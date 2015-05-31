@@ -1,9 +1,9 @@
 CREATE TABLE system_user (
 	system_user_id SERIAL PRIMARY KEY,
-	system_user_name VARCHAR(50) NOT NULL,
-	system_user_username VARCHAR(50) UNIQUE NOT NULL,
-	system_user_email VARCHAR(50) UNIQUE NOT NULL,
-	system_user_password VARCHAR(50) NOT NULL,
+	system_user_name VARCHAR(100) NOT NULL,
+	system_user_username VARCHAR(100) UNIQUE NOT NULL,
+	system_user_email VARCHAR(100) UNIQUE NOT NULL,
+	system_user_password VARCHAR(100) NOT NULL,
 	system_user_signup_date TIMESTAMP NOT NULL,
 	system_user_biography VARCHAR(500),
 	system_user_is_email_visible BOOLEAN DEFAULT False,
