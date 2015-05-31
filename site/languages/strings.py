@@ -404,7 +404,7 @@ STRINGS = {
 			The result is a continually growing work of hypertext fiction.
 			''',
 		'WHERE_IS_GOING_CONTENT': '''
-			As of now, the site unfortunately still doesn't offer an acceptable support
+			As of now, the site unfortunately doesn't offer an acceptable support
 			to mobile devices. So this should be one of my main priorities from now on.
 			Besides that, <a href="/contact">I'm open to sugestions</a>.
 			''',

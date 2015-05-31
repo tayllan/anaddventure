@@ -1212,8 +1212,16 @@ def about():
 	)
 
 @app.route('/faq')
-def fat():
+def faq():
 	return render_template('faq.html')
+
+@app.route('/terms')
+def terms():
+	return render_template('terms.html')
+
+@app.route('/privacy')
+def privacy():
+	return render_template('privacy.html')
 
 # Ajax
 @app.route('/get_user_info/')
