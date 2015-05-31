@@ -868,6 +868,7 @@ def profile(username):
 @app.route('/avatars/<int:user_id>/')
 def avatars(user_id):
 	for extension in ALLOWED_EXTENSIONS:
+		print(os.getcwd())
 		if os.path.exists('/home/tayllan/Projects/py_envs/anaddventure/Tale/site/static/avatars/' + str(user_id) + '.' + extension):
 			return send_file(
 				'static/avatars/' + str(user_id) + '.' + extension,
