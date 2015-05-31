@@ -15,7 +15,6 @@ from models.Tale import Tale
 from models.Tale_Genre import Tale_Genre
 from models.User import User
 from datetime import datetime
-from pprint import pprint
 from threading import Thread
 import os, pdfkit, hashlib, random
 
@@ -31,7 +30,7 @@ app.config.update(
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
-	SITE_URL = 'http://167.88.43.79:5000',
+	SITE_URL = 'http://167.88.43.79',
 	CONF_PRODUCTION = True,
 
 	# EMAIL SETTINGS
@@ -915,9 +914,8 @@ def update_profile(user_id):
 			uploaded_file_extension = get_file_extension(uploaded_file.filename)
 
 			if uploaded_file_extension is not None:
-				print(os.getcwd())
 				uploaded_file.save(
-					os.path.join('static/avatars/', str(user['id']) + '.' + uploaded_file_extension)
+					os.path.join('anaddventure/site/static/avatars/', str(user['id']) + '.' + uploaded_file_extension)
 				)
 			else:
 				error_list.append(strings.STRINGS[language]['INVALID_FILE'])
