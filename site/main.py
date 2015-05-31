@@ -35,12 +35,12 @@ app.config.update(
 	CONF_PRODUCTION = True,
 
 	# EMAIL SETTINGS
-	MAIL_SERVER = 'smtp.gmail.com',
+	MAIL_SERVER = 'smtp-mail.outlook.com',
 	MAIL_PORT = 587,
 	MAIL_USE_TLS = True,
-	MAIL_DEFAULT_SENDER = 'anaddventure@gmail.com',
-	MAIL_USERNAME = 'anaddventure@gmail.com',
-	MAIL_PASSWORD = 'processo',
+	MAIL_DEFAULT_SENDER = 'anaddventure@outlook.com',
+	MAIL_USERNAME = 'anaddventure@outlook.com',
+	MAIL_PASSWORD = 'processo0',
 )
 
 mail = Mail(app)
