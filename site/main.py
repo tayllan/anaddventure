@@ -164,9 +164,6 @@ def send_email(message_title, recipient, message_body):
 	message = Message(message_title, recipients = [recipient])
 	message.body = message_body
 
-	print('HERE')
-	print(message_body)
-
 	thread = Thread(target = send_async_email, args = [message])
 	thread.start()
 
@@ -979,7 +976,9 @@ def update_password(user_id):
 @app.route('/join/')
 def join():
 	if 'user_logged_id' in session:
-		return redirect('/profile/' + str(session['user_logged_id']))
+		user = User.select_by_id(session['user_logged_id'], 1)[0]
+
+		return redirect('/profile/' + user['username'])
 	else:
 		return render_template(
 			'join.html',
