@@ -36,7 +36,7 @@ app.config.update(
 
 	# EMAIL SETTINGS
 	MAIL_SERVER = 'smtp.gmail.com',
-	MAIL_PORT = 465,
+	MAIL_PORT = 587,
 	MAIL_USE_SSL = True,
 	MAIL_DEFAULT_SENDER = 'anaddventure@gmail.com',
 	MAIL_USERNAME = 'anaddventure@gmail.com',
