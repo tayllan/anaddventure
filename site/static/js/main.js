@@ -32,7 +32,7 @@ $(document).ready(function() {
 			GOOD: 'Good',
 			STRONG: 'Strong',
 			DELETE_MODAL_MESSAGE: 'Are you ABSOLUTELY sure?\nIf so, please type in the title of the tale to confirm.',
-			DELETE_MODAL_WRONG_TITLE: 'Wrong tale title',
+			DELETE_MODAL_WRONG_TITLE: 'Wrong tale title'
 		},
 		pt: {
 			NAME_MIN: 'Deve conter ao menos 3 caracteres',
@@ -60,7 +60,7 @@ $(document).ready(function() {
 			GOOD: 'Boa',
 			STRONG: 'Forte',
 			DELETE_MODAL_MESSAGE: 'Você tem certeza ABSOLUTA?\nSe sim, por favor digite o título do conto para confirmar.',
-			DELETE_MODAL_WRONG_TITLE: 'Título do conto errado',
+			DELETE_MODAL_WRONG_TITLE: 'Título do conto errado'
 		}
 	};
 
@@ -130,7 +130,7 @@ $(document).ready(function() {
 				type: 'match[' + otherFieldIdentifier + ']',
 				prompt: my_messages[language]['MATCH']
 			}];
-		},
+		}
 	};
 
 	var calculate_password_strength = function(password) {
