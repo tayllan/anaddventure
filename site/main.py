@@ -38,9 +38,9 @@ app.config.update(
 	MAIL_SERVER = 'smtp.gmail.com',
 	MAIL_PORT = 465,
 	MAIL_USE_SSL = True,
-	MAIL_DEFAULT_SENDER = 'suchexpertise@gmail.com',
-	MAIL_USERNAME = 'suchexpertise@gmail.com',
-	MAIL_PASSWORD = 'carelessWhisper'
+	MAIL_DEFAULT_SENDER = 'anaddventure@gmail.com',
+	MAIL_USERNAME = 'anaddventure@gmail.com',
+	MAIL_PASSWORD = 'processoMetodologico'
 )
 
 mail = Mail(app)
