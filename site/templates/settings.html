@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('OPTIONS')}}
+{% endblock %}
+
+{% block content %}
+
+{% include "fragment/tale_upper_bar.html" %}
+
+<div class="ui divider"></div>
+
+<div class="main">
+	<div class="ui two column grid">
+		<div class="thirteen wide column justified">
+			<ul class="ui list">
+				<li class="item">
+					<a href="/update_tale/{{tale.id}}" class="ui button">
+						{{_('UPDATE_TALE_INFO')}}
+					</a>
+					<br>
+				</li>
+
+				{% if tale.category == 2 %}
+					<li class="item">
+						<a href="/invite/{{tale.id}}" class="ui button">
+							{{_('INVITE_FRIEND_TO_TALE')}}
+						</a>
+						<br>
+					</li>
+				{% endif %}
+			</ul>
+
+			<h3 class="ui red inverted segment">{{_('DANGER_ZONE')}}</h3>
+			<ul class="ui list">
+				<li class="item">
+					<div class="ui two column grid segment">
+						<div class="twelve wide column">
+							<h3 class="ui header">{{_('DELETE_TALE')}}</h3>
+							<p>
+								{% autoescape false %}
+									{{_('DELETE_TALE_CONTENT')}}
+								{% endautoescape %}
+							</p>
+						</div>
+						<div class="four wide column">
+							<form action="/tale/delete/{{tale.id}}/" method="post" id="form-delete">
+								<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+								<button type="submit" name="delete-submit" value="{{tale.title}}" class="ui red button">
+									{{_('DELETE_TALE')}}
+								</button>
+							</form>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="three wide column ui segment">
+			{% include "fragment/tale_right_bar.html" %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

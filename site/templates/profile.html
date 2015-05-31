@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{user.username}} ({{user.name}})
+{% endblock %}
+
+{% block content %}
+
+<div class="ui two column grid">
+	<div class="four wide column">
+		{% include "fragment/profile_side_bar.html" %}
+	</div>
+
+	<div class="twelve wide column">
+		<div class="ui four column grid">
+		{% if user.id == user_logged_id %}
+			<div class="column"></div>
+
+			<div class="column">
+				<a href="/create" class="ui green button">
+					<i class="plus icon"></i>
+					{{_('CREATE_TALE')}}
+				</a>
+			</div>
+
+			<div class="column"></div>
+
+			<div class="column">
+				<a href="/update/{{user_logged_id}}" class="ui button edit-profile">
+					<i class="edit icon"></i>
+					{{_('EDIT_PROFILE')}}
+				</a>
+			</div>
+		{% else %}
+			<div class="column"></div>
+
+			<div class="column"></div>
+
+			<div class="column"></div>
+		{% endif %}
+		</div>
+
+		<div class="ui two column grid">
+			<div class="own column">
+			</div>
+
+			<div class="participated column">	
+			</div>
+		</div>
+
+		<div class="ui message">
+			<h4 class="header">{{_('BIOGRAPHY')}}</h4>
+			<p>
+				{% autoescape false %}
+					{{user.biography}}
+				{% endautoescape %}
+			</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

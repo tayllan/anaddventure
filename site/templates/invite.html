@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('INVITE_FRIEND')}}
+{% endblock %}
+
+{% block content %}
+
+{% include "fragment/tale_upper_bar.html" %}
+
+<div class="ui divider"></div>
+
+<div class="main">
+	<div class="ui two column grid">
+		<div class="thirteen wide column left aligned">
+			<form action="/invite/{{tale.id}}/" method="post" class="ui form">
+				<h1 class="ui header">{{_('INVITE_FRIEND')}}</h1>
+
+				<div class="required field">
+					<label>{{_('EMAIL_INVITED_USER')}}</label>
+
+					<div class="ui left icon input">
+						<input type="text" name="invite-username">
+						<i class="mail icon"></i>
+					</div>
+				</div>
+
+				<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+				<button type="submit" name="invite-submit" class="ui green button">
+					<i class="plus icon"></i>
+					{{_('INVITE')}}
+				</button>
+			</form>
+		</div>
+
+		<div class="three wide column ui segment">
+			{% include "fragment/tale_right_bar.html" %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

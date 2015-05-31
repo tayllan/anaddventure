@@ -1,0 +1,59 @@
+/* BEGINNING COMMON CSS */
+
+body, .site-wrapper {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	text-align: center;
+}
+
+.site-wrapper {
+	width: 100%;
+}
+
+.header {
+	background-color: #f5f5f5;
+	padding-top: 8px;
+	padding-bottom: 12px;
+}
+
+.header * {
+	display: inline;
+	padding: 10px;
+}
+
+.header input {
+	height: 6px;
+	width: 400px;
+	font-size: 12px;
+	border-radius: 5px;
+	margin-right: 200px;
+}
+
+.content {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1000px;
+	min-height: 350px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+footer {
+	display: table;
+	margin: 0 auto;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+ul {
+	list-style: none;
+}
+
+ul li {
+	float: left;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+/* END COMMON CSS */

@@ -1,0 +1,31 @@
+<div class="closed-contribution-requests ui bottom attached segment">
+	{% if closed_contribution_requests|length == 0 %}
+		<h2>{{_('NO_CLOSED_CONTRIBUTIONS_TALE')}}</h2>
+	{% else %}
+		{% for c_c_r in closed_contribution_requests %}
+			<div class="ui segment">
+				<h3>
+					{% if c_c_r.was_accepted == true %}
+						<span class="ui green ribbon label">
+							{{_('ACCEPTED')}}
+						</span>
+					{% else %}
+						<span class="ui red ribbon label">
+							{{_('REFUSED')}}
+						</span>
+					{% endif %}
+					<a href="/contribution_request/{{c_c_r.id}}">
+						{{_('CHAPTER')}} {{c_c_r.number}} - {{c_c_r.title}}
+					</a>
+				</h3>
+
+				<p>
+					{{_('SUBMITTED_ON')}} {{c_c_r.datetime}} {{_('BY')}}
+					<a href="/profile/{{c_c_r.user_username}}">
+						{{c_c_r.user_username}}
+					</a>
+				</p>
+			</div>
+		{% endfor %}
+	{% endif %}
+</div>

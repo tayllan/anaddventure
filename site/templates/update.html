@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('ACCOUNT_SETTINGS')}}
+{% endblock %}
+
+{% block content %}
+
+<div class="ui two column grid">
+	<div class="five wide column">
+		{% include "fragment/profile_side_bar.html" %}
+	</div>
+
+	<div class="profile ten wide column">
+		<div class="ui two column grid">
+			<div class="column">
+				<h2 class="ui header">
+					<i class="settings icon"></i>
+					<div class="content">
+						{{_('ACCOUNT_SETTINGS')}}
+					</div>
+				</h2>
+			</div>
+
+			<div class="column">
+				<button class="button-update-profile ui button" value="{{user.id}}">
+					{{_('UPDATE_PROFILE')}}
+				</button>
+				<button class="button-update-password ui button" value="{{user.id}}">
+					{{_('UPDATE_PASSWORD')}}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

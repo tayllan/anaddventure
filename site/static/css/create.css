@@ -1,0 +1,12 @@
+.label, button {
+	display: block;
+	margin-top: 10px;
+}
+
+.content input[type='text'] {
+	width: 80%;
+}
+
+button {
+	margin-left: 48%;
+}

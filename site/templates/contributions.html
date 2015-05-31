@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('CONTRIBUTIONS')|capitalize}} - {{creator.username}}/{{tale.title}}
+{% endblock %}
+
+{% block content %}
+
+{% include "fragment/tale_upper_bar.html" %}
+
+<div class="ui divider"></div>
+
+<div class="main">
+	<div class="ui two column grid">
+		<div class="thirteen wide column left aligned">
+			<div class="contributions">
+				{% if contributions['keys']|length == 0 %}
+					<h2>{{_('NO_CONTRIBUTIONS_TALE')}}</h2>
+				{% else %}
+					{% for key in contributions['keys'] %}
+						<h2>{{_('CONTRIBUTIONS')|capitalize}} {{_('ON')}} {{key}}</h2>
+
+						{% for contribution in contributions.content[key] %}
+							<div class="ui segment">
+								<h4>
+								{% if contribution.number == 0 %}
+									{{_('GUIDELINE_CHAPTER')}}
+								{% else %}
+									{{_('CHAPTER')}} {{contribution.number}}
+								{% endif %}
+								<a href="/tale/{{contribution.tale_id}}/{{contribution.id}}">
+										{{contribution.title}}
+									</a>
+								</h4>
+								<p>
+									{{_('PUBLISHED_BY')}}
+									<a href="/profile/{{contribution.contributor_username}}">
+										{{contribution.contributor_username}}
+									</a>
+								</p>
+							</div>
+						{% endfor %}						
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="three wide column ui segment">
+			{% include "fragment/tale_right_bar.html" %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

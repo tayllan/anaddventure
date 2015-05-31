@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('NEW_TALE')}}
+{% endblock %}
+
+{% block content %}
+<div class="create ui three column centered grid form">
+	<div class="one wide column"></div>
+
+	<form action="/create/" method="post" class="twelve wide column">
+		<h1 class="ui dividing header">
+			<i class="write icon"></i>
+			{{_('NEW_TALE')}}
+		</h1>
+
+		<div class="required field">
+			<label>{{_('TITLE')}}</label>
+			<input type="text" name="create-title">
+		</div>
+
+		<div class="field">
+			<label>{{_('DESCRIPTION')}}</label>
+			<textarea cols="80" rows="10" name="create-description"></textarea>
+		</div>
+
+		<div class="grouped fields column" id="genres">
+			<label>{{_('GENRES')}} <span style="color: #d95c5c;">*</span></label>
+
+			<div class="ui three column grid">
+				<div class="column">
+					<div class="ui fluid icon input">
+						<input type="text" id="available-genres">
+						<i class="search icon"></i>
+					</div>
+					<select size="5" name="available-genres" multiple>
+						{% for genre in genres|reverse %}
+							<option value="{{genre.id}}">{{_(genre.type)}}</option>
+						{% endfor %}
+					</select>
+				</div>
+
+				<div class="column center aligned">
+					<div class="ui green button" id="add">
+						<i class="arrow right icon"></i>
+						{{_('ADD')}}
+					</div>
+					<br>
+					<br>
+					<div class="ui red button" id="remove">
+						<i class="arrow left icon"></i>
+						{{_('REMOVE')}}
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="ui fluid icon input">
+						<input type="text" id="taken-genres">
+						<i class="search icon"></i>
+					</div>
+					<div class="field">
+						<select size="5" name="create-genres" multiple>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ui two column grid">
+			<div class="grouped fields column">
+				<label>{{_('TALE_TYPE')}}</label>
+				<div class="field">
+					<div class="ui radio checkbox">
+						<input id="public" type="radio"  name="create-type" value="1" checked>
+						<label for="public">
+							<i class="book icon"></i>
+							{{_('PUBLIC')}}
+						</label>
+					</div>
+				</div>
+				<div class="field">
+					<div class="ui radio checkbox">
+						<input id="private" type="radio"  name="create-type" value="2">
+						<label for="private">
+							<i class="lock icon"></i>
+							{{_('PRIVATE')}}
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="grouped fields column">
+				<label>{{_('TALE_LICENSE')}}</label>
+				{% for license in licenses %}
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input id="{{license.id}}" type="radio"  name="create-license" value="{{license.id}}" checked>
+							<label for="{{license.id}}">{{license.name}}  <a href="{{license.url}}" target="_blank">({{_('SPECIFICATION')}})</a></label>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+		<button type="submit" name="create-submit" class="ui green button">
+			{{_('CREATE_TALE')}}
+		</button>
+	</form>
+
+	<div class="one wide column"></div>
+</div>
+{% endblock %}

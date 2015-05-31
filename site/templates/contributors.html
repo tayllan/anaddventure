@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('WRITERS')}} - {{creator.username}}/{{tale.title}}
+{% endblock %}
+
+{% block content %}
+
+{% include "fragment/tale_upper_bar.html" %}
+
+<div class="ui divider"></div>
+
+<div class="main">
+	<div class="ui two column grid">
+		<div class="thirteen wide column left aligned">
+			<div class="contributors">
+				<ul>
+					{% for id in contributors %}
+						<li class="ui segment">
+							<a href="/profile/{{contributors[id]['username']}}">
+								<img class="ui avatar image" src="/avatars/{{id}}">
+								{{contributors[id]['username']}}
+							</a>: {{contributors[id]['count']}} {{_('CONTRIBUTIONS')}}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="three wide column ui segment">
+			{% include "fragment/tale_right_bar.html" %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

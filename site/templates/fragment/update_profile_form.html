@@ -1,0 +1,62 @@
+<form action="/update_profile/{{user.id}}/" method="post" enctype="multipart/form-data" class="ui form">
+	<h4 class="ui header">{{_('PUBLIC_PROFILE')}}</h4>
+
+	<div class="field">
+		<label class="label">{{_('AVATAR_IMAGE')}}</label>
+		<div style="display: none;">
+			<input type="file" name="update-avatar">
+		</div>
+		<button class="button-choose-file ui button">{{_('ADD_AVATAR')}}</button>
+		<div class="label-choose-file"></div>
+	</div>
+
+	<div class="required field">
+		<label class="label">{{_('NAME')}}</label>
+
+		<div class="ui left icon input">
+			<input type="text" name="update-name" value="{{user.name}}">
+			<i class="user icon"></i>
+		</div>
+	</div>
+
+	<div class="required field">
+		<label class="label">Username</label>
+
+		<div class="ui left icon input">
+			<input type="text" name="update-username" value="{{user.username}}" disabled>
+			<i class="user icon"></i>
+		</div>
+	</div>
+
+	<div class="required field">
+		<label class="label">Email</label>
+
+		<div class="ui left icon input">
+			<input type="email" name="update-email" value="{{user.email}}">
+			<i class="mail icon"></i>
+		</div>
+	</div>
+
+	<div class="required field">
+		<label class="label">{{_('PUBLIC_EMAIL')}}?</label>
+		<select size="1" name="update-email-visibility">
+			{% if user.is_email_visible == true %}
+				<option value="false">{{_('NO_SHOW')}}</option>
+				<option value="true" selected>{{_('SHOW')}}</option>
+			{% else %}
+				<option value="false" selected>{{_('NO_SHOW')}}</option>
+				<option value="true">{{_('SHOW')}}</option>
+			{% endif %}
+		</select>
+	</div>
+
+	<div class="field">
+		<label class="label">{{_('BIOGRAPHY')}}</label>
+		<textarea cols="50" rows="5" name="update-biography">{% autoescape false %}{{user.biography}}{% endautoescape %}</textarea>
+	</div>
+
+	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+	<button type="submit" name="update-profile-submit" class="ui green button">
+		{{_('UPDATE_PROFILE')}}
+	</button>
+</form>

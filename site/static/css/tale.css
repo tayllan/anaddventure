@@ -1,0 +1,16 @@
+.right-bar {
+	float: right;
+}
+
+.upper-bar p, .upper-bar form {
+	display: inline;
+}
+
+.upper-bar button {
+	margin-left: 40px;
+}
+
+.options-bar p{
+	display: inline-block;
+	padding: 30px;
+}

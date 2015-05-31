@@ -1,0 +1,35 @@
+<h1 style="text-align: center;">
+	{{tale.title}}
+</h1>
+
+{% for chapter in chapters %}
+	<div style="page-break-after: aways; text-align: center;">
+		<h3>
+			{% if chapter.number == 0 %}
+				{{_('GUIDELINE_CHAPTER')}} - {{chapter.title}}
+			{% else %}
+				{{_('CHAPTER')}} {{chapter.number}} - {{chapter.title}}
+			{% endif %}
+
+			<h4>
+				{{_('SUBMITTED_ON')}} {{chapter.datetime}} {{_('BY')}}
+				<a href="/profile/{{chapter.contributor_username}}">
+					{{chapter.contributor_username}}
+				</a>
+			</h4>
+		</h3>
+
+		<hr>
+
+		<div>
+			{% autoescape false %}
+				{{chapter.content}}
+			{% endautoescape %}
+		</div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+{% endfor %}

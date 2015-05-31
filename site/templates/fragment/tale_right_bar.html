@@ -1,0 +1,23 @@
+<div class="right-bar">
+	<p>
+		<a href="/tale/{{tale.id}}/0">
+			<i class="book icon"></i>
+			{{_('CONTENT')}}
+		</a>
+	</p>
+	<p>
+		<a href="/contribution_requests/{{tale.id}}">
+			<i class="fork icon"></i>
+			{{_('CONTRIBUTION_REQUESTS')}} {{tale.contribution_requests}}
+		</a>
+	</p>
+	<hr>
+	{% if user_logged_id == creator.id %}
+		<p>
+			<a href="/settings/{{tale.id}}">
+				<i class="settings icon"></i>
+				{{_('SETTINGS')}}
+			</a>
+		</p>
+	{% endif %}
+</div>

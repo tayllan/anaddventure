@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('FAQ')}}
+{% endblock %}
+
+{% block content %}
+<div>
+	<h1 class="ui header">{{_('FAQ')}}</h1>
+
+	<div class="ui divider"></div>
+
+	<ol>
+		<li>
+			<h2 class="ui header">{{_('WHAT_IS_AN_ADDVENTURE')}} ?</h2>
+
+			{{_('AN_ADDVENTURE_CONTENT')}}
+		</li>
+		
+		<li>
+			<h2 class="ui header">{{_('WHAT_IS_COLLABORATIVE_TALE')}} ?</h2>
+
+			{{_('COLLABORATIVE_TALE_CONTENT')}}
+		</li>
+		
+		<li>
+			<h2 class="ui header">{{_('SO_I_CAN_CONTRIBUTE')}} ?</h2>
+
+			{{_('SO_I_CAN_CONTRIBUTE_CONTENT')}}
+		</li>
+
+		<li>
+			<h2 class="ui header">{{_('WHAT_IS_PUBLIC_TALE')}} ?</h2>
+
+			{{_('WHAT_IS_PUBLIC_TALE_CONTENT')}}
+		</li>
+
+		<li>
+			<h2 class="ui header">{{_('WHAT_IS_PRIVATE_TALE')}} ?</h2>
+
+			{{_('WHAT_IS_PRIVATE_TALE_CONTENT')}}
+		</li>
+	</ol>
+</div>
+{% endblock %}

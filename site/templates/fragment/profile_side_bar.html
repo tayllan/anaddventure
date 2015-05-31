@@ -1,0 +1,16 @@
+<div>
+	<a href="/profile/{{user.username}}">
+		<img src="/avatars/{{user.id}}" alt="avatar picture" title="Avatar Picture" height="230" width="230" style="border-radius: 10px;">
+	</a>
+	<div>
+		<h1 style="margin-bottom: 0; margin-top: 0;">{{user.name}}</h1>
+		<h3 style="margin-top: 0; color: #666;">{{user.username}}</h3>
+
+		<div class="ui divider"></div>
+
+		{% if user.is_email_visible is sameas true %}
+			<p><a href="mailto:{{user.email}}"><i class="mail icon"></i>{{user.email}}</a></p>
+		{% endif %}
+		<p><i class="wait icon"></i>{{_('JOINED_ON')}} {{user.signup_date}}</p>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('NOT_FOUND')}}
+{% endblock %}
+
+{% block content %}
+
+<div class="ui center aligned three column grid">
+	<div class="three wide column"></div>
+
+	<div class="ten wide column">
+		<h1 class="ui header red">404 - {{_('NOT_FOUND')}}</h1>
+	</div>	
+
+	<div class="three wide column"></div>
+</div>
+
+{% endblock %}

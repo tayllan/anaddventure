@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{contribution.title}} {{_('BY')}} {{contribution.user_username}} - {{_('CONTRIBUTION_REQUEST')}} - {{creator.username}}/{{tale.title}}
+{% endblock %}
+
+{% block content %}
+
+{% include "fragment/tale_upper_bar.html" %}
+
+<div class="ui divider"></div>
+
+<div class="main">
+	<div class="ui two column grid">
+		<div class="thirteen wide column justified">
+			<div class="contribution-request">
+				{% if contribution.was_closed == false %}
+					<span class="ui yellow ribbon label">{{_('OPEN')}}</span>
+				{% else %}
+					<span class="ui black ribbon label">{{_('CLOSED')}}</span>
+					{% if contribution.was_accepted == true %}
+						<span class="ui green label"><i class="checkmark icon"></i>{{_('ACCEPTED')}}</span>
+					{% else %}
+						<span class="ui red label"><i class="remove icon"></i>{{_('REFUSED')}}</span>
+					{% endif %}
+				{% endif %}
+
+				<h5>
+					{{_('CHAPTER')}} {{contribution.number}} - {{contribution.datetime}} {{_('BY')}}
+					<a href="/profile/{{contribution.user_username}}">{{contribution.user_username}}</a>
+				</h5>
+
+				<div class="ui segment">
+					<h1 class="ui header center aligned">
+						{{contribution.title}}
+					</h1>
+
+					{% autoescape false %}
+						{{contribution.content}}
+					{% endautoescape %}
+				</div>
+			</div>
+		</div>
+
+		<div class="three wide column ui segment">
+			{% include "fragment/tale_right_bar.html" %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

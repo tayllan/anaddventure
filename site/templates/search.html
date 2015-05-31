@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('SEARCH')}} - {{content}}
+{% endblock %}
+
+{% block content %}
+
+<div class="ui two column grid">
+	<div class="four wide column">
+		<h1 class="ui header">
+			<i class="search icon"></i>
+			{{_('SEARCH')}}
+		</h1>
+	</div>
+	<div class="ten wide column ui header">
+		<form action="/search" method="get" class="ui form">
+			<div class="ui fluid icon input">
+				<input type="text" name="content" placeholder="{{_('TALE_AND_OR_USER')}}" value="{{content}}">
+				<i class="search icon"></i>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="search-block ui two column grid">
+	<div class="side-bar four wide column">
+		<div class="ui segment">
+			<p>
+				<i class="book icon"></i>
+				<a href="/search_tales?content={{content}}" class="search-tales">
+					{{_('TALES')}} {{tales.amount_of_results}}
+				</a>
+			</p>
+			<p>
+				<i class="users icon"></i>
+				<a href="/search_users/?content={{content}}" class="search-users">
+					{{_('USERS')}} {{users.amount_of_results}}
+				</a>
+			</p>
+		</div>
+
+		<div class="per-genres ui segment">
+			{% if tales_per_genre|length != 0 %}
+				<h3 class="ui header">{{_('GENRES')}}</h3>
+
+				{% for genre in tales_per_genre %}
+					<a href="/search_tales/?content={{content}}&amp;genre_id={{tales_per_genre[genre].id}}" class="search-tales ui two column grid" id="per-genre">
+						<div class="column left aligned">{{_(genre)}}</div>
+						<div class="column right aligned">{{tales_per_genre[genre].count}}</div>
+					</a>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="main-block twelve wide column">
+	</div>
+</div>
+
+{% endblock %}

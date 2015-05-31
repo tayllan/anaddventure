@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('TALE_SETTINGS')}}
+{% endblock %}
+
+{% block content %}
+
+{% include "fragment/tale_upper_bar.html" %}
+
+<div class="ui divider"></div>
+
+<div class="main">
+	<div class="ui two column grid">
+		<div class="thirteen wide column left aligned">
+			<form action="/update_tale/{{tale.id}}/" method="post" class="ui form">
+				<h1 class="ui dividing header">
+					<i class="edit icon"></i>
+					{{_('UPDATE_TALE')}}
+				</h1>
+
+				<div class="required field">
+					<label class="label">{{_('TITLE')}}</label>
+					<input type="text" name="update-tale-title" value="{{tale.title}}">
+				</div>
+
+				<div class="field">
+					<label class="label">{{_('DESCRIPTION')}}</label>
+					<textarea cols="80" rows="10" name="update-tale-description">{{tale.description}}</textarea>
+				</div>
+
+				<div class="grouped fields column" id="genres">
+					<label>{{_('GENRES')}} <span style="color: #d95c5c;">*</span></label>
+
+					<div class="ui three column grid">
+						<div class="column">
+							<div class="ui fluid icon input">
+								<input type="text" id="available-genres">
+								<i class="search icon"></i>
+							</div>
+							<select size="5" name="available-genres" multiple>
+								{% for genre in genres|reverse %}
+									{% if genre.checked == false %}
+										<option value="{{genre.id}}">{{_(genre.type)}}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+
+						<div class="column center aligned">
+							<div class="ui green button" id="add">
+								<i class="arrow right icon"></i>
+								{{_('ADD')}}
+							</div>
+							<br>
+							<br>
+							<div class="ui red button" id="remove">
+								<i class="arrow left icon"></i>
+								{{_('REMOVE')}}
+							</div>
+						</div>
+
+						<div class="column">
+							<div class="ui fluid icon input">
+								<input type="text" id="taken-genres">
+								<i class="search icon"></i>
+							</div>
+							<div class="field">
+								<select size="5" name="update-tale-genres" multiple>
+									{% for genre in genres|reverse %}
+										{% if genre.checked == true %}
+											<option value="{{genre.id}}" selected>{{_(genre.type)}}</option>
+										{% endif %}
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="ui two column grid">
+					<div class="grouped fields column">
+						<label>{{_('TALE_TYPE')}}</label>
+						{% if tale.category == 1 %}
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input id="public" type="radio"  name="update-tale-type" value="1" checked>
+									<label for="public">
+										<i class="book icon"></i>
+										{{_('PUBLIC')}}
+									</label>
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input id="private" type="radio"  name="update-tale-type" value="2">
+									<label for="private">
+										<i class="lock icon"></i>
+										{{_('PRIVATE')}}
+									</label>
+								</div>
+							</div>
+						{% else %}
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input id="public" type="radio"  name="update-tale-type" value="1">
+									<label for="public">
+										<i class="book icon"></i>
+										{{_('PUBLIC')}}
+									</label>
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input id="private" type="radio"  name="update-tale-type" value="2" checked>
+									<label for="private">
+										<i class="lock icon"></i>
+										{{_('PRIVATE')}}
+									</label>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+
+					<div class="grouped fields column">
+						<label>{{_('TALE_LICENSE')}}</label>
+						{% for license in licenses %}
+
+							<div class="field">
+								<div class="ui radio checkbox">
+									{% if license.selected == true %}
+										<input id="{{license.id}}" type="radio"  name="update-tale-license" value="{{license.id}}" checked>
+									{% else %}
+										<input id="{{license.id}}" type="radio"  name="update-tale-license" value="{{license.id}}">
+									{% endif %}
+									<label for="{{license.id}}">{{license.name}}  <a href="{{license.url}}" target="_blank">({{_('SPECIFICATION')}})</a></label>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+				<button type="submit" name="update-tale-submit" class="ui green button">
+					{{_('UPDATE')}}
+				</button>
+			</form>
+		</div>
+
+		<div class="three wide column ui segment">
+			{% include "fragment/tale_right_bar.html" %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

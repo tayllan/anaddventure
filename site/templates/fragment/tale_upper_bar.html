@@ -1,0 +1,68 @@
+<div class="upper-bar ui header center aligned">
+	<div class="ui two column grid">
+		<div class="nine wide column">
+			<h3>
+				{% if tale.category == 1 %}
+					<i class="book icon"></i>
+				{% else %}
+					<i class="lock icon"></i>
+				{% endif %}
+				<a href="/profile/{{creator.username}}">
+					{{creator.username}}
+				</a>
+				/
+				<a href="/tale/{{tale.id}}/0">
+					{{tale.title}}
+				</a>
+				<h4 class="sub header">
+					{{_('LICENSE')}}:
+					<a href="{{license.url}}" target="_blank">{{license.name}}</a>
+				</h4>
+			</h3>
+		</div>
+
+		<div class="seven wide column">
+			<div class="ui two column grid">
+				<div class="column">
+					{% if this_user_is_following is sameas true %}
+						<form action="/unfollow/{{tale.id}}/" method="post" class="form-unfollow">
+							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+							<button type="submit" class="ui button">
+								<i class="unhide icon"></i>
+								{{_('UNWATCH')}} {{tale.followers}}
+							</button>
+						</form>
+					{% else %}
+						<form action="/follow/{{tale.id}}/" method="post" class="form-follow">
+							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+							<button type="submit" class="ui button">
+								<i class="unhide icon"></i>
+								{{_('WATCH')}} {{tale.followers}}
+							</button>
+						</form>
+					{% endif %}
+				</div>
+
+				<div class="column">
+					{% if this_user_gave_star is sameas true %}
+						<form action="/unstar/{{tale.id}}/" method="post" class="form-unstar">
+							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+							<button type="submit" class="ui button">
+								<i class="star icon"></i>
+								{{_('UNSTAR')}} {{tale.stars}}
+							</button>
+						</form>
+					{% else %}
+						<form action="/star/{{tale.id}}/" method="post" class="form-star">
+							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+							<button type="submit" class="ui button">
+								<i class="star icon"></i>
+								{{_('STAR')}} {{tale.stars}}
+							</button>
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

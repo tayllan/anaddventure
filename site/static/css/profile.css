@@ -1,0 +1,27 @@
+.side-bar, .own, .participated {
+	float: left;
+	width: 32%;
+	padding-top: 20px;
+}
+
+.side-bar div, .side-bar p {
+	margin: 0 auto;
+}
+
+caption {
+	padding-top: 20px;
+	font-weight: bold;
+}
+
+.biography {
+	padding-left: 40%;
+	padding-top: 260px;
+}
+
+.biography label {
+	display: block;
+}
+
+.edit-profile {
+	float: right;
+}

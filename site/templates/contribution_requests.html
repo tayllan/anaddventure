@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('CONTRIBUTION_REQUESTS')}} - {{creator.username}}/{{tale.title}}
+{% endblock %}
+
+{% block content %}
+
+{% include "fragment/tale_upper_bar.html" %}
+
+<div class="ui divider"></div>
+
+<div class="main">
+	<div class="ui two column grid">
+		<div class="contribution-requests thirteen wide column">
+			<div class="ui top attached tabular menu">
+				<a class="o-c-r active item">{{_('OPEN_CONTRIBUTION_REQUESTS')}}</a>
+				<a class="c-c-r item">{{_('CLOSED_CONTRIBUTION_REQUESTS')}}</a>
+			</div>
+		</div>
+
+		<div class="three wide column ui segment">
+			{% include "fragment/tale_right_bar.html" %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('ABOUT')}}
+{% endblock %}
+
+{% block content %}
+<div>
+	<h1 class="ui header">{{_('ABOUT')}} {{_('SITE_LOGO')}}</h1>
+
+	<div class="ui divider"></div>
+
+	<section>
+		<h2 class="ui header">{{_('WHAT_IS')}} {{_('SITE_LOGO')}}?</h2>
+		<article>
+			<strong>{{_('AN_ADDVENTURE')}}</strong>
+			{{_('WHAT_IS_CONTENT')}} {{_('CURRENTLY_HAS')}} <strong>{{total_users}}</strong> {{_('REGISTERED_USERS')}}.
+		</article>
+
+		<h2 class="ui header">{{_('WHERE_IT_STARTED')}}</h2>
+		<article>
+			{{_('WHERE_IT_STARTED_CONTENT')}}
+			<article class="ui message">
+				{{_('AN_ADDVENTURE_CONTENT')}}
+			</article>
+		</article>
+
+		<h2 class="ui header">{{_('WHERE_IS_GOING')}}</h2>
+		<article>
+			{% autoescape false %}
+				{{_('WHERE_IS_GOING_CONTENT')}}
+			{% endautoescape %}
+		</article>
+	</section>
+</div>
+{% endblock %}

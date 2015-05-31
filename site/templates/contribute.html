@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('TALE')}}
+{% endblock %}
+
+{% block css %}
+	<script src="{{url_for('static', filename = 'js/tinymce/tinymce.min.js')}}"></script>
+{% endblock %}
+
+{% block content %}
+
+<form action="/contribute/{{tale_id}}/{{chapter_id}}/" method="post" class="contribute-form ui form">
+	<h1 class="ui dividing header">
+		<i class="write icon"></i>
+		{{_('CONTRIBUTE')}}
+	</h1>
+
+	<div class="required field">
+		<label>{{_('TITLE')}}</label>
+		<input type="text" name="contribute-title">
+	</div>
+	
+	<div class="field">
+		<textarea name="contribute-content"></textarea>
+	</div>
+	
+	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+	<button type="submit" name="contribute-submit" class="ui green button">{{_('SUBMIT')}}</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+.best {
+	height: 200px;
+	padding-left: 300px;
+}
+
+.best-table {
+	float: left;
+}
+
+.best-genres {
+	float: left;
+	width: 50%;
+}
+
+caption {
+	padding-top: 20px;
+	font-weight: bold;
+}

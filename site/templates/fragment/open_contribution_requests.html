@@ -1,0 +1,44 @@
+<div class="open-contribution-requests ui bottom attached segment">
+	{% if open_contribution_requests|length == 0 %}
+		<h2>{{_('NO_OPEN_CONTRIBUTIONS_TALE')}}</h2>
+	{% else %}
+		{% for o_c_r in open_contribution_requests %}
+			<div class="ui segment">
+				<h3>
+					<a href="/contribution_request/{{o_c_r.id}}">
+						{{_('CHAPTER')}} {{o_c_r.number}} - {{o_c_r.title}}
+					</a>
+				</h3>
+				<p>
+					{{_('SUBMITTED_ON')}} {{o_c_r.datetime}} {{_('BY')}}
+					<a href="/profile/{{o_c_r.user_username}}">
+						{{o_c_r.user_username}}
+					</a>
+				</p>
+
+				{% if user_logged_id == creator.id %}
+					<div class="ui four column grid">
+						<form action="/contribution_requests/accept/" method="post" class="column">
+							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+							<input type="hidden" name="contribution_request_id" value="{{o_c_r.id}}">
+							<button type="submit" class="positive ui button">
+								{{_('ACCEPT_CONTRIBUTION')}}
+							</button>
+						</form>
+
+						<form action="/contribution_requests/refuse/" method="post" class="column">
+							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+							<input type="hidden" name="contribution_request_id" value="{{o_c_r.id}}">
+							<button type="submit" class="negative ui button">
+								{{_('REFUSE_CONTRIBUTION')}}
+							</button>
+						</form>
+
+						<div class="column"></div>
+						<div class="column"></div>
+					</div>
+				{% endif %}
+			</div>
+		{% endfor %}
+	{% endif %}
+</div>

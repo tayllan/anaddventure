@@ -1,0 +1,51 @@
+<div>
+	<br>
+	<br>
+	{% for tale in tales %}
+		<div class="ui two column grid">
+			<div class="two wide column">
+				<h4 class="ui header">
+					{{tale.stars_today}} <i class="star icon"></i>
+				</h4>
+			</div>
+			<div class="fourteen wide column">
+				<p>
+					<sup>
+						{{_('TALE_BY')}}
+						<a href="/profile/{{tale.creator.username}}">{{tale.creator.username}}</a>
+					</sup>
+				</p>
+				<p>
+					<a href="/tale/{{tale.id}}/0">{{tale.title}}</a>
+				</p>
+				<p>
+					<sub>
+						{% if tale.chapters == 1 %}
+							<i class="book icon"></i>{{tale.chapters}} {{_('CHAPTER')}}
+						{% else %}
+							<i class="book icon"></i>{{tale.chapters}} {{_('CHAPTERS')}}
+						{% endif %}
+					</sub>
+					<sub>
+						{% if tale.stars == 1 %}
+							<i class="star icon"></i>{{tale.stars}} {{_('STAR')}}
+						{% else %}
+							<i class="star icon"></i>{{tale.stars}} {{_('STARS')}}
+						{% endif %}
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</sub>
+					<sub>
+						{% if tale.last_update != false %}
+							<i class="wait icon"></i>{{_('LAST_UPDATED_ON')}} {{tale.last_update}}
+						{% else %}
+							<i class="wait icon"></i>{{_('WAITING_FIRST_CHAPTER')}}
+						{% endif %}
+					</sub>
+				</p>
+			</div>
+		</div>
+		<div class="ui divider"></div>
+	{% endfor %}
+</div>
