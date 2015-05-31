@@ -40,7 +40,7 @@ app.config.update(
 	MAIL_USE_SSL = True,
 	MAIL_DEFAULT_SENDER = 'anaddventure@gmail.com',
 	MAIL_USERNAME = 'anaddventure@gmail.com',
-	MAIL_PASSWORD = 'processoMetodologico'
+	MAIL_PASSWORD = 'processo',
 )
 
 mail = Mail(app)
