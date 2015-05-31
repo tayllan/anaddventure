@@ -1,3 +1,9 @@
+CREATE DATABASE tales;
+
+\c tales;
+
+CREATE SCHEMA anaddventure;
+
 CREATE TABLE anaddventure.system_user (
 	system_user_id SERIAL PRIMARY KEY,
 	system_user_name VARCHAR(100) NOT NULL,
