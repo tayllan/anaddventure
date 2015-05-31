@@ -2,7 +2,7 @@ $(document).ready(function() {
 	'use strict';
 
 	var language = $('#selected-language')[0].innerHTML;
-	
+
 	var path = window.location.pathname;
 
 	var my_messages = {
@@ -188,7 +188,7 @@ $(document).ready(function() {
 		event.preventDefault();
 
 		var value = /\-(\w+)/.exec(this.id)[1];
-		
+
 		$.ajax({
 			type: 'get',
 			url: '/set_language',
@@ -536,7 +536,7 @@ $(document).ready(function() {
 
 			return false;
 		});
-		
+
 		render_own_tales(0);
 		render_participated_tales(0);
 
