@@ -2,7 +2,7 @@ import psycopg2
 
 class DAO:
 
-	connection_string = "host='localhost' dbname='tales' user='postgres' password='tolkien'"
+	connection_string = "host='localhost' dbname='tales' user='postgres' password='supremeTolkien'"
 	connection = psycopg2.connect(connection_string)
 
 	@staticmethod
