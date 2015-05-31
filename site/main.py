@@ -246,7 +246,9 @@ def tale_delete(tale_id):
 			Tale_Genre.delete_by_tale_id(tale['id'])
 			Tale.delete(tale['id'])
 
-			return jsonify(url = '/profile/' + str(user_logged_id))
+			username = User.select_by_id(user_logged_id, 1)[0]['username']
+
+			return jsonify(url = '/profile/' + username)
 		else:
 			return redirect('/404')
 	else:
@@ -913,6 +915,7 @@ def update_profile(user_id):
 			uploaded_file_extension = get_file_extension(uploaded_file.filename)
 
 			if uploaded_file_extension is not None:
+				print(os.getcwd())
 				uploaded_file.save(
 					os.path.join('static/avatars/', str(user['id']) + '.' + uploaded_file_extension)
 				)
@@ -938,7 +941,7 @@ def update_profile(user_id):
 
 			User.update_profile(user['id'], name, email, biography, is_email_visible)
 
-			return jsonify(url = '/profile/' + str(user['id']))
+			return jsonify(url = '/profile/' + user['username'])
 	else:
 		return redirect('/404')
 
@@ -969,7 +972,7 @@ def update_password(user_id):
 		else:
 			User.update_password(user_id, new_password)
 
-			return jsonify(url = '/profile/' + str(user_id))
+			return jsonify(url = '/profile/' + user['username'])
 	else:
 		return redirect('/404')
 
@@ -1047,8 +1050,9 @@ def login():
 
 		if user_id is not None:
 			session['user_logged_id'] = user_id
+			username = User.select_by_id(user_id, 1)[0]['username']
 
-			return jsonify(url = request.args.get('redirect', '/profile/' + str(user_id)))
+			return jsonify(url = request.args.get('redirect', '/profile/' + username))
 		else:
 			return make_response(jsonify(error_list = (['invalid user'])), 400)
 	else:
