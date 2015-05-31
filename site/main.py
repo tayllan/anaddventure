@@ -100,11 +100,6 @@ def send_email_to_followers(tale_id, message_title, message_body):
 	for follower in followers:
 		id = follower[0]
 		email = User.select_by_id(id, 1)[0]['email']
-
-		pprint('<<<<<<<<<<<<')
-		pprint(email)
-		pprint('>>>>>>>>>>>>')
-
 		send_email(message_title, email, message_body)
 
 def return_rendered_tale_template(
@@ -168,6 +163,9 @@ def send_async_email(message):
 def send_email(message_title, recipient, message_body):
 	message = Message(message_title, recipients = [recipient])
 	message.body = message_body
+
+	print('HERE')
+	print(message_body)
 
 	thread = Thread(target = send_async_email, args = [message])
 	thread.start()
