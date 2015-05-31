@@ -32,7 +32,8 @@ app.config.update(
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
 	SITE_URL = 'http://localhost',
-	
+	CONF_PRODUCTION = True,
+
 	# EMAIL SETTINGS
 	MAIL_SERVER = 'smtp.gmail.com',
 	MAIL_PORT = 465,
@@ -167,9 +168,9 @@ def send_async_email(message):
 def send_email(message_title, recipient, message_body):
 	message = Message(message_title, recipients = [recipient])
 	message.body = message_body
-	
+
 	thread = Thread(target = send_async_email, args = [message])
-	thread.start()	
+	thread.start()
 
 @app.context_processor
 def inject_user():
@@ -200,6 +201,7 @@ def inject_user():
 		'user_is_logged': user_is_logged,
 		'user_logged_username': user_logged_username,
 		'_': lambda token: strings.STRINGS[language][token],
+		'conf_production': app.config['CONF_PRODUCTION'],
 	}
 # END auxiliary functions
 
@@ -220,7 +222,6 @@ def not_found(error):
 
 @app.route('/')
 def index():
-	
 	return render_template('index.html', genres = Genre.select_top_ten())
 
 @app.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
@@ -921,7 +922,7 @@ def update_profile(user_id):
 					os.path.join('static/avatars/', str(user['id']) + '.' + uploaded_file_extension)
 				)
 			else:
-				error_list.append(strings.STRINGS[language]['INVALID_FILE'])			
+				error_list.append(strings.STRINGS[language]['INVALID_FILE'])
 
 		if not User.is_name_valid(name):
 			error_list.append(strings.STRINGS[language]['INVALID_NAME'])
