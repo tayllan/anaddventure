@@ -30,7 +30,7 @@ app.config.update(
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
-	SITE_URL = 'http://167.88.43.79',
+	SITE_URL = 'http://anaddventure.com',
 	CONF_PRODUCTION = True,
 
 	# EMAIL SETTINGS
