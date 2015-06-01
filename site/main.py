@@ -1164,7 +1164,9 @@ def change_password_post():
 
 				session['user_logged_id'] = p_c_r['user_id']
 
-				return jsonify(url = '/profile/' + str(p_c_r['user_id']))
+				username = User.select_by_id(p_c_r['user_id'], 1)[0]['username']
+
+				return jsonify(url = '/profile/' + username)
 			else:
 				return jsonify(url = '/')
 	else:
