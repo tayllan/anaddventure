@@ -10,8 +10,8 @@
 		{% block css %}{% endblock %}
 
 		{% if conf_production == true %}
-			<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/form.min.js"></script>
+			<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/form.min.js"></script>
 			<script src="{{url_for('static', filename = 'js/main.min.js')}}"></script>
 		{% else %}
 			<script src="{{url_for('static', filename = 'js/jquery-2.1.1.min.js')}}"></script>
