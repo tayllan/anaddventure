@@ -329,6 +329,7 @@ STRINGS = {
 		'INVALID_DESCRIPTION': 'DESCRIPTION Can have at most 500 characters.',
 		'INVALID_FILE': 'Invalid Picture.',
 		'INVALID_GENRE': 'Invalid Genre.',
+		'INVALID_LICENSE': 'Invalid License',
 		'USERNAME_TAKEN': 'This Username is not available.',
 		'EMAIL_TAKEN': 'This Email is not available.',
 		'TITLE_TAKEN': 'You already have a Tale with this Title.',
@@ -337,7 +338,7 @@ STRINGS = {
 		'WRONG_OLD_PASSWORD': 'The Old password is wrong.',
 
 		'TOO_WEAK': 'Too Weak',
-		
+
 		'ACTION / ADVENTURE': 'Action / Adventure',
 		'CHILDREN\'S TALES': 'Children\'s Tales',
 		'CRIME / DETECTIVE': 'Crime / Detective',
@@ -575,6 +576,7 @@ STRINGS = {
 		'INVALID_DESCRIPTION': 'DESCRIÇÃO Pode ter no máximo 500 caracteres.',
 		'INVALID_FILE': 'Imagem Inválida.',
 		'INVALID_GENRE': 'Gênero Inválido.',
+		'INVALID_LICENSE': 'Licença Inválida',
 		'USERNAME_TAKEN': 'Este Username não está disponível.',
 		'EMAIL_TAKEN': 'Este Email não está disponível.',
 		'TITLE_TAKEN': 'Você já possui um Conto com este Título.',
@@ -582,7 +584,7 @@ STRINGS = {
 		'NO_GENRES': 'Um Conto deve ter ao menos um Gênero.',
 		'WRONG_OLD_PASSWORD': 'A Senha antiga está errada.',
 		'TOO_WEAK': 'Muito Fraca',
-		
+
 		'ACTION / ADVENTURE': 'Ação / Aventura',
 		'CHILDREN\'S TALES': 'Contos Infantis',
 		'CRIME / DETECTIVE': 'Crime / Detetive',
