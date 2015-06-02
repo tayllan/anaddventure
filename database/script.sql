@@ -224,3 +224,6 @@ INSERT INTO anaddventure.genre (genre_type) VALUES ('TABOO');
 INSERT INTO anaddventure.genre (genre_type) VALUES ('TEEN / YOUNG ADULT');
 INSERT INTO anaddventure.genre (genre_type) VALUES ('URBAN');
 INSERT INTO anaddventure.genre (genre_type) VALUES ('WESTERN');
+
+INSERT INTO anaddventure.license (license_name, license_url) VALUES (1, 'Creative Commons Attribution-Noncommercial-Share Alike 4.0 License', 'http://creativecommons.org/licenses/by-nc-sa/4.0/');
+INSERT INTO anaddventure.license (license_name, license_url) VALUES (2, 'Copyright All rights reserved', 'https://en.wikipedia.org/wiki/Copyright');
