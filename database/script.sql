@@ -80,7 +80,7 @@ CREATE TABLE anaddventure.chapter (
 	chapter_content VARCHAR(100000) NOT NULL,
 	chapter_datetime TIMESTAMP NOT NULL,
 	chapter_download_count INTEGER DEFAULT 0,
-	chapter_previous_chapter INTEGER DEFAULT 0 REFERENCES anaddventure.chapter
+	chapter_previous_chapter INTEGER DEFAULT 0
 );
 
 CREATE TABLE anaddventure.contribution_request (
