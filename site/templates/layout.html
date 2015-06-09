@@ -22,7 +22,7 @@
 	<body>
 		<span hidden id="selected-language">{{language}}</span>
 		<header class="ui four column grid">
-			<div class="one wide column removable">asd</div>
+			<div class="one wide column removable"></div>
 
 			<div class="four wide column one-line">
 				<h1 class="ui header">
@@ -113,6 +113,12 @@
 		</div>
 
 		<style>
+			@media only screen and (max-width: 1280px) {
+				.removable {
+					display: none !important;
+				}
+			}
+
 			@media only screen and (max-width: 400px) {
 				.removable {
 					display: none !important;
