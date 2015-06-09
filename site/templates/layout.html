@@ -22,9 +22,9 @@
 	<body>
 		<span hidden id="selected-language">{{language}}</span>
 		<header class="ui four column grid">
-			<div class="one wide column"></div>
+			<div class="one wide column removable">asd</div>
 
-			<div class="four wide column">
+			<div class="four wide column one-line">
 				<h1 class="ui header">
 					<a href="/">{{_('SITE_LOGO')}}</a>
 				</h1>
@@ -111,5 +111,19 @@
 				</span>
 			</footer>
 		</div>
+
+		<style>
+			@media only screen and (max-width: 400px) {
+				.removable {
+					display: none !important;
+				}
+
+				.one-line {
+					display: block !important;
+					text-align: center !important;
+					padding-bottom: 0 !important;
+				}
+			}
+		</style>
 	</body>
 </html>
