@@ -22,15 +22,15 @@
 	<body>
 		<span hidden id="selected-language">{{language}}</span>
 		<header class="ui four column grid">
-			<div class="one wide column removable"></div>
+			<div class="one wide column"></div>
 
-			<div class="four wide column one-line">
+			<div class="five wide column">
 				<h1 class="ui header">
 					<a href="/">{{_('SITE_LOGO')}}</a>
 				</h1>
 			</div>
 
-			<div class="six wide column ui header" id="layout-search-bar">
+			<div class="five wide column ui header" id="layout-search-bar">
 				<form action="/search" method="get" class="ui form">
 					<div class="ui fluid icon input">
 						<input type="text" name="content" placeholder="{{_('TALE_AND_OR_USER')}}">
@@ -113,23 +113,6 @@
 		</div>
 
 		<style>
-			@media only screen and (max-width: 1280px) {
-				.removable {
-					display: none !important;
-				}
-			}
-
-			@media only screen and (max-width: 400px) {
-				.removable {
-					display: none !important;
-				}
-
-				.one-line {
-					display: block !important;
-					text-align: center !important;
-					padding-bottom: 0 !important;
-				}
-			}
 		</style>
 	</body>
 </html>
