@@ -22,7 +22,7 @@
 	<body>
 		<span hidden id="selected-language">{{language}}</span>
 		<header class="ui four column grid">
-			<div class="one wide column"></div>
+			<div class="one wide column zero-columns"></div>
 
 			<div class="five wide column">
 				<h1 class="ui header">
@@ -113,6 +113,37 @@
 		</div>
 
 		<style>
+		/*
+			.four-columns {
+				width: 25% !important;
+			}
+			.five-columns {
+				width: 31.25% !important;
+			}
+			.six-columns {
+				width: 37.5% !important;
+			}
+			.seven-columns {
+				width: 43.75% !important;
+			}
+			.eight-columns {
+				width: 50% !important;
+			}
+			.nine-columns {
+				width: 56.25% !important;
+			}
+			.ten-columns {
+				width: 62.5% !important;
+			}
+			.eleven-columns {
+				width: 68.75% !important;
+			}
+		*/
+		@media only screen and (max-width: 1024px) {
+			.zero-columns {
+				display: none !important;
+			}
+		}
 		</style>
 	</body>
 </html>
