@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block site_header %}
-<div class="ui black inverted segment" style="height: 350px;">
-	<h1 class="ui header" style="font-size: 36pt;">
+<div class="ui black inverted segment">
+	<h1 class="ui header">
 		{{_('SITE_HEADER')}}
 		<sup>
 			<a href="https://en.wikipedia.org/wiki/Addventure" title="{{_('NOT_WRONG')}}" target="_blank">*</a>
@@ -16,7 +16,7 @@
 
 	<br>
 
-	<h2 style="font-size: 22pt;">
+	<h2 class="ui header">
 		{{_('SITE_PRESENTATION')}}
 		<br>
 		<sub><a href="/faq">{{_('MORE_ABOUT')}}</a></sub>
@@ -25,28 +25,24 @@
 {% endblock %}
 
 {% block content %}
-<div class="ui two column grid">
-	<div class="column top-tales">
-		<label class="ui label black"><i class="star icon"></i>{{_('TOP_10')}}: </label>
-		<button class="ui button" id="top-today">{{_('TOP_10_TODAY')}}</button>
-		<button class="ui button" id="top-all">{{_('TOP_10_ALL')}}</button>
-	</div>
+<div class="ui grid">
+	<div class="doubling two column row">
+		<div class="column top-tales">
+			<label class="ui label black"><i class="star icon"></i>{{_('TOP_10')}}: </label>
+			<button class="ui button" id="top-today">{{_('TOP_10_TODAY')}}</button>
+			<button class="ui button" id="top-all">{{_('TOP_10_ALL')}}</button>
+		</div>
 
-	<div class="column">
-		<div class="ui two column grid">
-			<div class="two wide column"></div>
-
-			<div class="fourteen wide column">
-				<h2 class="ui header">{{_('TOP_10_GENRES')}}</h2>
-				<div class="ui three column grid">
-					{% for genre in genres %}
-						<div class="column">
-							<a href="/search?content=&amp;genre_id={{genre.id}}" class="ui tag label">
-								{{_(genre.type)}}
-							</a>
-						</div>
-					{% endfor %}
-				</div>
+		<div class="column">
+			<h2 class="ui header">{{_('TOP_10_GENRES')}}</h2>
+			<div class="ui three column grid">
+				{% for genre in genres %}
+					<div class="column">
+						<a href="/search?content=&amp;genre_id={{genre.id}}" class="ui tag label">
+							{{_(genre.type)}}
+						</a>
+					</div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>
