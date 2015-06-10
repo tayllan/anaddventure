@@ -21,27 +21,27 @@
 	</head>
 	<body>
 		<span hidden id="selected-language">{{language}}</span>
-		<header class="ui four column grid">
-			<div class="one wide column zero-columns"></div>
+		<header class="ui grid">
+			<div class="doubling four column row">
+				<div class="column">
+					<h1 class="ui header">
+						<a href="/">{{_('SITE_LOGO')}}</a>
+					</h1>
+				</div>
 
-			<div class="five wide column">
-				<h1 class="ui header">
-					<a href="/">{{_('SITE_LOGO')}}</a>
-				</h1>
-			</div>
-
-			<div class="five wide column ui header" id="layout-search-bar">
-				<form action="/search" method="get" class="ui form">
-					<div class="ui fluid icon input">
-						<input type="text" name="content" placeholder="{{_('TALE_AND_OR_USER')}}">
-						<i class="search icon"></i>
+				<div class="column" id="layout-search-bar">
+					<div class="ui header">
+						<form action="/search" method="get" class="ui form">
+							<div class="ui fluid icon input">
+								<input type="text" name="content" placeholder="{{_('TALE_AND_OR_USER')}}">
+								<i class="search icon"></i>
+							</div>
+						</form>
 					</div>
-				</form>
-			</div>
+				</div>
 
-			<div class="five wide column ui header">
-				<div class="ui two column grid">
-					<div class="ten wide column">
+				<div class="column">
+					<div class="ui header">
 						{% if user_is_logged == true %}
 							<a href="/profile/{{user_logged_username}}" class="ui button">
 								<i class="user icon"></i>
@@ -60,7 +60,10 @@
 							</a>
 						{% endif %}
 					</div>
-					<div class="six wide column">
+				</div>
+
+				<div class="column">
+					<div class="ui header">
 						{% if language == 'en' %}
 							<i class="us flag"></i><span><strong>English</strong></span>
 							<br>
@@ -85,65 +88,33 @@
 
 			<div class="ui divider"></div>
 
-			<footer>
-				<span>
-					<a href="https://github.com/tayllan">&copy; 2015 Tayllan Búrigo</a>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</span>
-				<span>
-					<a href="/faq">FAQ</a>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</span>
-				<span>
-					<a href="/terms">{{_('TERMS')}}</a>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</span>
-				<span>
-					<a href="/privacy">{{_('PRIVACY')}}</a>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</span>
-				<span>
-					<a href="/contact">{{_('CONTACT')}}</a>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				</span>
-				<span>
-					<a href="/about">{{_('ABOUT')}}</a>
-				</span>
+			<footer class="ui grid center aligned">
+				<div class="doubling six column row">
+					<span class="column">
+						<a href="https://github.com/tayllan">&copy; 2015 Tayllan Búrigo</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</span>
+					<span class="column">
+						<a href="/faq">FAQ</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</span>
+					<span class="column">
+						<a href="/terms">{{_('TERMS')}}</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</span>
+					<span class="column">
+						<a href="/privacy">{{_('PRIVACY')}}</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</span>
+					<span class="column">
+						<a href="/contact">{{_('CONTACT')}}</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</span>
+					<span class="column">
+						<a href="/about">{{_('ABOUT')}}</a>
+					</span>
+				</div>
 			</footer>
 		</div>
-
-		<style>
-		/*
-			.four-columns {
-				width: 25% !important;
-			}
-			.five-columns {
-				width: 31.25% !important;
-			}
-			.six-columns {
-				width: 37.5% !important;
-			}
-			.seven-columns {
-				width: 43.75% !important;
-			}
-			.eight-columns {
-				width: 50% !important;
-			}
-			.nine-columns {
-				width: 56.25% !important;
-			}
-			.ten-columns {
-				width: 62.5% !important;
-			}
-			.eleven-columns {
-				width: 68.75% !important;
-			}
-		*/
-		@media only screen and (max-width: 1024px) {
-			.zero-columns {
-				display: none !important;
-			}
-		}
-		</style>
 	</body>
 </html>
