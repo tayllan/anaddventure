@@ -31,7 +31,7 @@ app.config.update(
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
 	SITE_URL = 'http://anaddventure.com',
-	CONF_PRODUCTION = True,
+	CONF_PRODUCTION = False,
 
 	# EMAIL SETTINGS
 	MAIL_SERVER = 'smtp-mail.outlook.com',
@@ -637,7 +637,8 @@ def contributions(tale_id):
 			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
 			chapters_dict[date].append(chapter)
 
-		keys = chapters_dict.keys()
+		keys = list(chapters_dict.keys())
+		print(keys)
 		keys.sort(reverse = True)
 
 		return return_rendered_tale_template(
