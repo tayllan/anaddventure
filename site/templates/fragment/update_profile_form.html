@@ -4,7 +4,7 @@
 	<div class="field">
 		<label class="label">{{_('AVATAR_IMAGE')}}</label>
 		<div style="display: none;">
-			<input type="file" name="update-avatar">
+			<input type="file" name="update-avatar" tabindex="1">
 		</div>
 		<button class="button-choose-file ui button">{{_('ADD_AVATAR')}}</button>
 		<div class="label-choose-file"></div>
@@ -14,7 +14,7 @@
 		<label class="label">{{_('NAME')}}</label>
 
 		<div class="ui left icon input">
-			<input type="text" name="update-name" value="{{user.name}}">
+			<input type="text" name="update-name" value="{{user.name}}" tabindex="2">
 			<i class="user icon"></i>
 		</div>
 	</div>
@@ -32,14 +32,14 @@
 		<label class="label">Email</label>
 
 		<div class="ui left icon input">
-			<input type="email" name="update-email" value="{{user.email}}">
+			<input type="email" name="update-email" value="{{user.email}}" tabindex="3">
 			<i class="mail icon"></i>
 		</div>
 	</div>
 
 	<div class="required field">
 		<label class="label">{{_('PUBLIC_EMAIL')}}?</label>
-		<select size="1" name="update-email-visibility">
+		<select size="1" name="update-email-visibility" tabindex="4">
 			{% if user.is_email_visible == true %}
 				<option value="false">{{_('NO_SHOW')}}</option>
 				<option value="true" selected>{{_('SHOW')}}</option>
@@ -52,11 +52,11 @@
 
 	<div class="field">
 		<label class="label">{{_('BIOGRAPHY')}}</label>
-		<textarea cols="50" rows="5" name="update-biography">{% autoescape false %}{{user.biography}}{% endautoescape %}</textarea>
+		<textarea cols="50" rows="5" name="update-biography" tabindex="5">{% autoescape false %}{{user.biography}}{% endautoescape %}</textarea>
 	</div>
 
 	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-	<button type="submit" name="update-profile-submit" class="ui green button">
+	<button type="submit" name="update-profile-submit" class="ui green button" tabindex="6">
 		{{_('UPDATE_PROFILE')}}
 	</button>
 </form>
