@@ -21,58 +21,58 @@
 	</head>
 	<body>
 		<span hidden id="selected-language">{{language}}</span>
-		<header class="ui grid">
-			<div class="doubling four column row">
-				<div class="column">
-					<h1 class="ui header">
-						<a href="/">{{_('SITE_LOGO')}}</a>
-					</h1>
-				</div>
+		<header class="ui stackable three column grid">
+			<div class="column">
+				<h1 class="ui header center aligned">
+					<a href="/">{{_('SITE_LOGO')}}</a>
+				</h1>
+			</div>
 
-				<div class="column" id="layout-search-bar">
-					<div class="ui header">
-						<form action="/search" method="get" class="ui form">
-							<div class="ui fluid icon input">
-								<input type="text" name="content" placeholder="{{_('TALE_AND_OR_USER')}}">
-								<i class="search icon"></i>
-							</div>
-						</form>
-					</div>
+			<div class="column" id="layout-search-bar">
+				<div class="ui header">
+					<form action="/search" method="get" class="ui form">
+						<div class="ui fluid icon input">
+							<input type="text" name="content" placeholder="{{_('TALE_AND_OR_USER')}}">
+							<i class="search icon"></i>
+						</div>
+					</form>
 				</div>
+			</div>
 
-				<div class="column">
-					<div class="ui header">
-						{% if user_is_logged == true %}
-							<a href="/profile/{{user_logged_username}}" class="ui button">
-								<i class="user icon"></i>
-								{{_('MY_PROFILE')}}
-							</a>
-							<a href="/logout" class="ui button">
-								<i class="sign out icon"></i>
-								{{_('LOGOUT')}}
-							</a>
-						{% else %}
-							<a href="/join" class="ui button">
-								<i class="sign in icon"></i>
-								{{_('LOGIN')}}
-								/
-								{{_('SIGN_UP')}}
-							</a>
-						{% endif %}
-					</div>
-				</div>
+			<div class="column">
+				<div class="ui grid">
+					<div class="doubling three column row">
+						<div class="ui header column center aligned">
+							{% if user_is_logged == true %}
+								<a href="/profile/{{user_logged_username}}" class="ui button">
+									<i class="user icon"></i>
+									{{_('MY_PROFILE')}}
+								</a>
+								<a href="/logout" class="ui button">
+									<i class="sign out icon"></i>
+									{{_('LOGOUT')}}
+								</a>
+							{% else %}
+								<a href="/join" class="ui button">
+									<i class="sign in icon"></i>
+									{{_('LOGIN')}}
+									/
+									{{_('SIGN_UP')}}
+								</a>
+							{% endif %}
+						</div>
 
-				<div class="column">
-					<div class="ui header">
-						{% if language == 'en' %}
-							<i class="us flag"></i><span><strong>English</strong></span>
-							<br>
-							<i class="br flag"></i><a href="" id="language-pt">Portuguese</a>
-						{% else %}
-							<i class="us flag"></i><a href="" id="language-en">Inglês</a>
-							<br>
-							<i class="br flag"></i><span><strong>Português</strong></span>
-						{% endif %}
+						<div class="ui header column">
+							{% if language == 'en' %}
+								<i class="us flag"></i><span><strong>English</strong></span>
+								<br>
+								<i class="br flag"></i><a href="" id="language-pt">Portuguese</a>
+							{% else %}
+								<i class="us flag"></i><a href="" id="language-en">Inglês</a>
+								<br>
+								<i class="br flag"></i><span><strong>Português</strong></span>
+							{% endif %}
+						</div>
 					</div>
 				</div>
 			</div>
