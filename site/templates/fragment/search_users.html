@@ -26,14 +26,18 @@
 
 	<div class="results">
 		{% for user in users.results %}
-			<div class="result ui two column grid">
+			<div class="result ui stackable two column grid">
 				<div class="two wide column">
-					<img src="/avatars/{{user.id}}" class="ui small image">
+					<a href="/profile/{{user.username}}">
+						<img src="/avatars/{{user.id}}" class="ui small image">
+					</a>
 				</div>
 				<div class="column">
 					<a href="/profile/{{user.username}}">{{user.username}}</a>
 					<p><i class="wait icon"></i>{{_('JOINED_ON')}} {{user.signup_date}}</p>
 				</div>
+
+				<div class="ui divider"></div>
 			</div>
 		{% endfor %}
 	</div>
