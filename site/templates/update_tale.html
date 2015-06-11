@@ -11,8 +11,8 @@
 <div class="ui divider"></div>
 
 <div class="main">
-	<div class="ui two column grid">
-		<div class="thirteen wide column left aligned">
+	<div class="ui stackable two column grid">
+		<div class="thirteen wide column">
 			<form action="/update_tale/{{tale.id}}/" method="post" class="ui form">
 				<h1 class="ui dividing header">
 					<i class="edit icon"></i>
@@ -32,7 +32,7 @@
 				<div class="grouped fields column" id="genres">
 					<label>{{_('GENRES')}} <span style="color: #d95c5c;">*</span></label>
 
-					<div class="ui three column grid">
+					<div class="ui stackable three column grid">
 						<div class="column">
 							<div class="ui fluid icon input">
 								<input type="text" id="available-genres">
@@ -78,7 +78,7 @@
 					</div>
 				</div>
 
-				<div class="ui two column grid">
+				<div class="ui stackable two column grid">
 					<div class="grouped fields column">
 						<label>{{_('TALE_TYPE')}}</label>
 						{% if tale.category == 1 %}
@@ -147,8 +147,10 @@
 			</form>
 		</div>
 
-		<div class="three wide column ui segment">
-			{% include "fragment/tale_right_bar.html" %}
+		<div class="three wide column">
+			<div class="ui segment">
+				{% include "fragment/tale_right_bar.html" %}
+			</div>
 		</div>
 	</div>
 </div>
