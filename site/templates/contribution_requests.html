@@ -11,7 +11,7 @@
 <div class="ui divider"></div>
 
 <div class="main">
-	<div class="ui two column grid">
+	<div class="ui stackable two column grid">
 		<div class="contribution-requests thirteen wide column">
 			<div class="ui top attached tabular menu">
 				<a class="o-c-r active item">{{_('OPEN_CONTRIBUTION_REQUESTS')}}</a>
@@ -19,8 +19,10 @@
 			</div>
 		</div>
 
-		<div class="three wide column ui segment">
-			{% include "fragment/tale_right_bar.html" %}
+		<div class="three wide column">
+			<div class="ui segment">
+				{% include "fragment/tale_right_bar.html" %}
+			</div>
 		</div>
 	</div>
 </div>

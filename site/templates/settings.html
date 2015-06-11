@@ -11,7 +11,7 @@
 <div class="ui divider"></div>
 
 <div class="main">
-	<div class="ui two column grid">
+	<div class="ui stackable two column grid">
 		<div class="thirteen wide column justified">
 			<ul class="ui list">
 				<li class="item">
@@ -32,32 +32,28 @@
 			</ul>
 
 			<h3 class="ui red inverted segment">{{_('DANGER_ZONE')}}</h3>
-			<ul class="ui list">
+			<ul class="ui list segment">
 				<li class="item">
-					<div class="ui two column grid segment">
-						<div class="twelve wide column">
-							<h3 class="ui header">{{_('DELETE_TALE')}}</h3>
-							<p>
-								{% autoescape false %}
-									{{_('DELETE_TALE_CONTENT')}}
-								{% endautoescape %}
-							</p>
-						</div>
-						<div class="four wide column">
-							<form action="/tale/delete/{{tale.id}}/" method="post" id="form-delete">
-								<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-								<button type="submit" name="delete-submit" value="{{tale.title}}" class="ui red button">
-									{{_('DELETE_TALE')}}
-								</button>
-							</form>
-						</div>
-					</div>
+					<h3 class="ui header">{{_('DELETE_TALE')}}</h3>
+					<p>
+						{% autoescape false %}
+							{{_('DELETE_TALE_CONTENT')}}
+						{% endautoescape %}
+					</p>
+					<form action="/tale/delete/{{tale.id}}/" method="post" id="form-delete">
+						<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+						<button type="submit" name="delete-submit" value="{{tale.title}}" class="ui red button">
+							{{_('DELETE_TALE')}}
+						</button>
+					</form>
 				</li>
 			</ul>
 		</div>
 
-		<div class="three wide column ui segment">
-			{% include "fragment/tale_right_bar.html" %}
+		<div class="three wide column">
+			<div class="ui segment">
+				{% include "fragment/tale_right_bar.html" %}
+			</div>
 		</div>
 	</div>
 </div>

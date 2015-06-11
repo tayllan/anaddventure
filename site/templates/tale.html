@@ -11,11 +11,11 @@
 <div class="ui divider"></div>
 
 <div class="main">
-	<div class="ui two column grid">
+	<div class="ui stackable two column grid">
 		<div class="thirteen wide column justified">
-			<p>{{tale.description}}</p>
+			<p class="ui segment">{{tale.description}}</p>
 
-			<div class="options-bar ui four column grid">
+			<div class="options-bar ui stackable four column grid">
 				<div class="two wide column"></div>
 
 				<p class="column">
@@ -31,6 +31,7 @@
 						{{_('CHAPTERS')}}
 					</a>
 				</p>
+
 				<p class="column">
 					<i class="users icon"></i>
 					<a href="/contributors/{{tale.id}}">
@@ -42,95 +43,97 @@
 			<div class="ui divider"></div>
 
 			<div class="chapter">
-			{% if tale.chapter is not none %}
-				<div class="ui two column grid">
-					<div class="six wide column">
-						<h5>
-							{{_('CHAPTER')}} {{tale.chapter.number}}
-							-
-							{{tale.chapter.datetime}} {{_('BY')}}
-							<a href="/profile/{{tale.chapter.contributor_username}}">
-								{{tale.chapter.contributor_username}}
-							</a>
-						</h5>
-					</div>
+				{% if tale.chapter is not none %}
+					<div class="ui stackable two column grid">
+						<div class="six wide column">
+							<h5>
+								{{_('CHAPTER')}} {{tale.chapter.number}}
+								-
+								{{tale.chapter.datetime}} {{_('BY')}}
+								<a href="/profile/{{tale.chapter.contributor_username}}">
+									{{tale.chapter.contributor_username}}
+								</a>
+							</h5>
+						</div>
 
-					<div class="ten wide column">
-						<div class="ui two column grid">
-							<div class="column">
-								<form action="/download_chapter/{{tale.chapter.id}}/" method="post">
-									<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-									<button type="submit" class="ui small button">
-										<i class="download icon"></i>
-										{{_('DOWNLOAD_CHAPTER')}} {{tale.chapter.downloads}}
-									</button>
-								</form>
-							</div>
+						<div class="ten wide column">
+							<div class="ui stackable two column grid">
+								<div class="column">
+									<form action="/download_chapter/{{tale.chapter.id}}/" method="post">
+										<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+										<button type="submit" class="ui small button">
+											<i class="download icon"></i>
+											{{_('DOWNLOAD_CHAPTER')}} {{tale.chapter.downloads}}
+										</button>
+									</form>
+								</div>
 
-							<div class="column">
-								<form action="/download_all/{{tale.chapter.id}}/" method="post">
-									<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-									<button type="submit" class="ui small button">
-										<i class="download icon"></i>
-										{{_('DOWNLOAD_ALL')}}
-									</button>
-								</form>
+								<div class="column">
+									<form action="/download_all/{{tale.chapter.id}}/" method="post">
+										<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+										<button type="submit" class="ui small button">
+											<i class="download icon"></i>
+											{{_('DOWNLOAD_ALL')}}
+										</button>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="ui segment">
-					{% if tale.chapter.previous_chapter_id != -1 %}
-						<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}">
-							<i class="reply icon"></i>
-							{{_('PREVIOUS_CHAPTER')}}
-						</a>
-					{% endif %}
-					
-					<h1 class="ui header center aligned">
-						{{tale.chapter.title}}
-					</h1>
+					<div class="ui segment">
+						{% if tale.chapter.previous_chapter_id != -1 %}
+							<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}">
+								<i class="reply icon"></i>
+								{{_('PREVIOUS_CHAPTER')}}
+							</a>
+						{% endif %}
 
-					{% autoescape false %}
-						{{tale.chapter.content}}
-					{% endautoescape %}
+						<h1 class="ui header center aligned">
+							{{tale.chapter.title}}
+						</h1>
 
-					<div class="ui divider"></div>
+						{% autoescape false %}
+							{{tale.chapter.content}}
+						{% endautoescape %}
 
-					<div>
-						{% for next_chapter in tale.chapter.next_chapters %}
-							<p>
-								<a href="/tale/{{tale.id}}/{{next_chapter.id}}"><i class="arrow circle outline right icon"></i>{{next_chapter.title}}</a>
+						<div class="ui divider"></div>
+
+						<div>
+							{% for next_chapter in tale.chapter.next_chapters %}
+								<p>
+									<a href="/tale/{{tale.id}}/{{next_chapter.id}}"><i class="arrow circle outline right icon"></i>{{next_chapter.title}}</a>
+								</p>
+							{% endfor %}
+
+							<p class="ui green label">
+								<a href="/contribute/{{tale.id}}/{{tale.chapter.id}}">
+									{{_('CONTINUE_CHAPTER')}}
+								</a>
 							</p>
-						{% endfor %}
+						</div>
 					</div>
-
-					<p class="ui green bottom right attached label">
-						<a href="/contribute/{{tale.id}}/{{tale.chapter.id}}">
-							{{_('CONTINUE_CHAPTER')}}
-						</a>
-					</p>
-				</div>
-			{% else %}
-				{% if user_logged_id == creator.id %}
-					<h2>
-						{{creator.username}}, {{_('ADD_FIRST_CHAPTER')}}
-						<a href="/contribute/{{tale.id}}/0">
-							{{_('HERE')}}.
-						</a>
-					</h2>
 				{% else %}
-					<h2>
-						{{_('NO_CHAPTER')}}
-					</h2>
+					{% if user_logged_id == creator.id %}
+						<h2>
+							{{creator.username}}, {{_('ADD_FIRST_CHAPTER')}}
+							<a href="/contribute/{{tale.id}}/0">
+								{{_('HERE')}}.
+							</a>
+						</h2>
+					{% else %}
+						<h2>
+							{{_('NO_CHAPTER')}}
+						</h2>
+					{% endif %}
 				{% endif %}
-			{% endif %}
 			</div>
 		</div>
 
-		<div class="three wide column ui segment">
-			{% include "fragment/tale_right_bar.html" %}
+		<div class="three wide column">
+			<div class="ui segment">
+				{% include "fragment/tale_right_bar.html" %}
+			</div>
 		</div>
 	</div>
 </div>

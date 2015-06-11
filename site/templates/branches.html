@@ -11,8 +11,8 @@
 <div class="ui divider"></div>
 
 <div class="main">
-	<div class="ui two column grid">
-		<div class="thirteen wide column left aligned">
+	<div class="ui stackable two column grid">
+		<div class="thirteen wide column">
 			<div class="branches">
 				{% if branches|length == 0 %}
 					<h2>{{_('NO_CHAPTERS_TALE')}}</h2>
@@ -43,8 +43,10 @@
 			</div>
 		</div>
 
-		<div class="three wide column ui segment">
-			{% include "fragment/tale_right_bar.html" %}
+		<div class="three wide column">
+			<div class="ui segment">
+				{% include "fragment/tale_right_bar.html" %}
+			</div>
 		</div>
 	</div>
 </div>
