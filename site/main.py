@@ -638,7 +638,6 @@ def contributions(tale_id):
 			chapters_dict[date].append(chapter)
 
 		keys = list(chapters_dict.keys())
-		print(keys)
 		keys.sort(reverse = True)
 
 		return return_rendered_tale_template(
