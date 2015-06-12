@@ -31,7 +31,7 @@ app.config.update(
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
 	SITE_URL = 'http://anaddventure.com',
-	CONF_PRODUCTION = False,
+	CONF_PRODUCTION = True,
 
 	# EMAIL SETTINGS
 	MAIL_SERVER = 'smtp-mail.outlook.com',
