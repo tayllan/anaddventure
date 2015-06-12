@@ -1116,6 +1116,10 @@ $(document).ready(function() {
 		var $c_c_r = $('.c-c-r');
 
 		$o_c_r.on('click', function(event) {
+			if ($contribution_requests.find('.open-contribution-requests').length === 1) {
+				return;
+			}
+			console.log('HERE');
 			$o_c_r.addClass('active');
 			$c_c_r.removeClass('active');
 
@@ -1139,6 +1143,9 @@ $(document).ready(function() {
 		$o_c_r.trigger('click');
 
 		$c_c_r.on('click', function(event) {
+			if ($contribution_requests.find('.closed-contribution-requests').length === 1) {
+				return;
+			}
 			$c_c_r.addClass('active');
 			$o_c_r.removeClass('active');
 
