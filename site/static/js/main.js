@@ -795,7 +795,7 @@ $(document).ready(function() {
 
 					$form_unfollow.attr(
 						'class',
-						'form-follow'
+						'form-follow column'
 					);
 				},
 				error: function(xhr, status, error) {
@@ -833,7 +833,7 @@ $(document).ready(function() {
 
 						$form_follow.attr(
 							'class',
-							'form-unfollow'
+							'form-unfollow column'
 						);
 					}
 					else {
@@ -874,7 +874,7 @@ $(document).ready(function() {
 
 					$form_unstar.attr(
 						'class',
-						'form-star'
+						'form-star column'
 					);
 				},
 				error: function(xhr, status, error) {
@@ -912,7 +912,7 @@ $(document).ready(function() {
 
 						$form_star.attr(
 							'class',
-							'form-unstar'
+							'form-unstar column'
 						);
 					}
 					else {
