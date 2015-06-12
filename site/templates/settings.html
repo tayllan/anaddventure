@@ -15,17 +15,13 @@
 		<div class="thirteen wide column justified">
 			<ul class="ui list">
 				<li class="item">
-					<a href="/update_tale/{{tale.id}}" class="ui button">
-						{{_('UPDATE_TALE_INFO')}}
-					</a>
+					<a href="/update_tale/{{tale.id}}" class="ui button">{{_('UPDATE_TALE_INFO')}}</a>
 					<br>
 				</li>
 
 				{% if tale.category == 2 %}
 					<li class="item">
-						<a href="/invite/{{tale.id}}" class="ui button">
-							{{_('INVITE_FRIEND_TO_TALE')}}
-						</a>
+						<a href="/invite/{{tale.id}}" class="ui button">{{_('INVITE_FRIEND_TO_TALE')}}</a>
 						<br>
 					</li>
 				{% endif %}
@@ -42,9 +38,7 @@
 					</p>
 					<form action="/tale/delete/{{tale.id}}/" method="post" id="form-delete">
 						<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-						<button type="submit" name="delete-submit" value="{{tale.title}}" class="ui red button">
-							{{_('DELETE_TALE')}}
-						</button>
+						<button type="submit" name="delete-submit" value="{{tale.title}}" class="ui red button">{{_('DELETE_TALE')}}</button>
 					</form>
 				</li>
 			</ul>

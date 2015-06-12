@@ -20,11 +20,11 @@
 		<label>{{_('TITLE')}}</label>
 		<input type="text" name="contribute-title">
 	</div>
-	
+
 	<div class="field">
 		<textarea name="contribute-content"></textarea>
 	</div>
-	
+
 	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
 	<button type="submit" name="contribute-submit" class="ui green button">{{_('SUBMIT')}}</button>
 </form>

@@ -21,17 +21,13 @@
 						<form action="/contribution_requests/accept/" method="post" class="column">
 							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
 							<input type="hidden" name="contribution_request_id" value="{{o_c_r.id}}">
-							<button type="submit" class="positive ui button">
-								{{_('ACCEPT_CONTRIBUTION')}}
-							</button>
+							<button type="submit" class="positive ui button">{{_('ACCEPT_CONTRIBUTION')}}</button>
 						</form>
 
 						<form action="/contribution_requests/refuse/" method="post" class="column">
 							<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
 							<input type="hidden" name="contribution_request_id" value="{{o_c_r.id}}">
-							<button type="submit" class="negative ui button">
-								{{_('REFUSE_CONTRIBUTION')}}
-							</button>
+							<button type="submit" class="negative ui button">{{_('REFUSE_CONTRIBUTION')}}</button>
 						</form>
 
 						<div class="column"></div>

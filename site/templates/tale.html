@@ -59,20 +59,14 @@
 								<div class="column">
 									<form action="/download_chapter/{{tale.chapter.id}}/" method="post">
 										<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-										<button type="submit" class="ui small button">
-											<i class="download icon"></i>
-											{{_('DOWNLOAD_CHAPTER')}} {{tale.chapter.downloads}}
-										</button>
+										<button type="submit" class="ui small button"><i class="download icon"></i>{{_('DOWNLOAD_CHAPTER')}} {{tale.chapter.downloads}}</button>
 									</form>
 								</div>
 
 								<div class="column">
 									<form action="/download_all/{{tale.chapter.id}}/" method="post">
 										<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-										<button type="submit" class="ui small button">
-											<i class="download icon"></i>
-											{{_('DOWNLOAD_ALL')}}
-										</button>
+										<button type="submit" class="ui small button"><i class="download icon"></i>{{_('DOWNLOAD_ALL')}}</button>
 									</form>
 								</div>
 							</div>

@@ -17,17 +17,11 @@
 				<div class="doubling three column row">
 					{% if user.id == user_logged_id %}
 						<div class="column">
-							<a href="/create" class="ui green button">
-								<i class="plus icon"></i>
-								{{_('CREATE_TALE')}}
-							</a>
+							<a href="/create" class="ui green button"><i class="plus icon"></i>{{_('CREATE_TALE')}}</a>
 						</div>
 
 						<div class="column">
-							<a href="/update/{{user_logged_id}}" class="ui button edit-profile">
-								<i class="edit icon"></i>
-								{{_('EDIT_PROFILE')}}
-							</a>
+							<a href="/update/{{user_logged_id}}" class="ui button edit-profile"><i class="edit icon"></i>{{_('EDIT_PROFILE')}}</a>
 						</div>
 					{% endif %}
 				</div>
