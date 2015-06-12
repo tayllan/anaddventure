@@ -459,7 +459,7 @@ $(document).ready(function() {
 		var $own = $('.own');
 		var $participated = $('.participated');
 
-		var render_own_tales = function(offset, search_string) {
+		var render_own_tales = function(offset, search_string, dont_focus) {
 			$.ajax({
 				type: 'get',
 				url: '/get_rendered_own_tales',
@@ -471,7 +471,9 @@ $(document).ready(function() {
 				},
 				success: function(data) {
 					$own.empty().append(data);
-					$own.find('input')[0].focus();
+					if (!dont_focus) {
+						$own.find('input')[0].focus();
+					}
 
 					var $pagination_buttons = $own.find('#pagination-buttons button');
 
@@ -490,7 +492,7 @@ $(document).ready(function() {
 			});
 		};
 
-		var render_participated_tales = function(offset, search_string) {
+		var render_participated_tales = function(offset, search_string, dont_focus) {
 			$.ajax({
 				type: 'get',
 				url: '/get_rendered_participated_tales',
@@ -502,7 +504,9 @@ $(document).ready(function() {
 				},
 				success: function(data) {
 					$participated.empty().append(data);
-					$participated.find('input')[0].focus();
+					if (!dont_focus) {
+						$participated.find('input')[0].focus();
+					}
 
 					var $pagination_buttons = $participated.find('#pagination-buttons button');
 
@@ -537,8 +541,8 @@ $(document).ready(function() {
 			return false;
 		});
 
-		render_own_tales(0);
-		render_participated_tales(0);
+		render_own_tales(0, '', true);
+		render_participated_tales(0, '', true);
 
 		$own.on('submit', 'form', function(event) {
 			event.preventDefault();
