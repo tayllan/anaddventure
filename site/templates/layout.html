@@ -6,7 +6,7 @@
 		<title>
 			{% block title %}{% endblock %}
 		</title>
-		<link rel="shortcut icon" href="{{url_for('static', filename = 'img/favicon.ico')}}">
+		<link rel="shortcut icon" href="{{url_for('static', filename = 'img/favicon2.ico')}}">
 		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/semantic.min.css')}}">
 		{% block css %}{% endblock %}
 
@@ -22,46 +22,40 @@
 	</head>
 	<body>
 		<span hidden id="selected-language">{{language}}</span>
-		<header class="ui stackable two column grid">
-			<div class="column">
-				<h1 class="ui header center aligned">
-					<a href="/">{{_('SITE_LOGO')}}</a>
-				</h1>
+		<header class="ui stackable three column grid">
+			<h1 class="column">
+				<a href="/">
+					<img src="{{url_for('static', filename = 'img/logo.png')}}" alt="avatar picture" title="Avatar Picture" class="ui centered image" style="width: 250px;">
+				</a>
+			</h1>
+
+			<div class="ui header column" id="layout-search-bar">
+				<form action="/search" method="get" class="ui form">
+					<div class="ui fluid icon input">
+						<input type="text" name="content" placeholder="{{_('SEARCH')}}...">
+						<i class="search icon"></i>
+					</div>
+				</form>
 			</div>
 
-			<div class="column">
-				<div class="ui grid">
-					<div class="doubling three column row">
-						<div class="ui header column" id="layout-search-bar">
-							<form action="/search" method="get" class="ui form">
-								<div class="ui fluid icon input">
-									<input type="text" name="content" placeholder="{{_('SEARCH')}}...">
-									<i class="search icon"></i>
-								</div>
-							</form>
-						</div>
-
-						<div class="ui header column center aligned">
-							{% if user_is_logged == true %}
-								<a href="/profile/{{user_logged_username}}" class="ui button">
-									<i class="user icon"></i>
-									{{_('MY_PROFILE')}}
-								</a>
-								<a href="/logout" class="ui button">
-									<i class="sign out icon"></i>
-									{{_('LOGOUT')}}
-								</a>
-							{% else %}
-								<a href="/join" class="ui button">
-									<i class="sign in icon"></i>
-									{{_('LOGIN')}}
-									/
-									{{_('SIGN_UP')}}
-								</a>
-							{% endif %}
-						</div>
-					</div>
-				</div>
+			<div class="ui header column center aligned">
+				{% if user_is_logged == true %}
+					<a href="/profile/{{user_logged_username}}" class="ui button">
+						<i class="user icon"></i>
+						{{_('MY_PROFILE')}}
+					</a>
+					<a href="/logout" class="ui button">
+						<i class="sign out icon"></i>
+						{{_('LOGOUT')}}
+					</a>
+				{% else %}
+					<a href="/join" class="ui button">
+						<i class="sign in icon"></i>
+						{{_('LOGIN')}}
+						/
+						{{_('SIGN_UP')}}
+					</a>
+				{% endif %}
 			</div>
 		</header>
 
