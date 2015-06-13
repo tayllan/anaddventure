@@ -771,7 +771,6 @@ $(document).ready(function() {
 	if ($upper_bar.length > 0) {
 		var $to_fullscreen = $('#to-fullscreen');
 		var $fullscreen = $('#fullscreen');
-		var $change_chapter = $('#change-chapter');
 
 		$upper_bar.on('submit', '.form-unfollow', function(event) {
 			event.preventDefault();
@@ -937,14 +936,6 @@ $(document).ready(function() {
 
 		$to_fullscreen.on('click', function(event) {
 			$fullscreen.modal('show');
-		});
-
-		$change_chapter.on('click', function(event) {
-			event.preventDefault();
-
-			window.location = this.href + '/fullscreen';
-
-			return false;
 		});
 	}
 	// END tale.html js

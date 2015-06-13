@@ -75,7 +75,7 @@
 
 					<div class="ui modal" id="fullscreen">
 						{% if tale.chapter.previous_chapter_id != -1 %}
-							<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}" id="change-chapter">
+							<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}/fullscreen">
 								<i class="reply icon"></i>
 								{{_('PREVIOUS_CHAPTER')}}
 							</a>
@@ -94,7 +94,7 @@
 						<div>
 							{% for next_chapter in tale.chapter.next_chapters %}
 								<p>
-									<a href="/tale/{{tale.id}}/{{next_chapter.id}}" id="change-chapter"><i class="arrow circle outline right icon"></i>{{next_chapter.title}}</a>
+									<a href="/tale/{{tale.id}}/{{next_chapter.id}}/fullscreen"><i class="arrow circle outline right icon"></i>{{next_chapter.title}}</a>
 								</p>
 							{% endfor %}
 
