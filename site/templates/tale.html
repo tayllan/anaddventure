@@ -75,10 +75,12 @@
 
 					<div class="ui modal" id="fullscreen">
 						{% if tale.chapter.previous_chapter_id != -1 %}
-							<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}/fullscreen">
-								<i class="reply icon"></i>
-								{{_('PREVIOUS_CHAPTER')}}
-							</a>
+							<p class="ui segment">
+								<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}/fullscreen">
+									<i class="reply icon"></i>
+									{{_('PREVIOUS_CHAPTER')}}
+								</a>
+							</p>
 						{% endif %}
 
 						<h1 class="ui header center aligned">
