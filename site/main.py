@@ -318,6 +318,7 @@ def create_tale_post():
 		return redirect('/404')
 
 @app.route('/tale/<int:tale_id>/<int:chapter_id>/')
+@app.route('/tale/<int:tale_id>/<int:chapter_id>/fullscreen')
 def tale(tale_id, chapter_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
