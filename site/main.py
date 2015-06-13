@@ -39,7 +39,7 @@ app.config.update(
 	MAIL_USE_TLS = True,
 	MAIL_DEFAULT_SENDER = 'anaddventure@outlook.com',
 	MAIL_USERNAME = 'anaddventure@outlook.com',
-	MAIL_PASSWORD = 'processo0',
+	MAIL_PASSWORD = 'autoescola19',
 )
 
 mail = Mail(app)
