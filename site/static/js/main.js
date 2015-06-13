@@ -769,6 +769,9 @@ $(document).ready(function() {
 	var $upper_bar = $('.upper-bar');
 
 	if ($upper_bar.length > 0) {
+		var $to_fullscreen = $('#to-fullscreen');
+		var $fullscreen = $('#fullscreen');
+
 		$upper_bar.on('submit', '.form-unfollow', function(event) {
 			event.preventDefault();
 
@@ -925,6 +928,10 @@ $(document).ready(function() {
 			});
 
 			return false;
+		});
+
+		$to_fullscreen.on('click', function(event) {
+			$fullscreen.modal('show');
 		});
 	}
 	// END tale.html js

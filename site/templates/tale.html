@@ -73,6 +73,39 @@
 						</div>
 					</div>
 
+					<div class="ui modal" id="fullscreen">
+						{% if tale.chapter.previous_chapter_id != -1 %}
+							<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}">
+								<i class="reply icon"></i>
+								{{_('PREVIOUS_CHAPTER')}}
+							</a>
+						{% endif %}
+
+						<h1 class="ui header center aligned">
+							{{tale.chapter.title}}
+						</h1>
+
+						{% autoescape false %}
+							{{tale.chapter.content}}
+						{% endautoescape %}
+
+						<div class="ui divider"></div>
+
+						<div>
+							{% for next_chapter in tale.chapter.next_chapters %}
+								<p>
+									<a href="/tale/{{tale.id}}/{{next_chapter.id}}"><i class="arrow circle outline right icon"></i>{{next_chapter.title}}</a>
+								</p>
+							{% endfor %}
+
+							<p class="ui green label">
+								<a href="/contribute/{{tale.id}}/{{tale.chapter.id}}">
+									{{_('CONTINUE_CHAPTER')}}
+								</a>
+							</p>
+						</div>
+					</div>
+
 					<div class="ui segment">
 						{% if tale.chapter.previous_chapter_id != -1 %}
 							<a href="/tale/{{tale.id}}/{{tale.chapter.previous_chapter_id}}">
@@ -83,6 +116,7 @@
 
 						<h1 class="ui header center aligned">
 							{{tale.chapter.title}}
+							<a class="ui green tag label" id="to-fullscreen">{{_('FULLSCREEN')}}</a>
 						</h1>
 
 						{% autoescape false %}

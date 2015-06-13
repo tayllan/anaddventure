@@ -83,10 +83,16 @@
 		{% if conf_production == true %}
 			<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/form.min.js"></script>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/modal.min.js"></script>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/dimmer.min.js"></script>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/transition.min.js"></script>
 			<script src="{{url_for('static', filename = 'js/main.min.js')}}"></script>
 		{% else %}
 			<script src="{{url_for('static', filename = 'js/jquery-2.1.1.min.js')}}"></script>
-			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/form.min.js')}}"></script>
+			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/form.min.js')}}"></script>
+			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/modal.min.js')}}"></script>
+			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/dimmer.min.js')}}"></script>
+			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/transition.min.js')}}"></script>
 			<script src="{{url_for('static', filename = 'js/main.js')}}"></script>
 		{% endif %}
 	</body>

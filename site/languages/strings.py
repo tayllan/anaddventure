@@ -451,6 +451,7 @@ STRINGS = {
 		'SORT_FEWEST_STARS': 'Sort: Fewest Stars',
 		'SORT_RECENTLY_UPDATED': 'Sort: Recently Updated',
 		'SORT_LEAST_RECENTLY_UPDATED': 'Sort: Least Recently Updated',
+		'FULLSCREEN': 'Fullscreen',
 	},
 	'pt': {
 		'TOP_10_GENRES': 'Gêneros Mais Acessados',
@@ -697,5 +698,6 @@ STRINGS = {
 		'SORT_FEWEST_STARS': 'Ordenar: Menos Recomendações',
 		'SORT_RECENTLY_UPDATED': 'Ordenar: Recentemente Atualizado',
 		'SORT_LEAST_RECENTLY_UPDATED': 'Ordenar: Menos Recentemente Atualizado',
+		'FULLSCREEN': 'Tela Cheia',
 	}
 }
