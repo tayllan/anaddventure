@@ -372,7 +372,7 @@ STRINGS = {
 
 		'ADD': 'Add',
 		'REMOVE': 'Remove',
-		'CONTACT_MESSAGE': 'Any problem, complain and/or sugestion, please send an email to:',
+		'CONTACT_MESSAGE': 'Any problem, complaint and/or sugestion, please send an email to:',
 		'WAITING_FIRST_CHAPTER': 'Still waiting for the First Chapter',
 		'SITE_PRESENTATION': 'Awesome site to write Collaborative Tales',
 		'TALE_BY': 'tale by',
@@ -405,9 +405,7 @@ STRINGS = {
 			The result is a continually growing work of hypertext fiction.
 			''',
 		'WHERE_IS_GOING_CONTENT': '''
-			As of now, the site unfortunately doesn't offer an acceptable support
-			to mobile devices. So this should be one of my main priorities from now on.
-			Besides that, <a href="/contact">I'm open to sugestions</a>.
+			<a href="/contact">I'm open to sugestions</a>.
 			''',
 		'WHAT_IS_AN_ADDVENTURE': 'What is an addventure',
 		'WHAT_IS_COLLABORATIVE_TALE': 'What is a Collaborative Tale',
@@ -653,9 +651,7 @@ STRINGS = {
 			O resultado é uma ficção em hipertexto em contínuo crescimento.
 			''',
 		'WHERE_IS_GOING_CONTENT': '''
-			No momento, o site infelizmente não oference um suporte aceitável a
-			dispositivos móveis. Então essa deve ser a minha prioridade a partir de agora.
-			Fora isso, <a href="/contact">estou aberto a sugestões</a>.
+			<a href="/contact">Estou aberto a sugestões</a>.
 			''',
 		'WHAT_IS_AN_ADDVENTURE': 'O que é uma addventure',
 		'WHAT_IS_COLLABORATIVE_TALE': 'O que é um Conto Colaborativo',
