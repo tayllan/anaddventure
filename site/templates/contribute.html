@@ -4,10 +4,6 @@
 	{{_('TALE')}}
 {% endblock %}
 
-{% block css %}
-	<script src="{{url_for('static', filename = 'js/tinymce/tinymce.min.js')}}"></script>
-{% endblock %}
-
 {% block content %}
 
 <form action="/contribute/{{tale_id}}/{{chapter_id}}/" method="post" class="contribute-form ui form">
@@ -28,5 +24,7 @@
 	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
 	<button type="submit" name="contribute-submit" class="ui green button">{{_('SUBMIT')}}</button>
 </form>
+
+<script src="{{url_for('static', filename = 'js/tinymce/tinymce.min.js')}}"></script>
 
 {% endblock %}
