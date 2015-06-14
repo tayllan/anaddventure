@@ -405,7 +405,7 @@ STRINGS = {
 			The result is a continually growing work of hypertext fiction.
 			''',
 		'WHERE_IS_GOING_CONTENT': '''
-			<a href="/contact">I'm open to sugestions</a>.
+			<a href="/contact">I'm open to sugestions</a> as to what would be the next big thing for <strong>An Addventure</strong>.
 			''',
 		'WHAT_IS_AN_ADDVENTURE': 'What is an addventure',
 		'WHAT_IS_COLLABORATIVE_TALE': 'What is a Collaborative Tale',
@@ -651,7 +651,7 @@ STRINGS = {
 			O resultado é uma ficção em hipertexto em contínuo crescimento.
 			''',
 		'WHERE_IS_GOING_CONTENT': '''
-			<a href="/contact">Estou aberto a sugestões</a>.
+			<a href="/contact">Estou aberto a sugestões</a> sobre qual seria o próximo grande passo para <strong>An Addventure</strong>.
 			''',
 		'WHAT_IS_AN_ADDVENTURE': 'O que é uma addventure',
 		'WHAT_IS_COLLABORATIVE_TALE': 'O que é um Conto Colaborativo',
