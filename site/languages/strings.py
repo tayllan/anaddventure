@@ -451,6 +451,10 @@ STRINGS = {
 		'SORT_LEAST_RECENTLY_UPDATED': 'Sort: Least Recently Updated',
 		'FULLSCREEN': 'Fullscreen',
 		'HELP_ME_OUT': 'Help Me Improve the Site',
+		'MESSAGE': 'Message',
+		'SEND': 'Send',
+		'CONTACT_MESSAGE_2': 'or fill the form below:',
+		'CONTACT_MESSAGE_RECEIVED': 'Your message was sent. We\'ll get back to you shortly.',
 	},
 	'pt': {
 		'TOP_10_GENRES': 'Gêneros Mais Acessados',
@@ -697,5 +701,9 @@ STRINGS = {
 		'SORT_LEAST_RECENTLY_UPDATED': 'Ordenar: Menos Recentemente Atualizado',
 		'FULLSCREEN': 'Tela Cheia',
 		'HELP_ME_OUT': 'Me Ajude a Melhorar o Site',
+		'MESSAGE': 'Mensagem',
+		'SEND': 'Enviar',
+		'CONTACT_MESSAGE_2': 'ou preencha o formulário abaixo:',
+		'CONTACT_MESSAGE_RECEIVED': 'Sua mensagem foi enviada. Vamos lhe retornar em pouco tempo.',
 	}
 }

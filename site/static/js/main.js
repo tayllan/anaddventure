@@ -1374,6 +1374,50 @@ $(document).ready(function() {
 		});
 	}
 	// END settings.html js
+
+	// BEGIN contact.html js
+	if (path.indexOf('contact') !== -1) {
+		var $contact_form = $('.contact-form');
+
+		$contact_form.form({
+			name: {
+				identifier: 'contact-name',
+				rules: my_rules.name
+			},
+			email: {
+				identifier: 'contact-email',
+				rules: my_rules.email
+			},
+			message: {
+				identifier: 'contact-message',
+				rules: my_rules.empty
+			}
+		},
+		{
+			inline: true,
+			onSuccess: function() {
+				$.ajax({
+					type: this.method,
+					url: this.action,
+					data: new FormData(this),
+					processData: false,
+					contentType: false,
+					success: function(data) {
+						var $received_message = $('#received-message');
+						$received_message.html(data);
+						$received_message.addClass('ui positive message');
+					},
+					error: function(xhr, status, error) {
+						// TODO: see what exaclty this "append_messages_list" does.
+						append_messages_list(xhr.responseJSON.error_list, $contact_form.find('h1'));
+					}
+				});
+
+				return false;
+			}
+		});
+	}
+	// END contact.html js
 });
 
 /*

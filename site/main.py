@@ -1203,8 +1203,21 @@ def search():
 	)
 
 @app.route('/contact')
-def contact():
+def contact_get():
 	return render_template('contact.html')
+
+@app.route('/contact', methods = ['POST'])
+def contact_post():
+	if request.is_xhr:
+		name = request.form.get('contact-name', '')
+		email = request.form.get('contact-email', '')
+		message = request.form.get('contact-message', '') + '\nReply to: <' + email + '>'
+		language = session.get('language', 'en')
+
+		send_email('Contact: ' + name, app.config['MAIL_USERNAME'], message)
+		return strings.STRINGS[language]['CONTACT_MESSAGE_RECEIVED']
+	else:
+		return redirect('/404')
 
 @app.route('/about')
 def about():

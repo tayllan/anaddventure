@@ -7,6 +7,34 @@
 {% block content %}
 <div>
 	<h1 class="ui header">{{_('CONTACT')}}</h1>
-	<p>{{_('CONTACT_MESSAGE')}} <a href="mailto:anaddventure@outlook.com">anaddventure@outlook.com</a></p>
+	<p>{{_('CONTACT_MESSAGE')}} <a href="mailto:anaddventure@outlook.com">anaddventure@outlook.com</a> <strong>{{_('CONTACT_MESSAGE_2')}}</strong></p>
+
+	<p id="received-message"></p>
+
+	<form action="/contact" method="post" class="ui form contact-form">
+		<div class="required field">
+			<label>{{_('NAME')}}</label>
+
+			<div class="ui left icon input">
+				<input type="text" name="contact-name" tabindex="1">
+				<i class="user icon"></i>
+			</div>
+		</div>
+		<div class="required field">
+			<label>Email</label>
+
+			<div class="ui left icon input">
+				<input type="email" name="contact-email" tabindex="2">
+				<i class="mail icon"></i>
+			</div>
+		</div>
+		<div class="required field">
+			<label class="label">{{_('MESSAGE')}}</label>
+			<textarea cols="50" rows="5" name="contact-message" tabindex="3"></textarea>
+		</div>
+
+		<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+		<button type="submit" name="contact-submit" class="ui green button" tabindex="4">{{_('SEND')}}</button>
+	</form>
 </div>
 {% endblock %}
