@@ -381,7 +381,7 @@ def invite_get(tale_id):
 		return redirect('/404')
 
 @app.route('/invite/<int:tale_id>/', methods = ['POST'])
-def invite_post(tale_id):	
+def invite_post(tale_id):
 	username = request.form.get('invite-username', '')
 	user = User.select_by_email(username, 1)
 
@@ -1116,7 +1116,7 @@ def password_reset_post():
 			)
 
 			send_email(email_object['title'], email, email_object['body'])
-		
+
 		return jsonify(message = strings.STRINGS[language]['RESET_PASSWORD_MESSAGE'] + ' ' + email)
 	else:
 		return redirect('/404')
@@ -1148,10 +1148,10 @@ def change_password_post():
 		error_list = list()
 
 		if not User.is_password_valid(new_password):
-			error_list.append(STRINGS[language]['INVALID_PASSWORD'])
+			error_list.append(strings.STRINGS[language]['INVALID_PASSWORD'])
 
 		if new_password != confirm_new_password:
-			error_list.append(STRINGS[language]['PASSWORD_NO_MATCH'])
+			error_list.append(strings.STRINGS[language]['PASSWORD_NO_MATCH'])
 
 		if len(error_list) is not 0:
 			return make_response(jsonify(error_list = error_list), 400)
