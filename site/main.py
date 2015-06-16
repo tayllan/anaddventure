@@ -16,7 +16,7 @@ from models.Tale_Genre import Tale_Genre
 from models.User import User
 from datetime import datetime
 from threading import Thread
-import os, pdfkit, hashlib, random
+import os, hashlib, random
 
 # BEGIN app configuration
 app = Flask(__name__)
@@ -803,21 +803,18 @@ def contribution_request(contribution_request_id):
 	else:
 		return redirect('/404')
 
-@app.route('/download_chapter/<int:chapter_id>/', methods = ['POST'])
+@app.route('/download_chapter/<int:chapter_id>/', methods = ['GET', 'POST'])
 def download_chapter(chapter_id):
 	chapter = Chapter.select_by_id(chapter_id, 1)[0]
 	chapter['datetime'] = beautify_datetime(chapter['date'])
 	chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
-	template = render_template('fragment/downloadable_chapter.html', chapter = chapter)
 
-	Chapter.update_download_count(chapter_id)
+	if request.method == 'POST':
+		Chapter.update_download_count(chapter_id)
 
-	response = make_response(pdfkit.from_string(template, False))
-	response.headers['Content-Disposition'] = 'attachment; filename = ' + chapter['title'] + '.pdf'
+	return render_template('fragment/downloadable_chapter.html', chapter = chapter)
 
-	return response
-
-@app.route('/download_all/<int:chapter_id>/', methods = ['POST'])
+@app.route('/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
 def download_all(chapter_id):
 	chapter_list = list()
 	chapters_ids_list = list()
@@ -833,22 +830,19 @@ def download_all(chapter_id):
 
 	for chapter_id in reversed(chapters_ids_list):
 		chapter = Chapter.select_by_id(chapter_id, 1)[0]
-		Chapter.update_download_count(chapter_id)
+
+		if request.method == 'POST':
+			Chapter.update_download_count(chapter_id)
 
 		chapter['datetime'] = beautify_datetime(chapter['date'])
 		chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
 		chapter_list.append(chapter)
 
-	template = render_template(
+	return render_template(
 		'fragment/downloadable_all.html',
 		tale = tale,
 		chapters = chapter_list
 	)
-
-	response = make_response(pdfkit.from_string(template, False))
-	response.headers['Content-Disposition'] = 'attachment; filename = ' + tale['title'] + '.pdf'
-
-	return response
 
 @app.route('/profile/<username>/')
 def profile(username):
