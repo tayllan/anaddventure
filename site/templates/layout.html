@@ -10,7 +10,8 @@
 		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/semantic.min.css')}}">
 	</head>
 	<body>
-		<span hidden id="selected-language">{{language}}</span>
+		<input type="hidden" name="selected-language" value="{{language}}">
+		<input type="hidden" name="timezone-offset" value="{{timezone_offset}}">
 		<header class="ui stackable three column grid">
 			<h1 class="column">
 				<a href="/">

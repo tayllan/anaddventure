@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	'use strict';
 
-	var language = $('#selected-language')[0].innerHTML;
+	var language = $('[name="selected-language"]').val();
 
 	var path = window.location.pathname;
 
@@ -206,6 +206,23 @@ $(document).ready(function() {
 
 		return false;
 	});
+
+	if (!$('[name="timezone_offset"]').val()) {
+		$.ajax({
+			type: 'get',
+			url: '/set_timezone_offset',
+			datatype: 'json',
+			data: {
+				'timezone_offset': (new Date()).getTimezoneOffset()
+			},
+			success: function(data) {
+				// Nothing to do
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	}
 	// END all pages
 
 	// BEGIN index.html js;

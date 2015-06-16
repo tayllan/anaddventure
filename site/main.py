@@ -14,7 +14,7 @@ from models.Star import Star
 from models.Tale import Tale
 from models.Tale_Genre import Tale_Genre
 from models.User import User
-from datetime import datetime
+from datetime import datetime, timedelta
 from threading import Thread
 import os, hashlib, random
 
@@ -152,8 +152,8 @@ def get_file_extension(filename):
 	else:
 		return None
 
-def get_current_datetime_as_string(format = '%Y-%m-%d %H:%M:%S'):
-	return datetime.now().strftime(format)
+def get_current_datetime_as_string(format = '%Y-%m-%d %H:%M:%S', timezone_offset = 0):
+	return (datetime.now() + timedelta(minutes = timezone_offset)).strftime(format)
 
 def send_async_email(message):
 	with app.app_context():
@@ -196,6 +196,7 @@ def inject_user():
 		'user_logged_username': user_logged_username,
 		'_': lambda token: strings.STRINGS[language][token],
 		'conf_production': app.config['CONF_PRODUCTION'],
+		'timezone_offset': session.get('timezone_offset', None)
 	}
 # END auxiliary functions
 
@@ -273,6 +274,7 @@ def create_tale_post():
 		genres = request.form.getlist('create-genres')
 		license_id = request.form.get('create-license', -1)
 		creator_id = session['user_logged_id']
+		timezone_offset = session['timezone_offset']
 		language = session.get('language', 'en')
 
 		error_list = list()
@@ -300,7 +302,14 @@ def create_tale_post():
 		if len(error_list) is not 0:
 			return make_response(jsonify(error_list = error_list), 400)
 		else:
-			new_tale = Tale(title, description, category, creator_id, license_id, get_current_datetime_as_string())
+			new_tale = Tale(
+				title,
+				description,
+				category,
+				creator_id,
+				license_id,
+				get_current_datetime_as_string(timezone_offset = timezone_offset)
+			)
 			new_tale.insert()
 
 			tale_id = Tale.select_by_creator_id_and_full_title(creator_id, title, 1)[0]['id']
@@ -1462,6 +1471,15 @@ def set_language():
 			cache.delete('best_daily_tales')
 
 		session['language'] = request.args.get('language', 'en')
+
+		return ''
+	else:
+		return redirect('/404')
+
+@app.route('/set_timezone_offset')
+def set_timezone_offset():
+	if request.is_xhr:
+		session['timezone_offset'] = int(request.args.get('timezone_offset', '0'))
 
 		return ''
 	else:
