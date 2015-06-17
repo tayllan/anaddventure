@@ -206,23 +206,6 @@ $(document).ready(function() {
 
 		return false;
 	});
-
-	if (!$('[name="timezone_offset"]').val()) {
-		$.ajax({
-			type: 'get',
-			url: '/set_timezone_offset',
-			datatype: 'json',
-			data: {
-				'timezone_offset': (new Date()).getTimezoneOffset()
-			},
-			success: function(data) {
-				// Nothing to do
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
-	}
 	// END all pages
 
 	// BEGIN index.html js;
@@ -238,6 +221,9 @@ $(document).ready(function() {
 			$.ajax({
 				type: 'get',
 				url: '/get_ten_best_tales',
+				data: {
+					timezone_offset: (new Date()).getTimezoneOffset()
+				},
 				datatype: 'json',
 				success: function(data) {
 					$top_tales.find('div').remove();
@@ -256,6 +242,9 @@ $(document).ready(function() {
 			$.ajax({
 				type: 'get',
 				url: '/get_ten_best_daily_tales',
+				data: {
+					timezone_offset: (new Date()).getTimezoneOffset()
+				},
 				datatype: 'json',
 				success: function(data) {
 					$top_tales.find('div').remove();

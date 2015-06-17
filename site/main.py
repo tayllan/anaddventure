@@ -87,8 +87,8 @@ def get_number_with_two_digits(number):
 	else:
 		return '00' if len(temp) is 0 else '0' + temp
 
-def beautify_datetime(d, withHour = False):
-	d = d - timedelta(minutes = session.get('timezone_offset', 0))
+def beautify_datetime(d, withHour = False, timezone_offset = 0):
+	d = d - timedelta(minutes = timezone_offset)
 	if withHour:
 		return str(d.day) + ' ' + MONTHS_DICTIONARY[d.month] + ', ' + str(d.year) + ' ' + get_number_with_two_digits(d.hour) + ':' + get_number_with_two_digits(d.minute)
 	else:
@@ -197,7 +197,6 @@ def inject_user():
 		'user_logged_username': user_logged_username,
 		'_': lambda token: strings.STRINGS[language][token],
 		'conf_production': app.config['CONF_PRODUCTION'],
-		'timezone_offset': session.get('timezone_offset', None)
 	}
 # END auxiliary functions
 
@@ -1469,15 +1468,6 @@ def set_language():
 	else:
 		return redirect('/404')
 
-@app.route('/set_timezone_offset')
-def set_timezone_offset():
-	if request.is_xhr:
-		session['timezone_offset'] = int(request.args.get('timezone_offset', '0'))
-
-		return ''
-	else:
-		return redirect('/404')
-
 def get_timeout():
 	now = datetime.utcnow()
 	return 86399 - (now.second + now.minute * 60 + now.hour * 60 * 60)
@@ -1495,7 +1485,11 @@ def get_ten_best_tales():
 		last_update = Tale.select_last_update(tale['id'])[0][0]
 
 		tale['creator'] = creator[0]
-		tale['last_update'] = False if last_update is None else beautify_datetime(last_update, True)
+		tale['last_update'] = False if last_update is None else beautify_datetime(
+			last_update,
+			True,
+			int(request.args.get('timezone_offset', 0))
+		)
 		tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
 		tale['creation_datetime'] = beautify_datetime(tale['creation_datetime'])
 
@@ -1519,7 +1513,11 @@ def get_ten_best_daily_tales():
 		last_update = Tale.select_last_update(tale['id'])[0][0]
 
 		tale['creator'] = creator[0]
-		tale['last_update'] = False if last_update is None else beautify_datetime(last_update, True)
+		tale['last_update'] = False if last_update is None else beautify_datetime(
+			last_update,
+			True,
+			int(request.args.get('timezone_offset', 0))
+		)
 		tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
 		tale['creation_datetime'] = beautify_datetime(tale['creation_datetime'])
 
