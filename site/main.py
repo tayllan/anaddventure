@@ -88,7 +88,7 @@ def get_number_with_two_digits(number):
 		return '00' if len(temp) is 0 else '0' + temp
 
 def beautify_datetime(d, withHour = False):
-	d = d + timedelta(minutes = session.get('timezone_offset', 0))
+	d = d - timedelta(minutes = session.get('timezone_offset', 0))
 	if withHour:
 		return str(d.day) + ' ' + MONTHS_DICTIONARY[d.month] + ', ' + str(d.year) + ' ' + get_number_with_two_digits(d.hour) + ':' + get_number_with_two_digits(d.minute)
 	else:
@@ -154,8 +154,7 @@ def get_file_extension(filename):
 		return None
 
 def get_current_datetime_as_string(format = '%Y-%m-%d %H:%M:%S'):
-	timezone_offset = session.get('timezone_offset', 0)
-	return (datetime.now() + timedelta(minutes = timezone_offset)).strftime(format)
+	return datetime.utcnow().strftime(format)
 
 def send_async_email(message):
 	with app.app_context():
