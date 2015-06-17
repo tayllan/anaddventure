@@ -1,0 +1,503 @@
+    1  halt
+    2  sudo halt
+    3  ls
+    4  cd /
+    5  pwd
+    6  ls
+    7  exit
+    8  python3
+    9  pip3
+   10  sudo apt-get install python3-pip
+   11  suto apt-get update
+   12  sudo apt-get update
+   13  ls
+   14  pwd
+   15  mkdir apps
+   16  cd apps/
+   17  mkdir anaddventure
+   18  sudo apt-get install python-virtualenv 
+   19  cd anaddventure/
+   20  virtualenv -p /usr/bin/python3 venv
+   21  ls
+   22  ls venv/
+   23  rm -r venv/
+   24  ls
+   25  .
+   26  cd .
+   27  cd ..
+   28  rm -r anaddventure/
+   29  virtualenv -p /usr/bin/python3 anaddventure
+   30  cd anaddventure/
+   31  ls
+   32  vim
+   33  ls ../../
+   34  ..
+   35  vim .bashrc
+   36  .
+   37  exit
+   38  .
+   39  cat .bashrc 
+   40  ls -la
+   41  vim .bashrc 
+   42  cat .bashrc 
+   43  ls -la
+   44  .
+   45  exit
+   46  .
+   47  cd user/
+   48  l
+   49  tar -zxvf Tale.zip
+   50  tar -f Tale.zip
+   51  man tar
+   52  sudo apt-get install unzip
+   53  tar -zxvf Tale.tar.gz 
+   54  ls
+   55  rm Tale.zip 
+   56  mv Tale/ apps/anaddventure/
+   57  ls
+   58  cd apps/anaddventure/
+   59  ls
+   60  mv Tale/ /home/user/
+   61  ls
+   62  ..
+   63  ls
+   64  mkdir projects
+   65  mv Tale projects/
+   66  ls
+   67  ls projects/Tale/
+   68  cd apps/anaddventure/
+   69  ls
+   70  sudo apt-get install git
+   71  git clone /home/user/projects/Tale/
+   72  ls
+   73  ls Tale/
+   74  sudo apt-get install postgresql postgresql-contrib
+   75  sudo -i -u postgres
+   76  psql -h localhost 
+   77  sudo service postgresql start
+   78  psql --version
+   79  sudo -u postgres psql
+   80  psql -u postgres
+   81  psql -h localhost 
+   82  sudo service postgresql start
+   83  dpkg-reconfigure locales
+   84  sudo dpkg-reconfigure locales
+   85  sudo service postgresql start
+   86  vim /etc/environment 
+   87  sudo vim /etc/environment 
+   88  sudo reboot
+   89  sudo service postgresql start
+   90  psql -h localhost 
+   91  sudo service postgresql restart
+   92  psql --version
+   93  pg_createcluster 9.3.7 main --start
+   94  pg_createcluster 9.3 main --start
+   95  sudo pg_createcluster 9.3 main --start
+   96  sudo service postgresql start
+   97  psql -h localhost
+   98  sudo -u postgres psql
+   99  psql -h localhost 
+  100  psql -h localhost -U postgres 
+  101  cd apps/anaddventure/Tale/database/
+  102  ls
+  103  cat script.sql 
+  104  cat script.sql  | head
+  105  psql -h localhost -U postgres 
+  106  ls
+  107  psql -h localhost -U postgres -d tales -a -f script.sql 
+  108  cat script.sql | head -12
+  109  cat script.sql | head -15
+  110  cat script.sql | grep contribution
+  111  ls /home/user/
+  112  rm /home/user/Tale.tar.gz 
+  113  ..
+  114  rm -r Tale
+  115  sudo rm -r Tale
+  116  ..
+  117  rm projects/Tale/ -r
+  118  sudo rm projects/Tale/ -r
+  119  ls
+  120  tar -zxvf Tale.tar.gz 
+  121  ls
+  122  mv Tale projects/
+  123  ls
+  124  cd apps/ad
+  125  cd apps/anaddventure/
+  126  ls
+  127  git clone /home/user/projects/Tale/
+  128  cd Tale/database/
+  129  psql -h localhost -U postgres -d tales -a -f script.sql 
+  130  psql -h localhost -U postgres -d tales
+  131  ..
+  132  ls
+  133  ./bin/pip3 install flask uwsgi
+  134  ./bin/pip3 install Flask-Mail Flask-Cache pdfkit psycopg2
+  135  sudo apt-get install python3-psycopg2 libpq-dev 
+  136  ./bin/pip3 install Flask-Mail Flask-Cache pdfkit psycopg2
+  137  sudo apt-get install python3-dev
+  138  ./bin/pip3 install flask uwsgi Flask-Mail Flask-Cache pdfkit psycopg2
+  139  ..
+  140  ls
+  141  mkdir history-commands
+  142  history > history-commands/history15-05-31
+  143  sudo apt-get install nginx
+  144  cd apps/anaddventure/Tale/
+  145  ls
+  146  python3 site/main.py
+  147  .
+  148  ./bin/python3 Tale/site/main.py
+  149  vim Tale/site/main.py
+  150  ./bin/python3 Tale/site/main.py
+  151  psql -h localhost -U postgres -d tales
+  152  ./bin/python3 Tale/site/main.py
+  153  psql -h localhost -U postgres -d tales
+  154  ./bin/python3 Tale/site/main.py
+  155  exit
+  156  ls
+  157  rm Tale.tar.gz 
+  158  cd apps/anaddventure/
+  159  ls
+  160  sudo rm -r Tale/
+  161  ls
+  162  git clone https://github.com/tayllan/anaddventure
+  163  ls
+  164  cd anaddventure/
+  165  ls
+  166  .
+  167  ./bin/python3 anaddventure/site/main.py
+  168  cd anaddventure/
+  169  git pull origin master 
+  170  .
+  171  ./bin/python3 anaddventure/site/main.py
+  172  ls
+  173  exit
+  174  cd apps/anaddventure/anaddventure/
+  175  git pull origin master 
+  176  .
+  177  ./bin/python3 anaddventure/site/main.py
+  178  cd anaddventure/
+  179  git pull origin master 
+  180  psql -h localhost -U postgres -d tales
+  181  psql -h localhost -U postgres -d tales -a -f script.sql 
+  182  cd database/
+  183  psql -h localhost -U postgres -d tales -a -f script.sql 
+  184  ..
+  185  ./bin/python3 anaddventure/site/main.py
+  186  cd anaddventure/
+  187  git pull origin master 
+  188  cd database/
+  189  psql -h localhost -U postgres -d postgres
+  190  psql -h localhost -U postgres -d tales -a -f script.sql 
+  191  psql -h localhost -U postgres -d postgres
+  192  .
+  193  git pull origin master 
+  194  cd database/
+  195  psql -h localhost -U postgres -a -f script.sql 
+  196  ..
+  197  ./bin/python3 anaddventure/site/main.py
+  198  cd anaddventure/
+  199  git pull origin master 
+  200  .
+  201  ./bin/python3 anaddventure/site/main.py
+  202  psql -h localhost -U postgres -d tales
+  203  ./bin/python3 anaddventure/site/main.py
+  204  cd anaddventure/
+  205  git pull origin master 
+  206  psql -h localhost -U postgres -d tales
+  207  .
+  208  ./bin/python3 anaddventure/site/main.py
+  209  cat anaddventure/site/main.py | grep 'SITE_URL'
+  210  cd anaddventure/
+  211  git pull origin master 
+  212  .
+  213  ./bin/python3 anaddventure/site/main.py
+  214  psql -h localhost -U postgres -d tales
+  215  ./bin/python3 anaddventure/site/main.py
+  216  psql -h localhost -U postgres -d tales
+  217  cd anaddventure/
+  218  git pull origin master 
+  219  .
+  220  ./bin/python3 anaddventure/site/main.py
+  221  psql -h localhost -U postgres -d tales
+  222  ./bin/python3 anaddventure/site/main.py
+  223  psql -h localhost -U postgres -d tales
+  224  ./bin/python3 anaddventure/site/main.py
+  225  psql -h localhost -U postgres -d tales
+  226  cd anaddventure/
+  227  git pull origin master 
+  228  .
+  229  ./bin/python3 anaddventure/site/main.py
+  230  psql -h localhost -U postgres -d tales
+  231  cd anaddventure/
+  232  git pull origin master 
+  233  .
+  234  ./bin/python3 anaddventure/site/main.py
+  235  cd anaddventure/
+  236  git pull origin master 
+  237  psql -h localhost -U postgres -d tales
+  238  ../bin/python3 site/main.py
+  239  .
+  240  ./bin/uwsgi --ini uwsgi-anaddventure.ini
+  241  ls
+  242  vim uwsgi-anaddventure.ini
+  243  cd /home/user/apps/anaddventure/Tale/site
+  244  ls
+  245  vim uwsgi-anaddventure.ini 
+  246  cd /home/user/apps/anaddventure/anaddventure/site
+  247  b-
+  248  ./bin/uwsgi --ini uwsgi-anaddventure.ini 
+  249  ./bin/uwsgi --http :5000 --wsgi-file anaddventure/site/main.py
+  250  vim /etc/nginx/sites-available/anaddventure
+  251  sudo vim /etc/nginx/sites-available/anaddventure
+  252  sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/anaddventure
+  253  sudo service nginx restart
+  254  ./bin/uwsgi --ini uwsgi-anaddventure.ini --enable-threads
+  255  vim uwsgi-anaddventure.ini 
+  256  sudo vim /etc/nginx/sites-available/anaddventure
+  257  vim uwsgi-anaddventure.ini 
+  258  ls /tmp/
+  259  cat /tmp/anaddventure.sock 
+  260  sudo pip3 install uwsgi
+  261  sudo apt-get install python3-pip 
+  262  sudo pip3 install uwsgi
+  263  uwsgi --ini uwsgi-anaddventure.ini 
+  264  vim uwsgi-anaddventure.ini 
+  265  uwsgi --ini uwsgi-anaddventure.ini 
+  266  cat uwsgi-anaddventure.ini 
+  267  uwsgi --http :8000 --wsgi-file anaddventure/site/main.py
+  268  uwsgi --http :8050 --wsgi-file anaddventure/site/main.py
+  269  uwsgi --http :5000 --wsgi-file anaddventure/site/main.py
+  270  uwsgi --http :5000 ----callable app wsgi-file anaddventure/site/main.py
+  271  uwsgi --http :5000 --callable app wsgi-file anaddventure/site/main.py
+  272  uwsgi --http :5000 --callable app --wsgi-file anaddventure/site/main.py
+  273  sudo rm /etc/nginx/sites-available/anaddventure 
+  274  sudo rm /etc/nginx/sites-enabled/anaddventure 
+  275  sudo vim /etc/nginx/nginx.conf 
+  276  uwsgi --ini uwsgi-anaddventure.ini 
+  277  sudo vim /etc/nginx/nginx.conf 
+  278  uwsgi --ini uwsgi-anaddventure.ini 
+  279  vim /var/log/nginx/error.log 
+  280  cat /var/log/nginx/error.log 
+  281  sudo service nginx restart 
+  282  uwsgi --ini uwsgi-anaddventure.ini 
+  283  vim uwsgi-anaddventure.ini 
+  284  uwsgi --ini uwsgi-anaddventure.ini 
+  285  vim uwsgi-anaddventure.ini 
+  286  uwsgi --ini uwsgi-anaddventure.ini 
+  287  locate uwsgi
+  288  cd /etc/
+  289  ls
+  290  sudo mkdir uwsgi
+  291  cd uwsgi/
+  292  sudo mkdir vassals
+  293  sudo vim emperor.ini
+  294  b-
+  295  b--
+  296  cd apps/anaddventure/
+  297  ls
+  298  sudo ln -nsf /home/user/apps/anaddventure/uwsgi-anaddventure.ini /etc/uwsgi/vassals/
+  299  sudo uwsgi --ini /etc/uwsgi/emperor.ini 
+  300  ./bin/activate
+  301  sudo ./bin/activate
+  302  .
+  303  source anaddventure/bin/activate
+  304  pip3 install uwsgi flask
+  305  cd anaddventure/
+  306  python3 anaddventure/site/main.py
+  307  uwsgi --socket 0.0.0.0:8000 --protocol=http -w anaddventure/site/main
+  308  uwsgi --socket 0.0.0.0:8000 --protocol=http -w anaddventure/site/main --callable app
+  309  uwsgi --socket 0.0.0.0:8050 --protocol=http -w anaddventure/site/main
+  310  uwsgi --socket 0.0.0.0:5000 --protocol=http -w anaddventure/site/main
+  311  uwsgi --socket 0.0.0.0:5000 --protocol=http -w anaddventure/site/main.py
+  312  deactivate
+  313  vim uwsgi-anaddventure.ini 
+  314  sudo vim /etc/init/anaddventure.conf
+  315  ls
+  316  mv uwsgi-anaddventure.ini anaddventure.ini 
+  317  ls
+  318  sudo start anaddventure 
+  319  sudo vim /etc/nginx/sites-available/anaddventure
+  320  cd /home/user/apps/anaddventure/anaddventure/site/
+  321  b-
+  322  sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  323  sudo nginx -t
+  324  sudo service nginx restart
+  325  psql -h localhost -U postgres -d tales
+  326  psql -h localhost -U anaddventure -d tales
+  327  psql -h localhost -U postgres -d tales
+  328  psql -h localhost -U anaddventure -d tales
+  329  psql -h localhost -U postgres -d tales
+  330  psql -h localhost -U anaddventure -d tales
+  331  psql -h localhost -U postgres -d tales
+  332  psql -h localhost -U anaddventure -d tales
+  333  psql -h localhost -U postgres -d tales
+  334  psql -h localhost -U anaddventure -d tales
+  335  cd anaddventure/
+  336  git pull origin master 
+  337  cat /var/log/nginx/error.log 
+  338  sudo service nginx restart 
+  339  sudo start anaddventure 
+  340  sudo restart anaddventure 
+  341  sudo service nginx restart 
+  342  cat /var/log/nginx/error.log 
+  343  cat /var/log/nginx/access.log 
+  344  cd /var/log
+  345  ls
+  346  ls upstart/
+  347  cat upstart/anaddventure.log 
+  348  sudo cat upstart/anaddventure.log 
+  349  cd ~/apps/anaddventure/anaddventure/
+  350  git pull origin master 
+  351  sudo restart anaddventure && sudo service nginx restart
+  352  cat /var/log/upstart/anaddventure.log 
+  353  sudo cat /var/log/upstart/anaddventure.log 
+  354  cat /var/log/upstart/anaddventure.log 
+  355  sudo cat /var/log/upstart/anaddventure.lo
+  356  sudo cat /var/log/upstart/anaddventure.log 
+  357  psql -h localhost -U anaddventure -d tales
+  358  psql -h localhost -U postgres -d tales
+  359  sudo cat /var/log/upstart/anaddventure.log 
+  360  cat /var/log/nginx/error.log 
+  361  sudo restart anaddventure && sudo service nginx restart
+  362  vim site/models/DAO.py
+  363  psql -h localhost -U postgres -d tales
+  364  sudo restart anaddventure && sudo service nginx restart
+  365  cat /var/log/nginx/access.log 
+  366  cat /var/log/nginx/error.log 
+  367  sudo cat /var/log/upstart/anaddventure.log 
+  368  ls /var/log/
+  369  cat /etc/init/anaddventure.conf 
+  370  .
+  371  cat anaddventure
+  372  cat anaddventure.ini 
+  373  cat /etc/nginx/sites-available/anaddventure 
+  374  ls /var/log/
+  375  ls /var/log/nginx/
+  376  cat /var/log/nginx/*
+  377  cat /var/log/nginx/access.log 
+  378  cat /var/log/nginx/error.log 
+  379  sudo cat /var/log/upstart/anaddventure.log 
+  380  cd anaddventure/
+  381  vim site/models/DAO.py
+  382  git add site/models/DAO.py 
+  383  git commit -m 'Testing local'
+  384  git config --global user.email "tayllanburigo@gmail.com"
+  385  git config --global user.name "Tayllan Búrigo"
+  386  git commit -m 'Testing local'
+  387  git push origin master 
+  388  vim site/models/DAO.py
+  389  psql -h localhost -U anaddventure -d tales
+  390  git add site/models/DAO.py 
+  391  git commit -m 'Back to the normal user and password'
+  392  git push origin master 
+  393  sudo restart anaddventure && sudo service nginx restart
+  394  sudo cat /var/log/upstart/anaddventure.log 
+  395  cat /var/log/nginx/access.log 
+  396  cat /var/log/nginx/error.log 
+  397  ls /etc/nginx/
+  398  ls /
+  399  ls /tmp/
+  400  cat /tmp/uwsgi.log 
+  401  sudo cat /tmp/uwsgi.log 
+  402  ls /tmp/
+  403  ls /
+  404  ls /opt/
+  405  ls
+  406  .
+  407  ls
+  408  ls -la
+  409  cat .bashrc 
+  410  rm .bashrc 
+  411  ls ../
+  412  locate .log
+  413  sudo locate .log
+  414  cat /var/log/boot
+  415  cat /var/log/bootstrap.log 
+  416  sudo locate .log
+  417  sudo cat /var/log/upstart/anaddventure.log 
+  418  cat /var/log/nginx/error.log 
+  419  cat /var/log/nginx/access.log 
+  420  sudo cat /var/log/upstart/anaddventure.log 
+  421  sudo cat /etc/init/anaddventure.conf 
+  422  sudo stop anaddventure 
+  423  sudo rm /etc/init/anaddventure.conf 
+  424  cd /etc/uwsgi/
+  425  l
+  426  ls
+  427  ls vassals/
+  428  sudo rm vassals/uwsgi-anaddventure.ini 
+  429  sudo ln -s /home/user/apps/anaddventure/anaddventure.ini /etc/uwsgi/vassals/
+  430  sudo vim emperor.ini 
+  431  sudo vim /etc/systemd/system/uwsgi.service
+  432  sudo systemctl
+  433  sudo systemctl start uwsgi
+  434  sudo apt-get install systemctl
+  435  systemctl
+  436  sudo systemd
+  437  systemd
+  438  sudo service start uwsgi
+  439  sudo service uwsgi restart
+  440  cat /tmp/uwsgi.log 
+  441  sudo cat /tmp/uwsgi.log 
+  442  sudo uwsgi --ini /etc/uwsgi/emperor.ini 
+  443  sudo o cat /tmp/uwsgi.log 
+  444  sudo cat /tmp/uwsgi.log 
+  445  sudo rm /etc/systemd/system/uwsgi.service 
+  446  sudo vim /etc/uwsgi/emperor.ini 
+  447  sudo uwsgi --ini /etc/uwsgi/emperor.ini 
+  448  cd ~/apps/anaddventure/
+  449  uwsgi --ini anaddventure.ini 
+  450  psql -h localhost -U anaddventure -d tales
+  451  uwsgi --ini anaddventure.ini 
+  452  cd anaddventure/
+  453  git pull origin master 
+  454  .
+  455  uwsgi --ini anaddventure.ini 
+  456  uwsgi --ini anaddventure.ini --enable-threads
+  457  psql -h localhost -U anaddventure -d tales
+  458  cd anaddventure/
+  459  git pull origin master 
+  460  .
+  461  vim anaddventure.ini 
+  462  sudo vim /etc/init/anaddventure.conf
+  463  sudo restart anaddventure && sudo service nginx restart
+  464  sudo start anaddventure 
+  465  sudo restart anaddventure && sudo service nginx restart
+  466  cat /tmp/uwsgi.log 
+  467  sudo cat /tmp/uwsgi.log 
+  468  sudo cat /var/log/upstart/anaddventure.log 
+  469  sudo restart anaddventure && sudo service nginx restart
+  470  sudo cat /var/log/upstart/anaddventure.log 
+  471  cat /etc/nginx/sites-available/anaddventure 
+  472  cd anaddventure/site/static/avatars/
+  473  ls
+  474  ls identicons/
+  475  ls
+  476  ...
+  477  git pull origin master 
+  478  sudo restart anaddventure && sudo service nginx restart
+  479  sudo cat /var/log/upstart/anaddventure.log 
+  480  ls 
+  481  ls site/
+  482  git pull origin master 
+  483  sudo restart anaddventure && sudo service nginx restart
+  484  sudo cat /var/log/upstart/anaddventure.log 
+  485  cd site/static/
+  486  ls
+  487  cd avatars/
+  488  ls
+  489  ...
+  490  git pull origin master 
+  491  sudo restart anaddventure && sudo service nginx restart
+  492  sudo cat /var/log/upstart/anaddventure.log 
+  493  ls
+  494  .
+  495  cd anaddventure/site/static/avatars/
+  496  b-
+  497  cd anaddventure/
+  498  git pull origin master 
+  499  sudo restart anaddventure && sudo service nginx restart
+  500  ...
+  501  ls
+  502  ls history-commands/
+  503  history > history-commands/history15-05-31-2

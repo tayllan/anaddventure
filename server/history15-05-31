@@ -1,0 +1,142 @@
+    1  halt
+    2  sudo halt
+    3  ls
+    4  cd /
+    5  pwd
+    6  ls
+    7  exit
+    8  python3
+    9  pip3
+   10  sudo apt-get install python3-pip
+   11  suto apt-get update
+   12  sudo apt-get update
+   13  ls
+   14  pwd
+   15  mkdir apps
+   16  cd apps/
+   17  mkdir anaddventure
+   18  sudo apt-get install python-virtualenv 
+   19  cd anaddventure/
+   20  virtualenv -p /usr/bin/python3 venv
+   21  ls
+   22  ls venv/
+   23  rm -r venv/
+   24  ls
+   25  .
+   26  cd .
+   27  cd ..
+   28  rm -r anaddventure/
+   29  virtualenv -p /usr/bin/python3 anaddventure
+   30  cd anaddventure/
+   31  ls
+   32  vim
+   33  ls ../../
+   34  ..
+   35  vim .bashrc
+   36  .
+   37  exit
+   38  .
+   39  cat .bashrc 
+   40  ls -la
+   41  vim .bashrc 
+   42  cat .bashrc 
+   43  ls -la
+   44  .
+   45  exit
+   46  .
+   47  cd user/
+   48  l
+   49  tar -zxvf Tale.zip
+   50  tar -f Tale.zip
+   51  man tar
+   52  sudo apt-get install unzip
+   53  tar -zxvf Tale.tar.gz 
+   54  ls
+   55  rm Tale.zip 
+   56  mv Tale/ apps/anaddventure/
+   57  ls
+   58  cd apps/anaddventure/
+   59  ls
+   60  mv Tale/ /home/user/
+   61  ls
+   62  ..
+   63  ls
+   64  mkdir projects
+   65  mv Tale projects/
+   66  ls
+   67  ls projects/Tale/
+   68  cd apps/anaddventure/
+   69  ls
+   70  sudo apt-get install git
+   71  git clone /home/user/projects/Tale/
+   72  ls
+   73  ls Tale/
+   74  sudo apt-get install postgresql postgresql-contrib
+   75  sudo -i -u postgres
+   76  psql -h localhost 
+   77  sudo service postgresql start
+   78  psql --version
+   79  sudo -u postgres psql
+   80  psql -u postgres
+   81  psql -h localhost 
+   82  sudo service postgresql start
+   83  dpkg-reconfigure locales
+   84  sudo dpkg-reconfigure locales
+   85  sudo service postgresql start
+   86  vim /etc/environment 
+   87  sudo vim /etc/environment 
+   88  sudo reboot
+   89  sudo service postgresql start
+   90  psql -h localhost 
+   91  sudo service postgresql restart
+   92  psql --version
+   93  pg_createcluster 9.3.7 main --start
+   94  pg_createcluster 9.3 main --start
+   95  sudo pg_createcluster 9.3 main --start
+   96  sudo service postgresql start
+   97  psql -h localhost
+   98  sudo -u postgres psql
+   99  psql -h localhost 
+  100  psql -h localhost -U postgres 
+  101  cd apps/anaddventure/Tale/database/
+  102  ls
+  103  cat script.sql 
+  104  cat script.sql  | head
+  105  psql -h localhost -U postgres 
+  106  ls
+  107  psql -h localhost -U postgres -d tales -a -f script.sql 
+  108  cat script.sql | head -12
+  109  cat script.sql | head -15
+  110  cat script.sql | grep contribution
+  111  ls /home/user/
+  112  rm /home/user/Tale.tar.gz 
+  113  ..
+  114  rm -r Tale
+  115  sudo rm -r Tale
+  116  ..
+  117  rm projects/Tale/ -r
+  118  sudo rm projects/Tale/ -r
+  119  ls
+  120  tar -zxvf Tale.tar.gz 
+  121  ls
+  122  mv Tale projects/
+  123  ls
+  124  cd apps/ad
+  125  cd apps/anaddventure/
+  126  ls
+  127  git clone /home/user/projects/Tale/
+  128  cd Tale/database/
+  129  psql -h localhost -U postgres -d tales -a -f script.sql 
+  130  psql -h localhost -U postgres -d tales
+  131  ..
+  132  ls
+  133  ./bin/pip3 install flask uwsgi
+  134  ./bin/pip3 install Flask-Mail Flask-Cache pdfkit psycopg2
+  135  sudo apt-get install python3-psycopg2 libpq-dev 
+  136  ./bin/pip3 install Flask-Mail Flask-Cache pdfkit psycopg2
+  137  sudo apt-get install python3-dev
+  138  ./bin/pip3 install flask uwsgi Flask-Mail Flask-Cache pdfkit psycopg2
+  139  ..
+  140  ls
+  141  mkdir history-commands
+  142  history > history-commands/history15-05-31

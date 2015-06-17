@@ -1,0 +1,1000 @@
+   65  mv Tale projects/
+   66  ls
+   67  ls projects/Tale/
+   68  cd apps/anaddventure/
+   69  ls
+   70  sudo apt-get install git
+   71  git clone /home/user/projects/Tale/
+   72  ls
+   73  ls Tale/
+   74  sudo apt-get install postgresql postgresql-contrib
+   75  sudo -i -u postgres
+   76  psql -h localhost 
+   77  sudo service postgresql start
+   78  psql --version
+   79  sudo -u postgres psql
+   80  psql -u postgres
+   81  psql -h localhost 
+   82  sudo service postgresql start
+   83  dpkg-reconfigure locales
+   84  sudo dpkg-reconfigure locales
+   85  sudo service postgresql start
+   86  vim /etc/environment 
+   87  sudo vim /etc/environment 
+   88  sudo reboot
+   89  sudo service postgresql start
+   90  psql -h localhost 
+   91  sudo service postgresql restart
+   92  psql --version
+   93  pg_createcluster 9.3.7 main --start
+   94  pg_createcluster 9.3 main --start
+   95  sudo pg_createcluster 9.3 main --start
+   96  sudo service postgresql start
+   97  psql -h localhost
+   98  sudo -u postgres psql
+   99  psql -h localhost 
+  100  psql -h localhost -U postgres 
+  101  cd apps/anaddventure/Tale/database/
+  102  ls
+  103  cat script.sql 
+  104  cat script.sql  | head
+  105  psql -h localhost -U postgres 
+  106  ls
+  107  psql -h localhost -U postgres -d tales -a -f script.sql 
+  108  cat script.sql | head -12
+  109  cat script.sql | head -15
+  110  cat script.sql | grep contribution
+  111  ls /home/user/
+  112  rm /home/user/Tale.tar.gz 
+  113  ..
+  114  rm -r Tale
+  115  sudo rm -r Tale
+  116  ..
+  117  rm projects/Tale/ -r
+  118  sudo rm projects/Tale/ -r
+  119  ls
+  120  tar -zxvf Tale.tar.gz 
+  121  ls
+  122  mv Tale projects/
+  123  ls
+  124  cd apps/ad
+  125  cd apps/anaddventure/
+  126  ls
+  127  git clone /home/user/projects/Tale/
+  128  cd Tale/database/
+  129  psql -h localhost -U postgres -d tales -a -f script.sql 
+  130  psql -h localhost -U postgres -d tales
+  131  ..
+  132  ls
+  133  ./bin/pip3 install flask uwsgi
+  134  ./bin/pip3 install Flask-Mail Flask-Cache pdfkit psycopg2
+  135  sudo apt-get install python3-psycopg2 libpq-dev 
+  136  ./bin/pip3 install Flask-Mail Flask-Cache pdfkit psycopg2
+  137  sudo apt-get install python3-dev
+  138  ./bin/pip3 install flask uwsgi Flask-Mail Flask-Cache pdfkit psycopg2
+  139  ..
+  140  ls
+  141  mkdir history-commands
+  142  history > history-commands/history15-05-31
+  143  sudo apt-get install nginx
+  144  cd apps/anaddventure/Tale/
+  145  ls
+  146  python3 site/main.py
+  147  .
+  148  ./bin/python3 Tale/site/main.py
+  149  vim Tale/site/main.py
+  150  ./bin/python3 Tale/site/main.py
+  151  psql -h localhost -U postgres -d tales
+  152  ./bin/python3 Tale/site/main.py
+  153  psql -h localhost -U postgres -d tales
+  154  ./bin/python3 Tale/site/main.py
+  155  exit
+  156  ls
+  157  rm Tale.tar.gz 
+  158  cd apps/anaddventure/
+  159  ls
+  160  sudo rm -r Tale/
+  161  ls
+  162  git clone https://github.com/tayllan/anaddventure
+  163  ls
+  164  cd anaddventure/
+  165  ls
+  166  .
+  167  ./bin/python3 anaddventure/site/main.py
+  168  cd anaddventure/
+  169  git pull origin master 
+  170  .
+  171  ./bin/python3 anaddventure/site/main.py
+  172  ls
+  173  exit
+  174  cd apps/anaddventure/anaddventure/
+  175  git pull origin master 
+  176  .
+  177  ./bin/python3 anaddventure/site/main.py
+  178  cd anaddventure/
+  179  git pull origin master 
+  180  psql -h localhost -U postgres -d tales
+  181  psql -h localhost -U postgres -d tales -a -f script.sql 
+  182  cd database/
+  183  psql -h localhost -U postgres -d tales -a -f script.sql 
+  184  ..
+  185  ./bin/python3 anaddventure/site/main.py
+  186  cd anaddventure/
+  187  git pull origin master 
+  188  cd database/
+  189  psql -h localhost -U postgres -d postgres
+  190  psql -h localhost -U postgres -d tales -a -f script.sql 
+  191  psql -h localhost -U postgres -d postgres
+  192  .
+  193  git pull origin master 
+  194  cd database/
+  195  psql -h localhost -U postgres -a -f script.sql 
+  196  ..
+  197  ./bin/python3 anaddventure/site/main.py
+  198  cd anaddventure/
+  199  git pull origin master 
+  200  .
+  201  ./bin/python3 anaddventure/site/main.py
+  202  psql -h localhost -U postgres -d tales
+  203  ./bin/python3 anaddventure/site/main.py
+  204  cd anaddventure/
+  205  git pull origin master 
+  206  psql -h localhost -U postgres -d tales
+  207  .
+  208  ./bin/python3 anaddventure/site/main.py
+  209  cat anaddventure/site/main.py | grep 'SITE_URL'
+  210  cd anaddventure/
+  211  git pull origin master 
+  212  .
+  213  ./bin/python3 anaddventure/site/main.py
+  214  psql -h localhost -U postgres -d tales
+  215  ./bin/python3 anaddventure/site/main.py
+  216  psql -h localhost -U postgres -d tales
+  217  cd anaddventure/
+  218  git pull origin master 
+  219  .
+  220  ./bin/python3 anaddventure/site/main.py
+  221  psql -h localhost -U postgres -d tales
+  222  ./bin/python3 anaddventure/site/main.py
+  223  psql -h localhost -U postgres -d tales
+  224  ./bin/python3 anaddventure/site/main.py
+  225  psql -h localhost -U postgres -d tales
+  226  cd anaddventure/
+  227  git pull origin master 
+  228  .
+  229  ./bin/python3 anaddventure/site/main.py
+  230  psql -h localhost -U postgres -d tales
+  231  cd anaddventure/
+  232  git pull origin master 
+  233  .
+  234  ./bin/python3 anaddventure/site/main.py
+  235  cd anaddventure/
+  236  git pull origin master 
+  237  psql -h localhost -U postgres -d tales
+  238  ../bin/python3 site/main.py
+  239  .
+  240  ./bin/uwsgi --ini uwsgi-anaddventure.ini
+  241  ls
+  242  vim uwsgi-anaddventure.ini
+  243  cd /home/user/apps/anaddventure/Tale/site
+  244  ls
+  245  vim uwsgi-anaddventure.ini 
+  246  cd /home/user/apps/anaddventure/anaddventure/site
+  247  b-
+  248  ./bin/uwsgi --ini uwsgi-anaddventure.ini 
+  249  ./bin/uwsgi --http :5000 --wsgi-file anaddventure/site/main.py
+  250  vim /etc/nginx/sites-available/anaddventure
+  251  sudo vim /etc/nginx/sites-available/anaddventure
+  252  sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/anaddventure
+  253  sudo service nginx restart
+  254  ./bin/uwsgi --ini uwsgi-anaddventure.ini --enable-threads
+  255  vim uwsgi-anaddventure.ini 
+  256  sudo vim /etc/nginx/sites-available/anaddventure
+  257  vim uwsgi-anaddventure.ini 
+  258  ls /tmp/
+  259  cat /tmp/anaddventure.sock 
+  260  sudo pip3 install uwsgi
+  261  sudo apt-get install python3-pip 
+  262  sudo pip3 install uwsgi
+  263  uwsgi --ini uwsgi-anaddventure.ini 
+  264  vim uwsgi-anaddventure.ini 
+  265  uwsgi --ini uwsgi-anaddventure.ini 
+  266  cat uwsgi-anaddventure.ini 
+  267  uwsgi --http :8000 --wsgi-file anaddventure/site/main.py
+  268  uwsgi --http :8050 --wsgi-file anaddventure/site/main.py
+  269  uwsgi --http :5000 --wsgi-file anaddventure/site/main.py
+  270  uwsgi --http :5000 ----callable app wsgi-file anaddventure/site/main.py
+  271  uwsgi --http :5000 --callable app wsgi-file anaddventure/site/main.py
+  272  uwsgi --http :5000 --callable app --wsgi-file anaddventure/site/main.py
+  273  sudo rm /etc/nginx/sites-available/anaddventure 
+  274  sudo rm /etc/nginx/sites-enabled/anaddventure 
+  275  sudo vim /etc/nginx/nginx.conf 
+  276  uwsgi --ini uwsgi-anaddventure.ini 
+  277  sudo vim /etc/nginx/nginx.conf 
+  278  uwsgi --ini uwsgi-anaddventure.ini 
+  279  vim /var/log/nginx/error.log 
+  280  cat /var/log/nginx/error.log 
+  281  sudo service nginx restart 
+  282  uwsgi --ini uwsgi-anaddventure.ini 
+  283  vim uwsgi-anaddventure.ini 
+  284  uwsgi --ini uwsgi-anaddventure.ini 
+  285  vim uwsgi-anaddventure.ini 
+  286  uwsgi --ini uwsgi-anaddventure.ini 
+  287  locate uwsgi
+  288  cd /etc/
+  289  ls
+  290  sudo mkdir uwsgi
+  291  cd uwsgi/
+  292  sudo mkdir vassals
+  293  sudo vim emperor.ini
+  294  b-
+  295  b--
+  296  cd apps/anaddventure/
+  297  ls
+  298  sudo ln -nsf /home/user/apps/anaddventure/uwsgi-anaddventure.ini /etc/uwsgi/vassals/
+  299  sudo uwsgi --ini /etc/uwsgi/emperor.ini 
+  300  ./bin/activate
+  301  sudo ./bin/activate
+  302  .
+  303  source anaddventure/bin/activate
+  304  pip3 install uwsgi flask
+  305  cd anaddventure/
+  306  python3 anaddventure/site/main.py
+  307  uwsgi --socket 0.0.0.0:8000 --protocol=http -w anaddventure/site/main
+  308  uwsgi --socket 0.0.0.0:8000 --protocol=http -w anaddventure/site/main --callable app
+  309  uwsgi --socket 0.0.0.0:8050 --protocol=http -w anaddventure/site/main
+  310  uwsgi --socket 0.0.0.0:5000 --protocol=http -w anaddventure/site/main
+  311  uwsgi --socket 0.0.0.0:5000 --protocol=http -w anaddventure/site/main.py
+  312  deactivate
+  313  vim uwsgi-anaddventure.ini 
+  314  sudo vim /etc/init/anaddventure.conf
+  315  ls
+  316  mv uwsgi-anaddventure.ini anaddventure.ini 
+  317  ls
+  318  sudo start anaddventure 
+  319  sudo vim /etc/nginx/sites-available/anaddventure
+  320  cd /home/user/apps/anaddventure/anaddventure/site/
+  321  b-
+  322  sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  323  sudo nginx -t
+  324  sudo service nginx restart
+  325  psql -h localhost -U postgres -d tales
+  326  psql -h localhost -U anaddventure -d tales
+  327  psql -h localhost -U postgres -d tales
+  328  psql -h localhost -U anaddventure -d tales
+  329  psql -h localhost -U postgres -d tales
+  330  psql -h localhost -U anaddventure -d tales
+  331  psql -h localhost -U postgres -d tales
+  332  psql -h localhost -U anaddventure -d tales
+  333  psql -h localhost -U postgres -d tales
+  334  psql -h localhost -U anaddventure -d tales
+  335  cd anaddventure/
+  336  git pull origin master 
+  337  cat /var/log/nginx/error.log 
+  338  sudo service nginx restart 
+  339  sudo start anaddventure 
+  340  sudo restart anaddventure 
+  341  sudo service nginx restart 
+  342  cat /var/log/nginx/error.log 
+  343  cat /var/log/nginx/access.log 
+  344  cd /var/log
+  345  ls
+  346  ls upstart/
+  347  cat upstart/anaddventure.log 
+  348  sudo cat upstart/anaddventure.log 
+  349  cd ~/apps/anaddventure/anaddventure/
+  350  git pull origin master 
+  351  sudo restart anaddventure && sudo service nginx restart
+  352  cat /var/log/upstart/anaddventure.log 
+  353  sudo cat /var/log/upstart/anaddventure.log 
+  354  cat /var/log/upstart/anaddventure.log 
+  355  sudo cat /var/log/upstart/anaddventure.lo
+  356  sudo cat /var/log/upstart/anaddventure.log 
+  357  psql -h localhost -U anaddventure -d tales
+  358  psql -h localhost -U postgres -d tales
+  359  sudo cat /var/log/upstart/anaddventure.log 
+  360  cat /var/log/nginx/error.log 
+  361  sudo restart anaddventure && sudo service nginx restart
+  362  vim site/models/DAO.py
+  363  psql -h localhost -U postgres -d tales
+  364  sudo restart anaddventure && sudo service nginx restart
+  365  cat /var/log/nginx/access.log 
+  366  cat /var/log/nginx/error.log 
+  367  sudo cat /var/log/upstart/anaddventure.log 
+  368  ls /var/log/
+  369  cat /etc/init/anaddventure.conf 
+  370  .
+  371  cat anaddventure
+  372  cat anaddventure.ini 
+  373  cat /etc/nginx/sites-available/anaddventure 
+  374  ls /var/log/
+  375  ls /var/log/nginx/
+  376  cat /var/log/nginx/*
+  377  cat /var/log/nginx/access.log 
+  378  cat /var/log/nginx/error.log 
+  379  sudo cat /var/log/upstart/anaddventure.log 
+  380  cd anaddventure/
+  381  vim site/models/DAO.py
+  382  git add site/models/DAO.py 
+  383  git commit -m 'Testing local'
+  384  git config --global user.email "tayllanburigo@gmail.com"
+  385  git config --global user.name "Tayllan Búrigo"
+  386  git commit -m 'Testing local'
+  387  git push origin master 
+  388  vim site/models/DAO.py
+  389  psql -h localhost -U anaddventure -d tales
+  390  git add site/models/DAO.py 
+  391  git commit -m 'Back to the normal user and password'
+  392  git push origin master 
+  393  sudo restart anaddventure && sudo service nginx restart
+  394  sudo cat /var/log/upstart/anaddventure.log 
+  395  cat /var/log/nginx/access.log 
+  396  cat /var/log/nginx/error.log 
+  397  ls /etc/nginx/
+  398  ls /
+  399  ls /tmp/
+  400  cat /tmp/uwsgi.log 
+  401  sudo cat /tmp/uwsgi.log 
+  402  ls /tmp/
+  403  ls /
+  404  ls /opt/
+  405  ls
+  406  .
+  407  ls
+  408  ls -la
+  409  cat .bashrc 
+  410  rm .bashrc 
+  411  ls ../
+  412  locate .log
+  413  sudo locate .log
+  414  cat /var/log/boot
+  415  cat /var/log/bootstrap.log 
+  416  sudo locate .log
+  417  sudo cat /var/log/upstart/anaddventure.log 
+  418  cat /var/log/nginx/error.log 
+  419  cat /var/log/nginx/access.log 
+  420  sudo cat /var/log/upstart/anaddventure.log 
+  421  sudo cat /etc/init/anaddventure.conf 
+  422  sudo stop anaddventure 
+  423  sudo rm /etc/init/anaddventure.conf 
+  424  cd /etc/uwsgi/
+  425  l
+  426  ls
+  427  ls vassals/
+  428  sudo rm vassals/uwsgi-anaddventure.ini 
+  429  sudo ln -s /home/user/apps/anaddventure/anaddventure.ini /etc/uwsgi/vassals/
+  430  sudo vim emperor.ini 
+  431  sudo vim /etc/systemd/system/uwsgi.service
+  432  sudo systemctl
+  433  sudo systemctl start uwsgi
+  434  sudo apt-get install systemctl
+  435  systemctl
+  436  sudo systemd
+  437  systemd
+  438  sudo service start uwsgi
+  439  sudo service uwsgi restart
+  440  cat /tmp/uwsgi.log 
+  441  sudo cat /tmp/uwsgi.log 
+  442  sudo uwsgi --ini /etc/uwsgi/emperor.ini 
+  443  sudo o cat /tmp/uwsgi.log 
+  444  sudo cat /tmp/uwsgi.log 
+  445  sudo rm /etc/systemd/system/uwsgi.service 
+  446  sudo vim /etc/uwsgi/emperor.ini 
+  447  sudo uwsgi --ini /etc/uwsgi/emperor.ini 
+  448  cd ~/apps/anaddventure/
+  449  uwsgi --ini anaddventure.ini 
+  450  psql -h localhost -U anaddventure -d tales
+  451  uwsgi --ini anaddventure.ini 
+  452  cd anaddventure/
+  453  git pull origin master 
+  454  .
+  455  uwsgi --ini anaddventure.ini 
+  456  uwsgi --ini anaddventure.ini --enable-threads
+  457  psql -h localhost -U anaddventure -d tales
+  458  cd anaddventure/
+  459  git pull origin master 
+  460  .
+  461  vim anaddventure.ini 
+  462  sudo vim /etc/init/anaddventure.conf
+  463  sudo restart anaddventure && sudo service nginx restart
+  464  sudo start anaddventure 
+  465  sudo restart anaddventure && sudo service nginx restart
+  466  cat /tmp/uwsgi.log 
+  467  sudo cat /tmp/uwsgi.log 
+  468  sudo cat /var/log/upstart/anaddventure.log 
+  469  sudo restart anaddventure && sudo service nginx restart
+  470  sudo cat /var/log/upstart/anaddventure.log 
+  471  cat /etc/nginx/sites-available/anaddventure 
+  472  cd anaddventure/site/static/avatars/
+  473  ls
+  474  ls identicons/
+  475  ls
+  476  ...
+  477  git pull origin master 
+  478  sudo restart anaddventure && sudo service nginx restart
+  479  sudo cat /var/log/upstart/anaddventure.log 
+  480  ls 
+  481  ls site/
+  482  git pull origin master 
+  483  sudo restart anaddventure && sudo service nginx restart
+  484  sudo cat /var/log/upstart/anaddventure.log 
+  485  cd site/static/
+  486  ls
+  487  cd avatars/
+  488  ls
+  489  ...
+  490  git pull origin master 
+  491  sudo restart anaddventure && sudo service nginx restart
+  492  sudo cat /var/log/upstart/anaddventure.log 
+  493  ls
+  494  .
+  495  cd anaddventure/site/static/avatars/
+  496  b-
+  497  cd anaddventure/
+  498  git pull origin master 
+  499  sudo restart anaddventure && sudo service nginx restart
+  500  ...
+  501  ls
+  502  ls history-commands/
+  503  history > history-commands/history15-05-31-2
+  504  cd apps/anaddventure/anaddventure/
+  505  git pull origin master 
+  506  cat site/models/DAO.py | head
+  507  cd ~
+  508  vim .aliases 
+  509  b-
+  510  vim .aliases 
+  511  exit
+  512  sudo vim /etc/nginx/sites-available/anaddventure 
+  513  sudo vim /etc/nginx/nginx.conf 
+  514  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  515  rest-anaddventure 
+  516  sudo vim /etc/nginx/nginx.conf 
+  517  cd /etc/nginx/
+  518  sudo vim sites-available/anaddventure 
+  519  rest-anaddventure 
+  520  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  521  rest-anaddventure 
+  522  sudo cat /var/log/upstart/anaddventure.log 
+  523  cat ~/apps/anaddventure/anaddventure.ini 
+  524  vim sites-available/anaddventure 
+  525  sudo vim sites-available/anaddventure 
+  526  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  527  rest-anaddventure 
+  528  cd ~/apps/anaddventure/anaddventure/
+  529  g-pull
+  530  rest-anaddventure 
+  531  vim /etc/nginx/sites-available/anaddventure 
+  532  sudo vim /etc/nginx/sites-available/anaddventure 
+  533  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  534  rest-anaddventure 
+  535  cat /tmp/uwsgi.log 
+  536  sudo cat /tmp/uwsgi.log 
+  537  sudo vim /etc/nginx/sites-available/anaddventure 
+  538  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  539  rest-anaddventure 
+  540  sudo vim /etc/nginx/sites-available/anaddventure 
+  541  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  542  rest-anaddventure 
+  543  sudo vim /etc/nginx/sites-available/anaddventure 
+  544  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  545  rest-anaddventure 
+  546  sudo vim /etc/nginx/sites-available/anaddventure 
+  547  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  548  rest-anaddventure 
+  549  sudo vim /etc/nginx/sites-available/anaddventure 
+  550  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  551  rest-anaddventure 
+  552  sudo vim /etc/nginx/sites-available/anaddventure 
+  553  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  554  rest-anaddventure 
+  555  sudo vim /etc/nginx/sites-available/anaddventure 
+  556  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  557  rest-anaddventure 
+  558  sudo vim /etc/nginx/sites-available/anaddventure 
+  559  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  560  rest-anaddventure 
+  561  sudo vim /etc/nginx/sites-available/anaddventure 
+  562  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  563  rest-anaddventure 
+  564  sudo vim /etc/nginx/sites-available/anaddventure 
+  565  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  566  rest-anaddventure 
+  567  sudo vim /etc/nginx/sites-available/anaddventure 
+  568  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  569  rest-anaddventure 
+  570  sudo vim /etc/nginx/sites-available/anaddventure 
+  571  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  572  rest-anaddventure 
+  573  sudo vim /etc/nginx/sites-available/anaddventure 
+  574  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  575  rest-anaddventure 
+  576  sudo vim /etc/nginx/sites-available/anaddventure 
+  577  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  578  rest-anaddventure 
+  579  sudo vim /etc/nginx/sites-available/anaddventure 
+  580  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  581  rest-anaddventure 
+  582  sudo vim /etc/nginx/sites-available/anaddventure 
+  583  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  584  rest-anaddventure 
+  585  cat /var/log/nginx/error.log 
+  586  sudo nginx -t
+  587  cat /var/log/nginx/access.log 
+  588  sudo vim /etc/nginx/sites-available/anaddventure 
+  589  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  590  rest-anaddventure 
+  591  exit
+  592  sudo vim /etc/nginx/sites-available/anaddventure 
+  593  cat /etc/ssl/nginx/ssl.key
+  594  cat /etc/ssl/nginx/nginx.crt
+  595  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  596  rest-anaddventure 
+  597  sudo vim /etc/nginx/sites-available/anaddventure 
+  598  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  599  rest-anaddventure 
+  600  sudo vim /etc/nginx/sites-available/anaddventure 
+  601  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  602  rest-anaddventure 
+  603  sudo vim /etc/nginx/sites-available/anaddventure 
+  604  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  605  rest-anaddventure 
+  606  sudo vim /etc/nginx/sites-available/anaddventure 
+  607  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  608  rest-anaddventure 
+  609  sudo vim /etc/nginx/sites-available/anaddventure 
+  610  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  611  rest-anaddventure 
+  612  sudo vim /etc/nginx/sites-available/anaddventure 
+  613  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  614  rest-anaddventure 
+  615  sudo vim /etc/nginx/sites-available/anaddventure 
+  616  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  617  rest-anaddventure 
+  618  sudo vim /etc/nginx/sites-available/anaddventure 
+  619  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  620  rest-anaddventure 
+  621  sudo vim /etc/nginx/sites-available/anaddventure 
+  622  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  623  rest-anaddventure 
+  624  sudo vim /etc/nginx/sites-available/anaddventure 
+  625  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  626  rest-anaddventure 
+  627  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  628  sudo vim /etc/nginx/sites-available/anaddventure 
+  629  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  630  rest-anaddventure 
+  631  sudo vim /etc/nginx/sites-available/anaddventure 
+  632  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  633  rest-anaddventure 
+  634  sudo vim /etc/nginx/sites-available/anaddventure 
+  635  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  636  rest-anaddventure 
+  637  sudo vim /etc/nginx/sites-available/anaddventure 
+  638  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  639  rest-anaddventure 
+  640  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  641  rest-anaddventure 
+  642  sudo vim /etc/nginx/sites-available/anaddventure 
+  643  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  644  rest-anaddventure 
+  645  sudo nginx -t
+  646  sudo vim /etc/nginx/sites-available/anaddventure 
+  647  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  648  rest-anaddventure 
+  649  sudo vim /etc/nginx/sites-available/anaddventure 
+  650  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  651  rest-anaddventure 
+  652  sudo vim /etc/nginx/sites-available/anaddventure 
+  653  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  654  rest-anaddventure 
+  655  sudo vim /etc/nginx/sites-available/anaddventure 
+  656  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  657  rest-anaddventure 
+  658  sudo vim /etc/nginx/sites-available/anaddventure 
+  659  sudo nginx -t
+  660  sudo vim /etc/nginx/sites-available/anaddventure 
+  661  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  662  rest-anaddventure 
+  663  sudo nginx -t
+  664  sudo vim /etc/nginx/sites-available/anaddventure 
+  665  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  666  rest-anaddventure 
+  667  cd apps/anaddventure/anaddventure/
+  668  git pull origin master
+  669  rest-anaddventure 
+  670  g-pull
+  671  rest-anaddventure 
+  672  g-pull
+  673  rest-anaddventure 
+  674  exit
+  675  cd /etc/ssl/nginx/
+  676  sudo mv /home/user/ssl.* ./
+  677  ls
+  678  wget http://www.startsssl.com/certs/ca.pem
+  679  sudo wget http://www.startsssl.com/certs/ca.pem
+  680  ls
+  681  sudo wget http://www.startssl.com/certs/sub.class1.server.ca.pem
+  682  ls
+  683  cat sub.class1.server.ca.pem >> ca.pem
+  684  sudo cat sub.class1.server.ca.pem >> ca.pem
+  685  sudo cat sub.class1.server.ca.pem >> ca.pem 
+  686  cat ca.pem 
+  687  sudo cat sub.class1.server.ca.pem >> ca.pem 
+  688  cat ca.pem
+  689  echo "adf" >> ca.pem
+  690  sudo echo "adf" >> ca.pem
+  691  ls -la
+  692  sudo chmod 777 ca.pem 
+  693  sudo cat sub.class1.server.ca.pem >> ca.pem 
+  694  ls
+  695  cat ca.pem 
+  696  sudo rm -rf sub.class1.server.ca.pem 
+  697  sudo cat ssl.crt ca.pem > nginx.crt
+  698  sudo sudo cat ssl.crt ca.pem > nginx.crt
+  699  sudo chmod 777 nginx.crt
+  700  sudo chmod 777 *
+  701  ls
+  702  sudo sudo cat ssl.crt ca.pem > nginx.crt
+  703  sudo touch nginx.crt
+  704  sudo chmod 777 nginx.crt 
+  705  sudo sudo cat ssl.crt ca.pem > nginx.crt
+  706  ls
+  707  cat nginx.crt 
+  708  sudo vim /etc/nginx/sites-available/anaddventure 
+  709  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  710  rest-anaddventure 
+  711  sudo vim /etc/nginx/sites-available/anaddventure 
+  712  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  713  rest-anaddventure 
+  714  sudo vim /etc/nginx/sites-available/anaddventure 
+  715  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  716  rest-anaddventure 
+  717  sudo vim /etc/nginx/sites-available/anaddventure 
+  718  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  719  rest-anaddventure 
+  720  sudo nginx -l
+  721  sudo nginx -t
+  722  sudo vim /etc/nginx/nginx.conf 
+  723  cd apps/anaddventure/anaddventure/
+  724  g-pull
+  725  sudo cat /var/log/upstart/anaddventure.log 
+  726  sudo cat /var/log/upstart/anaddventure.log | head -30
+  727  sudo cat /var/log/upstart/anaddventure.log | tail -50
+  728  g-pull
+  729  rest-anaddventure 
+  730  psql -h localhost -U anaddventure -d tales
+  731  psql -h localhost -U postgres -d tales
+  732  psql -h localhost -U anaddventure -d tales
+  733  g-pull
+  734  rest-anaddventure 
+  735  sudo cat /var/log/upstart/anaddventure.log | tail -50
+  736  psql -h localhost -U anaddventure -d tales
+  737  psql -h localhost -U postgres -d tales
+  738  rest-anaddventure 
+  739  sudo vim /etc/nginx/nginx.conf 
+  740  sudo vim /etc/nginx/sites-available/anaddventure 
+  741  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  742  rest-anaddventure 
+  743  sudo nginx -t
+  744  sudo vim /etc/nginx/sites-available/anaddventure 
+  745  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  746  rest-anaddventure 
+  747  sudo vim /etc/nginx/sites-available/anaddventure 
+  748  sudo rm /etc/nginx/sites-enabled/anaddventure [B
+  749  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  750  rest-anaddventure 
+  751  sudo vim /etc/nginx/sites-available/anaddventure 
+  752  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  753  rest-anaddventure 
+  754  sudo vim /etc/nginx/sites-available/anaddventure 
+  755  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  756  rest-anaddventure 
+  757  sudo vim /etc/nginx/sites-available/anaddventure 
+  758  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  759  rest-anaddventure 
+  760  sudo vim /etc/nginx/sites-available/anaddventure 
+  761  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  762  rest-anaddventure 
+  763  sudo cat /var/log/upstart/anaddventure.log | tail -30
+  764  sudo cat /var/log/upstart/anaddventure.log | tail -50
+  765  sudo cat /var/log/upstart/anaddventure.log | tail -80
+  766  g-pull
+  767  exit
+  768  cd apps/anaddventure/
+  769  cd anaddventure/
+  770  g-pull
+  771  rest-anaddventure 
+  772  exit
+  773  cd apps/anaddventure/anaddventure/
+  774  g-pull
+  775  rest-anaddventure 
+  776  exit
+  777  sudo cat /var/log/upstart/anaddventure.log 
+  778  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  779  psql -h localhost -U anaddventure -d tales
+  780  sudo cat /var/log/upstart/anaddventure.log | grep 'invitation'
+  781  sudo cat /var/log/upstart/anaddventure.log | grep 'invite'
+  782  sudo cat /var/log/upstart/anaddventure.log | grep invite
+  783  sudo cat /var/log/upstart/anaddventure.log | grep create_tale
+  784  sudo cp /var/log/upstart/anaddventure.log ./
+  785  ls
+  786  sudo chmod 777 anaddventure.log 
+  787  cd apps/anaddventure/anaddventure/site/
+  788  egrep 'INVALID_LICENSE' * -r
+  789  .
+  790  g-pull
+  791  rest-anaddventure 
+  792  rm /home/user/anaddventure.log 
+  793  cat /var/log/upstart/anaddventure.log 
+  794  sudo cat /var/log/upstart/anaddventure.log 
+  795  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  796  cd site/
+  797  vim main.py
+  798  rest-anaddventure 
+  799  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  800  psql -h localhost -U anaddventure -d tales
+  801  vim main.py
+  802  rest-anaddventure 
+  803  psql -h localhost -U anaddventure -d tales
+  804  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  805  psql -h localhost -U anaddventure -d tales
+  806  rest-anaddventure 
+  807  exit
+  808  locate postgresql.conf
+  809  locate postgresql
+  810  locate .conf
+  811  locate .conf | grep p
+  812  sudo locate .conf
+  813  sudo locate postgresql.conf
+  814  locate postgresql
+  815  cd /etc/postgresql/9.3/main/
+  816  ls
+  817  ls -la
+  818  sudo vim postgresql.conf 
+  819  sudo service postgresql restart 
+  820  rest-anaddventure 
+  821  b-
+  822  cd apps/anaddventure/anaddventure/site/
+  823  sudo vim main.py
+  824  sudo vim /etc/nginx/nginx.conf 
+  825  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  826  rest-anaddventure 
+  827  sudo nginx -t
+  828  sudo vim /etc/nginx/nginx.conf 
+  829  sudo nginx -t
+  830  sudo vim /etc/nginx/nginx.conf 
+  831  sudo nginx -t
+  832  sudo vim /etc/nginx/nginx.conf 
+  833  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  834  sudo nginx -t
+  835  sudo vim /etc/nginx/nginx.conf 
+  836  sudo nginx -t
+  837  sudo vim /etc/nginx/nginx.conf 
+  838  sudo nginx -t
+  839  nginx --v
+  840  nginx --version
+  841  nginx -v
+  842  sudo vim /etc/nginx/sites-available/anaddventure 
+  843  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  844  sudo nginx -t
+  845  rest-anaddventure 
+  846  sudo cat /var/log/upstart/anaddventure.log | tail -50
+  847  vim main.py
+  848  rest-anaddventure 
+  849  sudo cat /var/log/upstart/anaddventure.log | tail -50
+  850  vim main.py
+  851  rest-anaddventure 
+  852  sudo cat /var/log/upstart/anaddventure.log | tail -50
+  853  vim main.py
+  854  rest-anaddventure 
+  855  git add main.py 
+  856  git commit -m 'Fixed email password'
+  857  g-push 
+  858  exit
+  859  cd apps/anaddventure/anaddventure/
+  860  g-pull
+  861  rest-anaddventure 
+  862  exit
+  863  cd apps/anaddventure/anaddventure/
+  864  g-pull
+  865  rest-anaddventure 
+  866  exit
+  867  cd apps/anaddventure/anaddventure/
+  868  g-pull
+  869  rest-anaddventure 
+  870  exit
+  871  cd apps/anaddventure/anaddventure/
+  872  rest-anaddventure 
+  873  g-pull
+  874  rest-anaddventure 
+  875  exit
+  876  sudo vim /etc/nginx/sites-available/anaddventure 
+  877  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  878  rest-anaddventure 
+  879  sudo vim /etc/nginx/sites-available/anaddventure 
+  880  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  881  rest-anaddventure 
+  882  exti
+  883  exit
+  884  cd apps/anaddventure/anaddventure/
+  885  g-pull
+  886  cat site/main.py | grep 'PRODUCTION'
+  887  rest-anaddventure 
+  888  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  889  cd site/
+  890  vim main.py
+  891  rest-anaddventure 
+  892  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  893  sudo cat /var/log/upstart/anaddventure.log | tail -100 | grep which
+  894  sudo apt-get install wkhtmltopdf
+  895  sudo apt-get update
+  896  sudo vim main.py
+  897  rest-anaddventure 
+  898  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  899  sudo apt-get install wkhtmltopdf
+  900  rest-anaddventure 
+  901  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  902  wkhtmltopdf -h
+  903  rest-anaddventure 
+  904  ....
+  905  ls
+  906  vim lero
+  907  wkhtmltopdf lero lero.pdf
+  908  sudo apt-get remove --purge wkhtmltopdf 
+  909  wget -q http://sourceforge.net/projects/wkhtmltopdf/files/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb/download?use_mirror=ufpr
+  910  wget -q http://sourceforge.net/projects/wkhtmltopdf/files/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
+  911  ls
+  912  sudo dpkg -i wkhtmltox-0.12.2.1_linux-trusty-amd64.deb 
+  913  sudo apt-get install xfonts-base
+  914  sudo apt-get -f install
+  915  sudo dpkg -i wkhtmltox-0.12.2.1_linux-trusty-amd64.deb 
+  916  rest-anaddventure 
+  917  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  918  wkhtmltopdf http://google.com google.pdf
+  919  ls
+  920  rm wkhtmltox-0.12.2.1_linux-trusty-amd64.deb 
+  921  rm lero 
+  922  rm download\?use_mirror\=ufpr 
+  923  ls -la
+  924  cat google.pdf 
+  925  rm google.pdf 
+  926  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  927  cd apps/anaddventure/
+  928  bin activate
+  929  ls
+  930  . bin/activate
+  931  cd anaddventure/
+  932  bin/pip3 install pdfkit
+  933  bin/pip3 install pdfkit --upgrade
+  934  rest-anaddventure 
+  935  ..
+  936  vim lero
+  937  wkhtmlto lero lero.pdf
+  938  wkhtmltopdf lero lero.pdf
+  939  ls
+  940  wkhtmltopdf lero lero.pdf --load-error-handling
+  941  wkhtmltopdf lero lero.pdf --load-error-handling ignore
+  942  ls
+  943  rm lero
+  944  exit
+  945  cd apps/anaddventure/anaddventure/
+  946  .
+  947  . anaddventure/bin/activate
+  948  cd apps/anaddventure/
+  949  exit
+  950  cd apps/anaddventure/anaddventure/
+  951  g-pull
+  952  cat site/main.py | grep 'PRODUCTION'
+  953  rest-anaddventure 
+  954  sudo cat /var/log/upstart/anaddventure.log  | tail -100
+  955  exit
+  956  cd apps/anaddventure/anaddventure/
+  957  g-pull
+  958  sudo apt-get remove -puger wkhtmltox 
+  959  sudo apt-get remove -purge wkhtmltox 
+  960  sudo apt-get remove --purge wkhtmltox 
+  961  exit
+  962  cd apps/anaddventure/anaddventure/
+  963  sudo apt-get auto-remove
+  964  sudo apt-get autoremove 
+  965  g-pull 
+  966  cat site/main.py | grep PRODUCTION
+  967  rest-anaddventure 
+  968  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  969  g-pull
+  970  rest-anaddventure 
+  971  g-pull
+  972  rest-anaddventure 
+  973  psql -h localhost -U anaddventure -d tales
+  974  g-pull
+  975  rest-anaddventure 
+  976  g-pull && rest-anaddventure 
+  977  psql -h localhost -U anaddventure -d tales
+  978  g-pull && rest-anaddventure 
+  979  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  980  g-pull && rest-anaddventure 
+  981  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  982  g-pull && rest-anaddventure 
+  983  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  984  sudo vim /etc/nginx/sites-available/anaddventure 
+  985  rest-anaddventure 
+  986  sudo vim /etc/nginx/sites-available/anaddventure 
+  987  cat ~/.aliases | grep rest
+  988  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  989  rest-anaddventure 
+  990  sudo cat /var/log/upstart/anaddventure.log | tail -100
+  991  sudo vim /etc/nginx/sites-available/anaddventure 
+  992  ls /etc/nginx/
+  993  sudo vim /etc/nginx/sites-available/anaddventure 
+  994  ls /etc/ssl/nginx/
+  995  rest-anaddventure 
+  996  sudo vim /etc/nginx/sites-available/anaddventure 
+  997  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+  998  rest-anaddventure 
+  999  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1000  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1001  rest-anaddventure 
+ 1002  sudo cat /var/log/upstart/anaddventure.log | tail -100
+ 1003  g-pull && rest-anaddventure 
+ 1004  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1005  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1006  rest-anaddventure 
+ 1007  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1008  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1009  rest-anaddventure 
+ 1010  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1011  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1012  rest
+ 1013  rest-anaddventure 
+ 1014  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1015  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1016  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1017  rest-anaddventure 
+ 1018  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1019  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1020  rest-anaddventure 
+ 1021  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1022  g-pull && rest-anaddventure 
+ 1023  exit
+ 1024  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1025  ls /etc/ss
+ 1026  ls /etc/ssl
+ 1027  ls /etc/ssl/private/
+ 1028  sudo ls /etc/ssl/private/
+ 1029  sudo ls /etc/ssl/certs/
+ 1030  sudo ls /etc/ssl/certs/ | grep an
+ 1031  sudo ls /etc/ssl/
+ 1032  sudo mkdir temp
+ 1033  ls
+ 1034  cd temp/m
+ 1035  cd temp/
+ 1036  sudo openssl genrsa -des3 -out anaddventure.key 2048
+ 1037  ls
+ 1038  sudo openssl req -new -key anaddventure.key -out anaddventure.csr
+ 1039  ls
+ 1040  sudo cp anaddventure.key anaddventure.key.org
+ 1041  sudo openssl rsa -in anaddventure.key.org -out anaddventure.key
+ 1042  sudo openssl x509 -req -days 365 -in anaddventure.csr -signkey anaddventure.key -out anaddventure.crt
+ 1043  sudo cp anaddventure.crt /etc/ssl/certs/
+ 1044  sudo cp anaddventure.key /etc/ssl/private/
+ 1045  .
+ 1046  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1047  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1048  rest-anaddventure 
+ 1049  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1050  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1051  rest-anaddventure 
+ 1052  sudo vim /etc/nginx/sites-available/anaddventure 
+ 1053  sudo rm /etc/nginx/sites-enabled/anaddventure && sudo ln -s /etc/nginx/sites-available/anaddventure /etc/nginx/sites-enabled/
+ 1054  rest-anaddventure 
+ 1055  ls
+ 1056  sudo rm -r temp/
+ 1057  ls
+ 1058  ls /etc/ssl/
+ 1059  ls /etc/ssl/nginx/
+ 1060  sudo rm -r /etc/ssl/nginx/
+ 1061  rest-anaddventure 
+ 1062  ls
+ 1063  ls history-commands/
+ 1064  history > history-commands/history15-06-17
