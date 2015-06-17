@@ -1,6 +1,5 @@
 from flask import Flask, request, session, render_template, redirect, jsonify, make_response, flash, abort, send_file
 from flask_mail import Mail, Message
-from flask_cache import Cache
 from languages import strings
 from models.Chapter import Chapter
 from models.Contribution_Request import Contribution_Request
@@ -20,7 +19,6 @@ import os, hashlib, random
 
 # BEGIN app configuration
 app = Flask(__name__)
-cache = Cache(app, config = {'CACHE_TYPE': 'simple'})
 
 app.config.update(
 	# FLASK SETTINGS
@@ -1283,8 +1281,6 @@ def star(tale_id):
 		if 'user_logged_id' in session:
 			new_star = Star(session['user_logged_id'], tale_id, get_current_datetime_as_string())
 			new_star.insert()
-			cache.delete('best_tales')
-			cache.delete('best_daily_tales')
 
 			return jsonify({'stars': tale[0]['stars']})
 		else:
@@ -1298,8 +1294,6 @@ def unstar(tale_id):
 
 	if len(tale) is not 0:
 		Star.delete_by_user_id(session['user_logged_id'])
-		cache.delete('best_tales')
-		cache.delete('best_daily_tales')
 
 		return jsonify({'stars': Tale.select_by_id(tale_id, 1)[0]['stars']})
 	else:
@@ -1458,25 +1452,14 @@ def get_rendered_participated_tales():
 @app.route('/set_language/')
 def set_language():
 	if request.is_xhr and request.args.get('language', None) in ALLOWED_LANGUAGES:
-		if session.get('language', None) != request.args.get('language', None):
-			cache.delete('best_tales')
-			cache.delete('best_daily_tales')
-
 		session['language'] = request.args.get('language', 'en')
 
 		return ''
 	else:
 		return redirect('/404')
 
-def get_timeout():
-	now = datetime.utcnow()
-	return 86399 - (now.second + now.minute * 60 + now.hour * 60 * 60)
-
 @app.route('/get_ten_best_tales/')
-@cache.cached(timeout = get_timeout(), key_prefix = 'best_tales')
 def get_ten_best_tales():
-	print('BEST NOT cached')
-
 	tales = Tale.select_top_ten_order_by_star_count()
 	tales_list = list()
 
@@ -1501,10 +1484,7 @@ def get_ten_best_tales():
 	)
 
 @app.route('/get_ten_best_daily_tales/')
-@cache.cached(timeout = get_timeout(), key_prefix = 'best_daily_tales')
 def get_ten_best_daily_tales():
-	print('TEN NOT cached')
-
 	tales = Tale.select_top_ten_order_by_star_count_today()
 	tales_list = list()
 
