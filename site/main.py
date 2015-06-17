@@ -1512,11 +1512,6 @@ def get_ten_best_daily_tales():
 		creator = User.select_by_id(tale['creator_id'])
 		last_update = Tale.select_last_update(tale['id'])[0][0]
 
-		print('ABOVE')
-		print(request.args.get('timezone_offset', 0))
-		print(last_update)
-		print('BELOW')
-
 		tale['creator'] = creator[0]
 		tale['last_update'] = False if last_update is None else beautify_datetime(
 			last_update,
