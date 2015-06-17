@@ -153,7 +153,8 @@ def get_file_extension(filename):
 	else:
 		return None
 
-def get_current_datetime_as_string(format = '%Y-%m-%d %H:%M:%S', timezone_offset = 0):
+def get_current_datetime_as_string(format = '%Y-%m-%d %H:%M:%S'):
+	timezone_offset = session.get('timezone_offset', 0)
 	return (datetime.now() + timedelta(minutes = timezone_offset)).strftime(format)
 
 def send_async_email(message):
@@ -303,14 +304,7 @@ def create_tale_post():
 		if len(error_list) is not 0:
 			return make_response(jsonify(error_list = error_list), 400)
 		else:
-			new_tale = Tale(
-				title,
-				description,
-				category,
-				creator_id,
-				license_id,
-				get_current_datetime_as_string(timezone_offset = timezone_offset)
-			)
+			new_tale = Tale(title, description, category, creator_id, license_id, get_current_datetime_as_string())
 			new_tale.insert()
 
 			tale_id = Tale.select_by_creator_id_and_full_title(creator_id, title, 1)[0]['id']
