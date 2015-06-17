@@ -7,7 +7,7 @@ class Password_Change_Requests(DAO):
 	def __init__(self, user_id):
 		self.user_id = user_id
 		self.id = Password_Change_Requests._generate_random_token()
-		self.datetime = datetime.now()
+		self.datetime = datetime.utcnow()
 
 	def insert(self):
 		cursor = DAO.connection.cursor()
@@ -52,8 +52,6 @@ class Password_Change_Requests(DAO):
 
 	@staticmethod
 	def select_by_id(id, rows = None):
-		print(hashlib.sha256(id.encode('utf-8')).hexdigest())
-
 		return Password_Change_Requests._construct_password_change_request_objects(
 			DAO.select_by(
 				"SELECT * FROM anaddventure.password_change_requests WHERE password_change_requests_id LIKE (%s)",
@@ -87,5 +85,5 @@ class Password_Change_Requests(DAO):
 	@staticmethod
 	def is_valid_random_token(time):
 		return (
-			(datetime.now() - time) <= timedelta(hours = 2)
+			(datetime.utcnow() - time) <= timedelta(hours = 2)
 		)

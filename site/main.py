@@ -275,7 +275,6 @@ def create_tale_post():
 		genres = request.form.getlist('create-genres')
 		license_id = request.form.get('create-license', -1)
 		creator_id = session['user_logged_id']
-		timezone_offset = session['timezone_offset']
 		language = session.get('language', 'en')
 
 		error_list = list()
@@ -1480,7 +1479,8 @@ def set_timezone_offset():
 		return redirect('/404')
 
 def get_timeout():
-	return 86399 - (datetime.now().second + datetime.now().minute * 60 + datetime.now().hour * 60 * 60)
+	now = datetime.utcnow()
+	return 86399 - (now().second + now().minute * 60 + now().hour * 60 * 60)
 
 @app.route('/get_ten_best_tales/')
 @cache.cached(timeout = get_timeout(), key_prefix = 'best_tales')
