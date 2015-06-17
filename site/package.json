@@ -1,0 +1,29 @@
+{
+  "name": "AnAddventure",
+  "version": "0.9.0",
+  "description": "Awesome site to write Collaborative Tales",
+  "main": "algorithms",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-cli": "latest",
+    "grunt-purifycss": "latest",
+    "grunt-contrib-cssmin": "latest",
+    "grunt-contrib-uglify": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tayllan/anaddventure"
+  },
+  "keywords": [
+    "collaborative tales"
+  ],
+  "author": "Tayllan Búrigo <tayllanburigo@gmail.com>",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "bugs": {
+    "url": "https://github.com/tayllan/anaddventure/issues"
+  },
+  "homepage": "https://anaddventure.com/"
+}
