@@ -1480,7 +1480,7 @@ def set_timezone_offset():
 
 def get_timeout():
 	now = datetime.utcnow()
-	return 86399 - (now().second + now().minute * 60 + now().hour * 60 * 60)
+	return 86399 - (now.second + now.minute * 60 + now.hour * 60 * 60)
 
 @app.route('/get_ten_best_tales/')
 @cache.cached(timeout = get_timeout(), key_prefix = 'best_tales')
