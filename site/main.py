@@ -88,6 +88,7 @@ def get_number_with_two_digits(number):
 		return '00' if len(temp) is 0 else '0' + temp
 
 def beautify_datetime(d, withHour = False):
+	d = d + timedelta(session['timezone_offset'])
 	if withHour:
 		return str(d.day) + ' ' + MONTHS_DICTIONARY[d.month] + ', ' + str(d.year) + ' ' + get_number_with_two_digits(d.hour) + ':' + get_number_with_two_digits(d.minute)
 	else:
