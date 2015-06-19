@@ -1961,7 +1961,10 @@ i.icon.book:before {
 i.icon.flag.outline:before {
   content: "\f11d";
 }
-/* Shapes */i.icon.circle:before {
+/* Shapes */i.icon.asterisk:before {
+  content: "\f069";
+}
+i.icon.circle:before {
   content: "\f111";
 }
 /* Item Selection */i.icon.checkmark:before {

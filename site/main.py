@@ -1171,12 +1171,9 @@ def change_password_post():
 @app.route('/search/')
 def search():
 	content = request.args.get('c', '')
-
-	if len(content) < 3:
-		return render_template('bad_search.html')
-
 	genre_id = request.args.get('g', None)
 	sort_value = int(request.args.get('s', 1))
+
 	user_logged_id = session.get('user_logged_id', None)
 	tales = Tale.select_viewable_by_title_and_creator_id(content, user_logged_id)
 	tales_per_genre = dict()
@@ -1211,7 +1208,7 @@ def search():
 		elif sort_value is 3:
 			users_list = sorted(users_list, key = lambda user: user['ugly_signup_date'])
 
-		tales = {'amount_of_results': len(tales)}
+		tales = {'amount_of_results': len(tales), 'genre_id': -1}
 		users = {'amount_of_results': len(users_list), 'results': users_list}
 		is_searching_user = True
 	else:
@@ -1260,7 +1257,7 @@ def search():
 		elif sort_value is 5:
 			tales_list = sorted(tales_list, key = lambda tale: tale['ugly_last_update'])
 
-		tales = {'amount_of_results': len(tales), 'results': tales_list}
+		tales = {'amount_of_results': len(tales_list), 'results': tales_list, 'genre_id': genre_id}
 		users = {'amount_of_results': User.select_count_by_username(content, 1)[0][0]}
 		is_searching_user = False
 
