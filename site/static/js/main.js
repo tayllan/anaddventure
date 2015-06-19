@@ -183,31 +183,6 @@ $(document).ready(function() {
 		element.after(final_string);
 	};
 
-	// BEGIN all pages
-	$('#language-en, #language-pt').on('click', function(event) {
-		event.preventDefault();
-
-		var value = /\-(\w+)/.exec(this.id)[1];
-
-		$.ajax({
-			type: 'get',
-			url: '/set_language',
-			datatype: 'json',
-			data: {
-				'language': value
-			},
-			success: function(data) {
-				window.location.reload(true);
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
-
-		return false;
-	});
-	// END all pages
-
 	// BEGIN index.html js;
 	if (path === '/') {
 		var $top_all = $('#top-all');
