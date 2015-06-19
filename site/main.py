@@ -31,7 +31,7 @@ app.config.update(
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
 	SITE_URL = 'http://anaddventure.com',
-	CONF_PRODUCTION = False,
+	CONF_PRODUCTION = True,
 
 	# EMAIL SETTINGS
 	MAIL_SERVER = 'smtp-mail.outlook.com',
@@ -1171,6 +1171,10 @@ def change_password_post():
 @app.route('/search/')
 def search():
 	content = request.args.get('c', '')
+
+	if len(content) < 3:
+		return render_template('bad_search.html')
+
 	genre_id = request.args.get('g', None)
 	sort_value = int(request.args.get('s', 1))
 	user_logged_id = session.get('user_logged_id', None)

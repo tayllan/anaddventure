@@ -7,7 +7,7 @@
 			{% block title %}{% endblock %}
 		</title>
 		<link rel="shortcut icon" href="{{url_for('static', filename = 'img/favicon2.ico')}}">
-		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/my_semantic.min.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/semantic.min.css')}}">
 	</head>
 	<body>
 		<input type="hidden" name="selected-language" value="{{language}}">
@@ -23,6 +23,7 @@
 				<form action="/search" method="get" class="ui form">
 					<div class="ui fluid icon input">
 						<input type="text" name="c" placeholder="{{_('SEARCH')}}...">
+						<input type="hidden" name="g" value="-1">
 						<i class="search icon"></i>
 					</div>
 				</form>
