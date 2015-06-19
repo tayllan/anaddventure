@@ -14,10 +14,9 @@
 		</h1>
 	</div>
 	<div class="ten wide column ui header">
-		<form action="/search" method="get" class="ui form">
+		<form action="/search_{{search_page}}" method="get" class="ui form">
 			<div class="ui fluid icon input">
 				<input type="text" name="c" placeholder="{{_('SEARCH')}}..." value="{{content}}">
-				<input type="hidden" name="g" value="-1">
 				<i class="search icon"></i>
 			</div>
 		</form>

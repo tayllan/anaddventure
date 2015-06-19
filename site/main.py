@@ -1172,6 +1172,10 @@ def change_password_post():
 def search_users():
 	content = request.args.get('c', '')
 	sort_value = int(request.args.get('s', 1))
+
+	if len(content) < 3:
+		return render_template('bad_search.html', search_page = 'users')
+
 	users = User.select_by_username(content)
 	users_list = list()
 
@@ -1200,6 +1204,10 @@ def search_users():
 def search_tales():
 	content = request.args.get('c', '')
 	genre_id = int(request.args.get('g', -1))
+
+	if len(content) < 3 and genre_id is -1:
+		return render_template('bad_search.html', search_page = 'tales')
+
 	sort_value = int(request.args.get('s', 1))
 	user_logged_id = session.get('user_logged_id', None)
 	tales = Tale.select_viewable_by_title_and_creator_id(
