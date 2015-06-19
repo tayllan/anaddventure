@@ -4,10 +4,10 @@ $(document).ready(function() {
 	var language = $('[name="selected-language"]').val();
 
 	if (language === 'en') {
-		$('#language-pt')[0].href = window.location.protocol + '://pt.anaddventure.com.dev:5000' + window.location.pathname + window.location.search;
+		$('#language-pt')[0].href = window.location.protocol + '//pt.anaddventure.com.dev:5000' + window.location.pathname + window.location.search;
 	}
 	else {
-		$('#language-en')[0].href = window.location.protocol + '://www.anaddventure.com.dev:5000' + window.location.pathname + window.location.search;
+		$('#language-en')[0].href = window.location.protocol + '//www.anaddventure.com.dev:5000' + window.location.pathname + window.location.search;
 	}
 
 	var path = window.location.pathname;
