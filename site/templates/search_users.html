@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('SEARCH')}} - {{content}}
+{% endblock %}
+
+{% block content %}
+
+<div class="ui stackable two column grid">
+	<div class="four wide column">
+		<h1 class="ui header">
+			<i class="search icon"></i>
+			{{_('SEARCH')}}
+		</h1>
+	</div>
+	<div class="ten wide column ui header">
+		<form action="/search_users" method="get" class="ui form">
+			<div class="ui fluid icon input">
+				<input type="text" name="c" placeholder="{{_('SEARCH')}}..." value="{{content}}">
+				<i class="search icon"></i>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="search-block ui stackable two column grid">
+	<div class="side-bar four wide column">
+		<div class="ui segment">
+			<p>
+				<i class="book icon"></i>
+				<a href="/search_tales/?c={{content}}&amp;">{{_('TALES')}}</a>
+			</p>
+			<p>
+				<i class="users icon"></i>
+				<a href="/search_users/?c={{content}}">{{_('USERS')}} {{amount_of_users}}</a>
+			</p>
+		</div>
+	</div>
+
+	<div class="main-block twelve wide column">
+		{% if amount_of_users == 0 %}
+			<div class="ui segment center aligned">
+				<h2 class="ui header message">
+					<i class="search icon"></i>
+					{{_('NO_RESULT_USERS')}} '{{content}}'
+				</h2>
+			</div>
+		{% else %}
+			<div class="sort">
+				<h2 class="amount-results">
+					{% if amount_of_users == 1 %}
+						{{_('WAS_FOUND')}} 1 {{_('RESULT')}}
+					{% else %}
+						{{_('WERE_FOUND')}} {{amount_of_users}} {{_('RESULTS')}}
+					{% endif %}
+				</h2>
+
+				<select size="1" id="sort-bar">
+					{% if sort_value == 1 %}
+						<option value="1" selected>{{_('SORT_BEST_MATCH')}}</option>
+						<option value="2">{{_('SORT_MOST_RECENTLY_JOINED')}}</option>
+						<option value="3">{{_('SORT_LEAST_RECENTLY_JOINED')}}</option>
+					{% elif sort_value == 2 %}
+						<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+						<option value="2" selected>{{_('SORT_MOST_RECENTLY_JOINED')}}</option>
+						<option value="3">{{_('SORT_LEAST_RECENTLY_JOINED')}}</option>
+					{% else %}
+						<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+						<option value="2">{{_('SORT_MOST_RECENTLY_JOINED')}}</option>
+						<option value="3" selected>{{_('SORT_LEAST_RECENTLY_JOINED')}}</option>
+					{% endif %}
+				</select>
+			</div>
+
+			<div class="ui divider"></div>
+
+			<div class="results">
+				{% for user in users %}
+					<div class="result ui stackable two column grid">
+						<div class="two wide column">
+							<a href="/profile/{{user.username}}">
+								<img src="/avatars/{{user.id}}" class="ui small image">
+							</a>
+						</div>
+						<div class="column">
+							<a href="/profile/{{user.username}}">{{user.username}}</a>
+							<p><i class="wait icon"></i>{{_('JOINED_ON')}} {{user.signup_date}}</p>
+						</div>
+
+						<div class="ui divider"></div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

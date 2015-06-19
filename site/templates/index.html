@@ -40,9 +40,7 @@
 			<div class="ui two column grid">
 				{% for genre in genres %}
 					<div class="column">
-						<a href="/search?g={{genre.id}}" class="ui tag label">
-							{{_(genre.type)}}
-						</a>
+						<a href="/search_tales/?g={{genre.id}}" class="ui tag label">{{_(genre.type)}}</a>
 					</div>
 				{% endfor %}
 			</div>
