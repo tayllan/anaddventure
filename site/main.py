@@ -359,6 +359,15 @@ def tale(tale_id, chapter_id):
 
 		tale['chapter'] = chapter
 
+		tale_genres = Tale_Genre.select_by_tale_id(tale['id'])
+		tale_genres_list = list()
+
+		for tale_genre in tale_genres:
+			genre = Genre.select_by_id(tale_genre[1], 1)[0]
+			tale_genres_list.append(genre)
+
+		tale['genres'] = tale_genres_list
+
 		return return_rendered_tale_template(tale, 'tale.html')
 	else:
 		return redirect('/404')
