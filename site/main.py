@@ -31,7 +31,7 @@ app.config.update(
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
 	SITE_URL = 'http://anaddventure.com',
-	CONF_PRODUCTION = True,
+	CONF_PRODUCTION = False,
 
 	# EMAIL SETTINGS
 	MAIL_SERVER = 'smtp-mail.outlook.com',
@@ -1170,31 +1170,104 @@ def change_password_post():
 
 @app.route('/search/')
 def search():
-	content = request.args.get('content', '')
-	tales = Tale.select_viewable_by_title_and_creator_id(
-		content, session.get('user_logged_id', None)
-	)
+	content = request.args.get('c', '')
+	genre_id = request.args.get('g', None)
+	sort_value = int(request.args.get('s', 1))
+	user_logged_id = session.get('user_logged_id', None)
+	tales = Tale.select_viewable_by_title_and_creator_id(content, user_logged_id)
 	tales_per_genre = dict()
 
-	for tale in tales:
-		tale_genres = Tale_Genre.select_by_tale_id(tale['id'])
-		tale_genres_list = list()
+	if genre_id is None:
+		for tale in tales:
+			tale_genres = Tale_Genre.select_by_tale_id(tale['id'])
+			tale_genres_list = list()
 
-		for tale_genre in tale_genres:
-			genre = Genre.select_by_id(tale_genre[1], 1)[0]
-			tale_genres_list.append(genre)
+			for tale_genre in tale_genres:
+				genre = Genre.select_by_id(tale_genre[1], 1)[0]
+				tale_genres_list.append(genre)
 
-			if genre['type'] in tales_per_genre:
-				tales_per_genre[genre['type']]['count'] += 1
-			else:
-				tales_per_genre[genre['type']] = {'count': 1, 'id': genre['id']}
+				if genre['type'] in tales_per_genre:
+					tales_per_genre[genre['type']]['count'] += 1
+				else:
+					tales_per_genre[genre['type']] = {'count': 1, 'id': genre['id']}
+
+		users = User.select_by_username(content)
+		users_list = list()
+
+		for user in users:
+			users_list.append({
+				'id': user['id'],
+				'username': user['username'],
+				'signup_date': beautify_datetime(user['signup_date']),
+				'ugly_signup_date': user['signup_date'],
+			})
+
+		if sort_value is 2:
+			users_list = sorted(users_list, key = lambda user: user['ugly_signup_date'], reverse = True)
+		elif sort_value is 3:
+			users_list = sorted(users_list, key = lambda user: user['ugly_signup_date'])
+
+		tales = {'amount_of_results': len(tales)}
+		users = {'amount_of_results': len(users_list), 'results': users_list}
+		is_searching_user = True
+	else:
+		genre_id = int(genre_id)
+		tales_list = list()
+
+		for tale in tales:
+			tale_genres = Tale_Genre.select_by_tale_id(tale['id'])
+			tale_genres_list = list()
+
+			for tale_genre in tale_genres:
+				genre = Genre.select_by_id(tale_genre[1], 1)[0]
+				tale_genres_list.append(genre)
+
+				if genre['type'] in tales_per_genre:
+					tales_per_genre[genre['type']]['count'] += 1
+				else:
+					tales_per_genre[genre['type']] = {'count': 1, 'id': genre['id']}
+
+				if genre['id'] == genre_id:
+					last_update = Tale.select_last_update(tale['id'], 1)[0][0]
+
+					tale['genres'] = tale_genres_list
+					tale['creator_username'] = User.select_by_id(tale['creator_id'], 1)[0]['username']
+					tale['last_update'] = False if last_update is None else beautify_datetime(last_update)
+					tale['ugly_last_update'] = datetime(1, 1, 1, 15, 11) if last_update is None else last_update
+
+					tales_list.append(tale)
+
+			if genre_id is -1:
+				last_update = Tale.select_last_update(tale['id'], 1)[0][0]
+
+				tale['genres'] = tale_genres_list
+				tale['creator_username'] = User.select_by_id(tale['creator_id'], 1)[0]['username']
+				tale['last_update'] = False if last_update is None else beautify_datetime(last_update)
+				tale['ugly_last_update'] = datetime(1, 1, 1, 15, 11) if last_update is None else last_update
+
+				tales_list.append(tale)
+
+		if sort_value is 2:
+			tales_list = sorted(tales_list, key = lambda tale: tale['stars'], reverse = True)
+		elif sort_value is 3:
+			tales_list = sorted(tales_list, key = lambda tale: tale['stars'])
+		elif sort_value is 4:
+			tales_list = sorted(tales_list, key = lambda tale: tale['ugly_last_update'], reverse = True)
+		elif sort_value is 5:
+			tales_list = sorted(tales_list, key = lambda tale: tale['ugly_last_update'])
+
+		tales = {'amount_of_results': len(tales), 'results': tales_list}
+		users = {'amount_of_results': User.select_count_by_username(content, 1)[0][0]}
+		is_searching_user = False
 
 	return render_template(
 		'search.html',
 		content = content,
-		tales = {'amount_of_results': len(tales)},
-		users = {'amount_of_results': User.select_count_by_username(content, 1)[0][0]},
-		tales_per_genre = tales_per_genre
+		tales = tales,
+		users = users,
+		tales_per_genre = tales_per_genre,
+		is_searching_user = is_searching_user,
+		sort_value = sort_value,
 	)
 
 @app.route('/contact')
@@ -1304,83 +1377,6 @@ def unstar(tale_id):
 		return jsonify({'stars': Tale.select_by_id(tale_id, 1)[0]['stars']})
 	else:
 		abort(404)
-
-@app.route('/search_tales/')
-def search_tales():
-	content = request.args.get('content', '')
-	genre_id = request.args.get('genre_id', None)
-	sort_value = int(request.args.get('sort-value', 1))
-
-	tales = Tale.select_viewable_by_title_and_creator_id(
-		content, session.get('user_logged_id', None)
-	) if genre_id is None else Tale.select_viewable_by_title_creator_id_and_genre_id(
-		content, session.get('user_logged_id', None), genre_id
-	)
-	tales_list = list()
-
-	for tale in tales:
-		tale_genres = Tale_Genre.select_by_tale_id(tale['id'])
-		tale_genres_list = list()
-
-		for tale_genre in tale_genres:
-			genre = Genre.select_by_id(tale_genre[1], 1)[0]
-			tale_genres_list.append(genre)
-
-		last_update = Tale.select_last_update(tale['id'], 1)[0][0]
-
-		tale['genres'] = tale_genres_list
-		tale['creator_username'] = User.select_by_id(tale['creator_id'], 1)[0]['username']
-		tale['last_update'] = False if last_update is None else beautify_datetime(last_update)
-		tale['ugly_last_update'] = datetime(1, 1, 1, 15, 11) if last_update is None else last_update
-
-		tales_list.append(tale)
-
-	if sort_value is 2:
-		tales_list = sorted(tales_list, key = lambda tale: tale['stars'], reverse = True)
-	elif sort_value is 3:
-		tales_list = sorted(tales_list, key = lambda tale: tale['stars'])
-	elif sort_value is 4:
-		tales_list = sorted(tales_list, key = lambda tale: tale['ugly_last_update'], reverse = True)
-	elif sort_value is 5:
-		tales_list = sorted(tales_list, key = lambda tale: tale['ugly_last_update'])
-
-	return render_template(
-		'fragment/search_tales.html',
-		content = content,
-		tales = {
-			'amount_of_results': len(tales_list),
-			'results': tales_list
-		}
-	)
-
-@app.route('/search_users/')
-def search_users():
-	content = request.args.get('content', '')
-	sort_value = int(request.args.get('sort-value', 1))
-	users = User.select_by_username(content)
-	users_list = list()
-
-	for user in users:
-		users_list.append({
-			'id': user['id'],
-			'username': user['username'],
-			'signup_date': beautify_datetime(user['signup_date']),
-			'ugly_signup_date': user['signup_date'],
-		})
-
-	if sort_value is 2:
-		users_list = sorted(users_list, key = lambda user: user['ugly_signup_date'], reverse = True)
-	elif sort_value is 3:
-		users_list = sorted(users_list, key = lambda user: user['ugly_signup_date'])
-
-	return render_template(
-		'fragment/search_users.html',
-		content = content,
-		users = {
-			'amount_of_results': len(users_list),
-			'results': users_list
-		}
-	)
 
 @app.route('/get_open_contribution_requests/')
 def get_open_contribution_requests():

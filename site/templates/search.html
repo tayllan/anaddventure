@@ -16,7 +16,7 @@
 	<div class="ten wide column ui header">
 		<form action="/search" method="get" class="ui form">
 			<div class="ui fluid icon input">
-				<input type="text" name="content" placeholder="{{_('SEARCH')}}..." value="{{content}}">
+				<input type="text" name="c" placeholder="{{_('SEARCH')}}..." value="{{content}}">
 				<i class="search icon"></i>
 			</div>
 		</form>
@@ -30,13 +30,13 @@
 		<div class="ui segment">
 			<p>
 				<i class="book icon"></i>
-				<a href="/search_tales?content={{content}}" class="search-tales">
+				<a href="/search/?c={{content}}&amp;g=-1" class="search-tales">
 					{{_('TALES')}} {{tales.amount_of_results}}
 				</a>
 			</p>
 			<p>
 				<i class="users icon"></i>
-				<a href="/search_users/?content={{content}}" class="search-users">
+				<a href="/search/?c={{content}}" class="search-users">
 					{{_('USERS')}} {{users.amount_of_results}}
 				</a>
 			</p>
@@ -47,7 +47,7 @@
 				<h3 class="ui header">{{_('GENRES')}}</h3>
 
 				{% for genre in tales_per_genre %}
-					<a href="/search_tales/?content={{content}}&amp;genre_id={{tales_per_genre[genre].id}}" class="search-tales ui two column grid" id="per-genre">
+					<a href="/search/?c={{content}}&amp;g={{tales_per_genre[genre].id}}" class="search-tales ui two column grid" id="per-genre">
 						<div class="column left aligned">{{_(genre)}}</div>
 						<div class="column right aligned">{{tales_per_genre[genre].count}}</div>
 					</a>
@@ -57,6 +57,11 @@
 	</div>
 
 	<div class="main-block twelve wide column">
+		{% if is_searching_user %}
+			{% include "fragment/search_users.html" %}
+		{% else %}
+			{% include "fragment/search_tales.html" %}
+		{% endif %}
 	</div>
 </div>
 

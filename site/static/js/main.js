@@ -1062,67 +1062,11 @@ $(document).ready(function() {
 	// END update_tale.html js
 
 	// BEGIN search.html js
-	var $results = $('.results');
-
-	if (path.indexOf('search') !== -1) {
+	if (path.indexOf('/search') !== -1) {
 		$('#layout-search-bar').empty();
-		$('input[name="content"]').focus();
-
-		var $main_block = $('.main-block');
-		var selected_search = 1; // positive is tales, negative is users
-
-		$.ajax({
-			type: 'get',
-			url: '/search_tales' + window.location.search,
-			datatype: 'json',
-			success: function(data) {
-				$main_block.empty().append(data);
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
-
-		var render_searched_matches = function(url, sort_value) {
-			$.ajax({
-				type: 'get',
-				url: url,
-				datatype: 'json',
-				data: {
-					'sort-value': sort_value
-				},
-				success: function(data) {
-					$main_block.empty().append(data);
-					selected_search = url.indexOf('tales');
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		};
-
-		$('.search-block').on('click', '.search-tales, .search-users', function(event) {
-			event.preventDefault();
-
-			render_searched_matches(this.href, 1);
-
-			return false;
-		});
-
-		$main_block.on('change', '#sort-bar', function(event) {
-			var url = '';
-
-			if (selected_search >= 0) {
-				url = $('.search-tales')[0].href;
-			}
-			else {
-				url = $('.search-users')[0].href;
-			}
-
-			render_searched_matches(
-				url,
-				$(this).find('option:selected')[0].value
-			);
+		$('input[name="c"]').focus();
+		$('#sort-bar').on('change', function(event) {
+			window.location = window.location.href.replace(/\&?s=\d+\&?/, '') + '&s=' + $(this).find('option:selected').val();
 		});
 	}
 	// END search.html js

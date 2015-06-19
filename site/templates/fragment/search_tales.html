@@ -8,19 +8,45 @@
 {% else %}
 	<div class="sort">
 		<h2 class="amount-results">
-			{% if tales.amount_of_results == 1 %}
-				{{_('WAS_FOUND')}} {{tales.amount_of_results}} {{_('RESULT')}}
+			{% if tales.results|length == 1 %}
+				{{_('WAS_FOUND')}} 1 {{_('RESULT')}}
 			{% else %}
-				{{_('WERE_FOUND')}} {{tales.amount_of_results}} {{_('RESULTS')}}
+				{{_('WERE_FOUND')}} {{tales.results|length}} {{_('RESULTS')}}
 			{% endif %}
 		</h2>
 
 		<select size="1" id="sort-bar">
-			<option value="1">{{_('SORT_BEST_MATCH')}}</option>
-			<option value="2">{{_('SORT_MORE_STARS')}}</option>
-			<option value="3">{{_('SORT_FEWEST_STARS')}}</option>
-			<option value="4">{{_('SORT_RECENTLY_UPDATED')}}</option>
-			<option value="5">{{_('SORT_LEAST_RECENTLY_UPDATED')}}</option>
+			{% if sort_value == 1 %}
+				<option value="1" selected>{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2">{{_('SORT_MORE_STARS')}}</option>
+				<option value="3">{{_('SORT_FEWEST_STARS')}}</option>
+				<option value="4">{{_('SORT_RECENTLY_UPDATED')}}</option>
+				<option value="5">{{_('SORT_LEAST_RECENTLY_UPDATED')}}</option>
+			{% elif sort_value == 2 %}
+				<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2" selected>{{_('SORT_MORE_STARS')}}</option>
+				<option value="3">{{_('SORT_FEWEST_STARS')}}</option>
+				<option value="4">{{_('SORT_RECENTLY_UPDATED')}}</option>
+				<option value="5">{{_('SORT_LEAST_RECENTLY_UPDATED')}}</option>
+			{% elif sort_value == 3 %}
+				<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2">{{_('SORT_MORE_STARS')}}</option>
+				<option value="3" selected>{{_('SORT_FEWEST_STARS')}}</option>
+				<option value="4">{{_('SORT_RECENTLY_UPDATED')}}</option>
+				<option value="5">{{_('SORT_LEAST_RECENTLY_UPDATED')}}</option>
+			{% elif sort_value == 4 %}
+				<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2">{{_('SORT_MORE_STARS')}}</option>
+				<option value="3">{{_('SORT_FEWEST_STARS')}}</option>
+				<option value="4" selected>{{_('SORT_RECENTLY_UPDATED')}}</option>
+				<option value="5">{{_('SORT_LEAST_RECENTLY_UPDATED')}}</option>
+			{% else %}
+				<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2">{{_('SORT_MORE_STARS')}}</option>
+				<option value="3">{{_('SORT_FEWEST_STARS')}}</option>
+				<option value="4">{{_('SORT_RECENTLY_UPDATED')}}</option>
+				<option value="5" selected>{{_('SORT_LEAST_RECENTLY_UPDATED')}}</option>
+			{% endif %}
 		</select>
 	</div>
 
@@ -49,7 +75,7 @@
 					</div>
 
 					{% for genre in tale.genres %}
-						<a href="/search_tales/?content={{content}}&amp;genre_id={{genre.id}}" class="search-tales ui mini tag label">
+						<a href="/search/?c={{content}}&amp;g={{genre.id}}" class="search-tales ui mini tag label">
 							{{_(genre.type)}}
 						</a>
 					{% endfor %}

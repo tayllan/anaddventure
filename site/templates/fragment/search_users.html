@@ -16,9 +16,19 @@
 		</h2>
 
 		<select size="1" id="sort-bar">
-			<option value="1">{{_('SORT_BEST_MATCH')}}</option>
-			<option value="2">{{_('SORT_MOST_RECENTLY_JOINED')}}</option>
-			<option value="3">{{_('SORT_LEAST_RECENTLY_JOINED')}}</option>
+			{% if sort_value == 1 %}
+				<option value="1" selected>{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2">{{_('SORT_MOST_RECENTLY_JOINED')}}</option>
+				<option value="3">{{_('SORT_LEAST_RECENTLY_JOINED')}}</option>
+			{% elif sort_value == 2 %}
+				<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2" selected>{{_('SORT_MOST_RECENTLY_JOINED')}}</option>
+				<option value="3">{{_('SORT_LEAST_RECENTLY_JOINED')}}</option>
+			{% else %}
+				<option value="1">{{_('SORT_BEST_MATCH')}}</option>
+				<option value="2">{{_('SORT_MOST_RECENTLY_JOINED')}}</option>
+				<option value="3" selected>{{_('SORT_LEAST_RECENTLY_JOINED')}}</option>
+			{% endif %}
 		</select>
 	</div>
 

@@ -40,7 +40,7 @@
 			<div class="ui two column grid">
 				{% for genre in genres %}
 					<div class="column">
-						<a href="/search?content=&amp;genre_id={{genre.id}}" class="ui tag label">
+						<a href="/search?g={{genre.id}}" class="ui tag label">
 							{{_(genre.type)}}
 						</a>
 					</div>
