@@ -5,6 +5,7 @@
 		{% for o_c_r in open_contribution_requests %}
 			<div class="ui segment">
 				<h3>
+					<span class="ui yellow ribbon label">{{_('OPEN')}}</span>
 					<a href="/contribution_request/{{o_c_r.id}}">
 						{{_('CHAPTER')}} {{o_c_r.number}} - {{o_c_r.title}}
 					</a>

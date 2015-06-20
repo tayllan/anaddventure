@@ -30,9 +30,20 @@
 					<a href="/profile/{{contribution.user_username}}">{{contribution.user_username}}</a>
 				</h5>
 
+				<div class="ui modal" id="fullscreen">
+					<h1 class="ui header center aligned">
+						{{contribution.title}}
+					</h1>
+
+					{% autoescape false %}
+						{{contribution.content}}
+					{% endautoescape %}
+				</div>
+
 				<div class="ui segment">
 					<h1 class="ui header center aligned">
 						{{contribution.title}}
+						<a class="ui green tag label" id="to-fullscreen">{{_('FULLSCREEN')}}</a>
 					</h1>
 
 					{% autoescape false %}

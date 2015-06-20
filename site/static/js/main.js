@@ -1061,9 +1061,8 @@ $(document).ready(function() {
 	// END search.html js
 
 	// BEGIN contribution_requests.html
-	var $contribution_requests = $('.contribution-requests');
-
 	if (path.indexOf('contribution_requests') !== -1) {
+		var $contribution_requests = $('.contribution-requests');
 		var tale_id = /contribution_requests\/([0-9]+)/.exec(window.location)[1];
 
 		var $o_c_r = $('.o-c-r');
@@ -1073,7 +1072,6 @@ $(document).ready(function() {
 			if ($contribution_requests.find('.open-contribution-requests').length === 1) {
 				return;
 			}
-			console.log('HERE');
 			$o_c_r.addClass('active');
 			$c_c_r.removeClass('active');
 
