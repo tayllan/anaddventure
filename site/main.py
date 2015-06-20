@@ -24,7 +24,7 @@ app.config.update(
 	DEBUG = True,
 	SECRET_KEY = '\xe1{\xb3\x96\xbac\x1ds\xad\x04\x92@\x0e\x8d\xaf`|\x95P\x84;\xa7\x0b\x98\xbcX\x9d\xeaV\x7f',
 	MAX_CONTENT_LENGTH = 1024 * 1024,
-	SERVER_NAME = 'anaddventure.com',
+	SERVER_NAME = 'anaddventure.com', #.dev:5000',
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
@@ -164,6 +164,30 @@ def send_email(message_title, recipient, message_body):
 	message.body = message_body
 
 	thread = Thread(target = send_async_email, args = [message])
+	thread.start()
+
+def save_image_async(uploaded_file, user_id, extension):
+	os.chdir('anaddventure/site/static/avatars/')
+	try:
+		os.remove(user_id + '-temp.' + extension)
+	except:
+		print('Could not remove ' + user_id + '-temp.' + extension + ' file BEFORE saving the new image.')
+		pass
+
+	uploaded_file.save(os.path.join(user_id + '-temp.' + extension))
+	os.system(
+		'/usr/bin/convert -resize 300x -quality 80 -strip ' +
+		user_id + '-temp.' + extension + ' ' + user_id + '.' + extension
+	)
+
+	try:
+		os.remove(user_id + '-temp.' + extension)
+	except:
+		print('Could not remove ' + user_id + '-temp.' + extension + ' file AFTER saving the new image.')
+		pass
+
+def save_image(uploaded_file, user_id, extension):
+	thread = Thread(target = save_image_async, args = [uploaded_file, user_id, extension])
 	thread.start()
 
 @www.context_processor
@@ -967,27 +991,7 @@ def update_profile(user_id):
 			uploaded_file_extension = get_file_extension(uploaded_file.filename)
 
 			if uploaded_file_extension is not None:
-				try:
-					os.remove('anaddventure/site/static/avatars/' + str(user['id']) + '-temp.' + uploaded_file_extension)
-				except:
-					print('Could not remove ' + str(user['id']) + '-temp.' + uploaded_file_extension + ' file BEFORE saving the new image.')
-					pass
-
-				uploaded_file.save(
-					os.path.join('anaddventure/site/static/avatars/', str(user['id']) + '-temp.' + uploaded_file_extension)
-				)
-				os.chdir('anaddventure/site/static/avatars/')
-				os.system(
-					'/usr/bin/convert -resize 300x -quality 80 -strip ' +
-					str(user['id']) + '-temp.' + uploaded_file_extension + ' ' +
-					str(user['id']) + '.' + uploaded_file_extension
-				)
-
-				try:
-					os.remove(str(user['id']) + '-temp.' + uploaded_file_extension)
-				except:
-					print('Could not remove ' + str(user['id']) + '-temp.' + uploaded_file_extension + ' file AFTER saving the new image.')
-					pass
+				save_image(uploaded_file, str(user['id']), uploaded_file_extension)
 			else:
 				error_list.append(strings.STRINGS[language]['INVALID_FILE'])
 
