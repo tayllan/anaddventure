@@ -929,7 +929,7 @@ def update_profile(user_id):
 
 			if uploaded_file_extension is not None:
 				try:
-					os.remove(str(user['id']) + '-temp.' + uploaded_file_extension)
+					os.remove('anaddventure/site/static/avatars/' + str(user['id']) + '-temp.' + uploaded_file_extension)
 				except:
 					print('Could not remove ' + str(user['id']) + '-temp.' + uploaded_file_extension + ' file BEFORE saving the new image.')
 					pass
