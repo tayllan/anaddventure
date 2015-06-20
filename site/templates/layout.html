@@ -32,10 +32,19 @@
 
 			<div class="ui header column center aligned">
 				{% if user_is_logged == true %}
-					<a href="/profile/{{user_logged_username}}" class="ui button"><i class="user icon"></i>{{_('MY_PROFILE')}}</a>
-					<a href="/logout" class="ui button"><i class="sign out icon"></i>{{_('LOGOUT')}}</a>
+					<a href="/profile/{{user_logged_username}}" class="ui button">
+						<i class="user icon"></i>
+						{{_('MY_PROFILE')}}
+					</a>
+					<a href="/logout" class="ui button">
+						<i class="sign out icon"></i>
+						{{_('LOGOUT')}}
+					</a>
 				{% else %}
-					<a href="/join" class="ui button"><i class="sign in icon"></i>{{_('LOGIN')}} / {{_('SIGN_UP')}}</a>
+					<a href="/join" class="ui button">
+						<i class="sign in icon"></i>
+						{{_('LOGIN')}} / {{_('SIGN_UP')}}
+					</a>
 				{% endif %}
 			</div>
 		</header>
@@ -66,11 +75,23 @@
 					</span>
 
 					{% if language == 'en' %}
-						<span class="column"><i class="us flag"></i><strong>English</strong></span>
-						<span class="column"><i class="br flag"></i><a id="language-pt">Portuguese</a></span>
+						<span class="column">
+							<img src="{{url_for('static', filename = 'img/us.png')}}">
+							<strong>English</strong>
+						</span>
+						<span class="column">
+							<img src="{{url_for('static', filename = 'img/br.png')}}">
+							<a id="language-pt">Portuguese</a>
+						</span>
 					{% else %}
-						<span class="column"><i class="us flag"></i><a id="language-en">Inglês</a></span>
-						<span class="column"><i class="br flag"></i><strong>Português</strong></span>
+						<span class="column">
+							<img src="{{url_for('static', filename = 'img/us.png')}}">
+							<a id="language-en">Inglês</a>
+						</span>
+						<span class="column">
+							<img src="{{url_for('static', filename = 'img/br.png')}}">
+							<strong>Português</strong>
+						</span>
 					{% endif %}
 				</div>
 			</footer>
