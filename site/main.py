@@ -929,8 +929,14 @@ def update_profile(user_id):
 
 			if uploaded_file_extension is not None:
 				uploaded_file.save(
-					os.path.join('anaddventure/site/static/avatars/', str(user['id']) + '.' + uploaded_file_extension)
+					os.path.join('anaddventure/site/static/avatars/', str(user['id']) + '-temp.' + uploaded_file_extension)
 				)
+				os.system(
+					'convert -resize 300x -quality 80 -strip ' +
+					str(user['id']) + '-temp.' + uploaded_file_extension + ' ' +
+					str(user['id']) + '.' + uploaded_file_extension
+				)
+				os.system('rm ' + str(user['id']) + '-temp.' + uploaded_file_extension)
 			else:
 				error_list.append(strings.STRINGS[language]['INVALID_FILE'])
 
