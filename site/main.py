@@ -928,17 +928,16 @@ def update_profile(user_id):
 			uploaded_file_extension = get_file_extension(uploaded_file.filename)
 
 			if uploaded_file_extension is not None:
+				try:
+					os.remove(str(user['id']) + '-temp.' + uploaded_file_extension)
+				except:
+					print('Could not remove ' + str(user['id']) + '-temp.' + uploaded_file_extension + ' file BEFORE saving the new image.')
+					pass
+
 				uploaded_file.save(
 					os.path.join('anaddventure/site/static/avatars/', str(user['id']) + '-temp.' + uploaded_file_extension)
 				)
-
 				os.chdir('anaddventure/site/static/avatars/')
-
-				try:
-					os.remove(str(user['id']) + '.' + uploaded_file_extension)
-				except:
-					pass
-
 				os.system(
 					'/usr/bin/convert -resize 300x -quality 80 -strip ' +
 					str(user['id']) + '-temp.' + uploaded_file_extension + ' ' +
@@ -948,7 +947,7 @@ def update_profile(user_id):
 				try:
 					os.remove(str(user['id']) + '-temp.' + uploaded_file_extension)
 				except:
-					print('Could not remove ' + str(user['id']) + '-temp.' + uploaded_file_extension + ' file.')
+					print('Could not remove ' + str(user['id']) + '-temp.' + uploaded_file_extension + ' file AFTER saving the new image.')
 					pass
 			else:
 				error_list.append(strings.STRINGS[language]['INVALID_FILE'])
