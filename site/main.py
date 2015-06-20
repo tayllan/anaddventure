@@ -968,7 +968,7 @@ def update_profile(user_id):
 
 			if uploaded_file_extension is not None:
 				user_id = str(user['id'])
-				os.chdir('anaddventure/site/static/avatars/')
+				os.chdir('/home/user/apps/anaddventure/anaddventure/site/static/avatars/')
 				try:
 					os.remove(user_id + '-temp.' + uploaded_file_extension)
 				except:
