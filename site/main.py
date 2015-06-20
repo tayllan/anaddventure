@@ -933,16 +933,27 @@ def update_profile(user_id):
 				)
 
 				try:
-					os.remove(str(user['id']) + '.' + uploaded_file_extension)
+					os.remove(
+						'anaddventure/site/static/avatars/' + str(user['id']) + '.' + uploaded_file_extension
+					)
 				except:
 					pass
 
 				os.system(
 					'convert -resize 300x -quality 80 -strip ' +
+					'anaddventure/site/static/avatars/' +
 					str(user['id']) + '-temp.' + uploaded_file_extension + ' ' +
+					'anaddventure/site/static/avatars/' +
 					str(user['id']) + '.' + uploaded_file_extension
 				)
-				os.remove(str(user['id']) + '-temp.' + uploaded_file_extension)
+
+				try:
+					os.remove(
+						'anaddventure/site/static/avatars/' + str(user['id']) + '-temp.' + uploaded_file_extension
+					)
+				except:
+					print('Could not remove ' + str(user['id']) + '-temp.' + uploaded_file_extension + ' file.')
+					pass
 			else:
 				error_list.append(strings.STRINGS[language]['INVALID_FILE'])
 
