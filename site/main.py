@@ -28,7 +28,7 @@ app.config.update(
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
-	SITE_URL = 'http://anaddventure.com',
+	SITE_URL = 'https://www.anaddventure.com',
 	CONF_PRODUCTION = True,
 
 	# EMAIL SETTINGS
@@ -166,9 +166,16 @@ def send_email(message_title, recipient, message_body):
 
 @app.context_processor
 def inject_data():
+	language_url = 'https://www.anaddventure.com'
 	if not request.is_xhr and request.method != 'POST':
-		subdomain = re.findall(r'https?://(\w+)\.anaddventure\.com.*', request.url_root)[0]
-		language = 'pt' if subdomain == 'pt' else 'en'
+		matches = re.findall(r'(https?://)(\w+)(\.anaddventure\.com.*)', request.base_url)[0]
+
+		if matches[1] == 'pt':
+			language = 'pt'
+			language_url = matches[0] + 'www' + matches[2]
+		else:
+			language = 'en'
+			language_url = matches[0] + 'pt' + matches[2]
 
 		if session.get('language', None) != language:
 			session['language'] = language
@@ -198,6 +205,7 @@ def inject_data():
 		'user_logged_username': user_logged_username,
 		'_': lambda token: strings.STRINGS[language][token],
 		'conf_production': app.config['CONF_PRODUCTION'],
+		'language_url': language_url,
 	}
 # END auxiliary functions
 
