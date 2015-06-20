@@ -1,11 +1,35 @@
 server {
+	listen 80;
 	server_name anaddventure.com;
-	rewrite ^/(.*) https://anaddventure.com/$1 permanent;
+	rewrite ^/(.*) https://www.anaddventure.com/$1 permanent;
 }
 
 server {
 	listen 443;
-	server_name anaddventure.com www.anaddventure.com;
+	server_name anaddventure.com;
+	rewrite ^/(.*) https://www.anaddventure.com/$1 permanent;
+}
+
+server {
+	listen 80;
+	server_name en.anaddventure.com;
+	rewrite ^/(.*) https://www.anaddventure.com/$1 permanent;
+}
+
+server {
+	listen 443;
+	server_name en.anaddventure.com;
+	rewrite ^/(.*) https://www.anaddventure.com/$1 permanent;
+}
+
+server {
+	server_name pt.anaddventure.com;
+	rewrite ^/(.*) https://pt.anaddventure.com/$1 permanent;
+}
+
+server {
+	listen 443 default;
+	server_name www.anaddventure.com pt.anaddventure.com;
 
 	ssl on;
 	ssl_session_timeout  5m;
@@ -31,6 +55,7 @@ server {
 	}
 
 	location /static {
+		expires 365d;
 		root /home/user/apps/anaddventure/anaddventure/site/;
 	}
 }
