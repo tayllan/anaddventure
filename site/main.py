@@ -235,7 +235,6 @@ def internal_error(error):
 
 @app.route('/')
 def index():
-	abort(500)
 	return render_template('index.html', genres = Genre.select_top_ten())
 
 @app.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
