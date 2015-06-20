@@ -1,11 +1,13 @@
 <!doctype html>
-<html>
+<html lang="{{language}}">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>
 			{% block title %}{% endblock %}
 		</title>
+		<link rel="alternate" href="https://www.anaddventure.com" hreflang="en">
+		<link rel="alternate" href="https://pt.anaddventure.com" hreflang="pt">
 		<link rel="shortcut icon" href="{{url_for('static', filename = 'img/favicon2.ico')}}">
 		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/my_semantic.min.css')}}">
 	</head>
