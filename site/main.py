@@ -1,4 +1,4 @@
-from flask import Flask, request, session, render_template, redirect, jsonify, make_response, flash, abort, send_file
+from flask import Flask, request, session, render_template, redirect, jsonify, make_response, flash, abort, send_file, Blueprint
 from flask_mail import Mail, Message
 from languages import strings
 from models.Chapter import Chapter
@@ -19,12 +19,12 @@ import os, hashlib, random, re
 
 # BEGIN app configuration
 app = Flask(__name__)
-
 app.config.update(
 	# FLASK SETTINGS
 	DEBUG = True,
 	SECRET_KEY = '\xe1{\xb3\x96\xbac\x1ds\xad\x04\x92@\x0e\x8d\xaf`|\x95P\x84;\xa7\x0b\x98\xbcX\x9d\xeaV\x7f',
 	MAX_CONTENT_LENGTH = 1024 * 1024,
+	SERVER_NAME = 'anaddventure.com.dev:5000',
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
@@ -39,6 +39,8 @@ app.config.update(
 	MAIL_USERNAME = 'anaddventure@outlook.com',
 	MAIL_PASSWORD = 'autoescola19',
 )
+www = Blueprint('www', __name__, 	subdomain = 'www', 	static_folder = 'static', 	static_url_path = '/static')
+pt = Blueprint('pt', __name__, subdomain = 'pt', static_folder = 'static', static_url_path = '/static')
 
 mail = Mail(app)
 # END app configuration
@@ -164,7 +166,8 @@ def send_email(message_title, recipient, message_body):
 	thread = Thread(target = send_async_email, args = [message])
 	thread.start()
 
-@app.context_processor
+@www.context_processor
+@pt.context_processor
 def inject_data():
 	language_url = 'https://www.anaddventure.com'
 	if not request.is_xhr and request.method != 'POST':
@@ -214,7 +217,8 @@ def inject_data():
 	}
 # END auxiliary functions
 
-@app.before_request
+@www.before_request
+@pt.before_request
 def csrf_protect():
 	if request.method == 'POST':
 		token = session.get('_csrf_token', None)
@@ -233,11 +237,13 @@ def not_found(error):
 def internal_error(error):
 	return render_template('500.html')
 
-@app.route('/')
+@www.route('/')
+@pt.route('/')
 def index():
 	return render_template('index.html', genres = Genre.select_top_ten())
 
-@app.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
+@www.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
+@pt.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
 def tale_delete(tale_id):
 	if request.is_xhr:
 		user_logged_id = session.get('user_logged_id', None)
@@ -272,7 +278,8 @@ def tale_delete(tale_id):
 	else:
 		redirect('/404')
 
-@app.route('/create/')
+@www.route('/create/')
+@pt.route('/create/')
 def create_tale_get():
 	if 'user_logged_id' in session:
 		return render_template(
@@ -283,7 +290,8 @@ def create_tale_get():
 	else:
 		return redirect('/404')
 
-@app.route('/create/', methods = ['POST'])
+@www.route('/create/', methods = ['POST'])
+@pt.route('/create/', methods = ['POST'])
 def create_tale_post():
 	if request.is_xhr and 'user_logged_id' in session:
 		title = request.form.get('create-title', '')
@@ -336,8 +344,10 @@ def create_tale_post():
 	else:
 		return redirect('/404')
 
-@app.route('/tale/<int:tale_id>/<int:chapter_id>/')
-@app.route('/tale/<int:tale_id>/<int:chapter_id>/fullscreen')
+@www.route('/tale/<int:tale_id>/<int:chapter_id>/')
+@pt.route('/tale/<int:tale_id>/<int:chapter_id>/')
+@www.route('/tale/<int:tale_id>/<int:chapter_id>/fullscreen')
+@pt.route('/tale/<int:tale_id>/<int:chapter_id>/fullscreen')
 def tale(tale_id, chapter_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -390,7 +400,8 @@ def tale(tale_id, chapter_id):
 	else:
 		return redirect('/404')
 
-@app.route('/settings/<int:tale_id>/')
+@www.route('/settings/<int:tale_id>/')
+@pt.route('/settings/<int:tale_id>/')
 def settings(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -399,7 +410,8 @@ def settings(tale_id):
 	else:
 		return redirect('/404')
 
-@app.route('/invite/<int:tale_id>/')
+@www.route('/invite/<int:tale_id>/')
+@pt.route('/invite/<int:tale_id>/')
 def invite_get(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -408,7 +420,8 @@ def invite_get(tale_id):
 	else:
 		return redirect('/404')
 
-@app.route('/invite/<int:tale_id>/', methods = ['POST'])
+@www.route('/invite/<int:tale_id>/', methods = ['POST'])
+@pt.route('/invite/<int:tale_id>/', methods = ['POST'])
 def invite_post(tale_id):
 	username = request.form.get('invite-username', '')
 	user = User.select_by_email(username, 1)
@@ -437,7 +450,8 @@ def invite_post(tale_id):
 
 	return redirect('/tale/' + str(tale_id) + '/0')
 
-@app.route('/update_tale/<int:tale_id>/')
+@www.route('/update_tale/<int:tale_id>/')
+@pt.route('/update_tale/<int:tale_id>/')
 def update_tale_get(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -473,7 +487,8 @@ def update_tale_get(tale_id):
 	else:
 		return redirect('/404')
 
-@app.route('/update_tale/<int:tale_id>/', methods = ['POST'])
+@www.route('/update_tale/<int:tale_id>/', methods = ['POST'])
+@pt.route('/update_tale/<int:tale_id>/', methods = ['POST'])
 def update_tale_post(tale_id):
 	if request.is_xhr:
 		title = request.form.get('update-tale-title', '')
@@ -533,7 +548,8 @@ def update_tale_post(tale_id):
 	else:
 		return redirect('/404')
 
-@app.route('/contribute/<int:tale_id>/<int:chapter_id>/')
+@www.route('/contribute/<int:tale_id>/<int:chapter_id>/')
+@pt.route('/contribute/<int:tale_id>/<int:chapter_id>/')
 def contribute_get(tale_id, chapter_id):
 	if 'user_logged_id' in session:
 		return render_template(
@@ -544,7 +560,8 @@ def contribute_get(tale_id, chapter_id):
 	else:
 		return redirect('/join?redirect=/tale/' + str(tale_id) + '/' + str(chapter_id))
 
-@app.route('/contribute/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
+@www.route('/contribute/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
+@pt.route('/contribute/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
 def contribute_post(tale_id, chapter_id):
 	if request.is_xhr:
 		tale = Tale.select_by_id(tale_id, 1)
@@ -647,7 +664,8 @@ def contribute_post(tale_id, chapter_id):
 	else:
 		return redirect('/404')
 
-@app.route('/contributions/<int:tale_id>/')
+@www.route('/contributions/<int:tale_id>/')
+@pt.route('/contributions/<int:tale_id>/')
 def contributions(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -680,7 +698,8 @@ def contributions(tale_id):
 	else:
 		return redirect('/404')
 
-@app.route('/branches/<int:tale_id>/')
+@www.route('/branches/<int:tale_id>/')
+@pt.route('/branches/<int:tale_id>/')
 def branches(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -706,7 +725,8 @@ def branches(tale_id):
 	else:
 		return redirect('/404')
 
-@app.route('/contributors/<int:tale_id>/')
+@www.route('/contributors/<int:tale_id>/')
+@pt.route('/contributors/<int:tale_id>/')
 def contributors(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -733,13 +753,15 @@ def contributors(tale_id):
 	else:
 		return redirect('/404')
 
-@app.route('/contribution_requests/<int:tale_id>/')
+@www.route('/contribution_requests/<int:tale_id>/')
+@pt.route('/contribution_requests/<int:tale_id>/')
 def contribution_requests(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)[0]
 
 	return return_rendered_tale_template(tale, 'contribution_requests.html')
 
-@app.route('/contribution_requests/accept/', methods = ['POST'])
+@www.route('/contribution_requests/accept/', methods = ['POST'])
+@pt.route('/contribution_requests/accept/', methods = ['POST'])
 def contribution_requests_accept():
 	contribution_request_id = request.form.get('contribution_request_id', -1)
 	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
@@ -781,7 +803,8 @@ def contribution_requests_accept():
 	else:
 		return redirect('/404')
 
-@app.route('/contribution_requests/refuse/', methods = ['POST'])
+@www.route('/contribution_requests/refuse/', methods = ['POST'])
+@pt.route('/contribution_requests/refuse/', methods = ['POST'])
 def contribution_requests_refuse():
 	contribution_request_id = request.form.get('contribution_request_id', -1)
 	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
@@ -812,7 +835,8 @@ def contribution_requests_refuse():
 	else:
 		return redirect('/404')
 
-@app.route('/contribution_request/<int:contribution_request_id>/')
+@www.route('/contribution_request/<int:contribution_request_id>/')
+@pt.route('/contribution_request/<int:contribution_request_id>/')
 def contribution_request(contribution_request_id):
 	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
 
@@ -831,7 +855,8 @@ def contribution_request(contribution_request_id):
 	else:
 		return redirect('/404')
 
-@app.route('/download_chapter/<int:chapter_id>/', methods = ['GET', 'POST'])
+@www.route('/download_chapter/<int:chapter_id>/', methods = ['GET', 'POST'])
+@pt.route('/download_chapter/<int:chapter_id>/', methods = ['GET', 'POST'])
 def download_chapter(chapter_id):
 	chapter = Chapter.select_by_id(chapter_id, 1)[0]
 	chapter['datetime'] = beautify_datetime(chapter['date'])
@@ -842,7 +867,8 @@ def download_chapter(chapter_id):
 
 	return render_template('fragment/downloadable_chapter.html', chapter = chapter)
 
-@app.route('/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
+@www.route('/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
+@pt.route('/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
 def download_all(chapter_id):
 	chapter_list = list()
 	chapters_ids_list = list()
@@ -872,7 +898,8 @@ def download_all(chapter_id):
 		chapters = chapter_list
 	)
 
-@app.route('/profile/<username>/')
+@www.route('/profile/<username>/')
+@pt.route('/profile/<username>/')
 def profile(username):
 	user = User.select_by_full_username(username, 1)
 
@@ -888,7 +915,8 @@ def profile(username):
 	else:
 		return redirect('/404')
 
-@app.route('/avatars/<int:user_id>/')
+@www.route('/avatars/<int:user_id>/')
+@pt.route('/avatars/<int:user_id>/')
 def avatars(user_id):
 	for extension in ALLOWED_EXTENSIONS:
 		if os.path.exists('anaddventure/site/static/avatars/' + str(user_id) + '.' + extension):
@@ -902,7 +930,8 @@ def avatars(user_id):
 		mimetype = 'image/png'
 	)
 
-@app.route('/update/<int:user_id>/')
+@www.route('/update/<int:user_id>/')
+@pt.route('/update/<int:user_id>/')
 def update(user_id):
 	user = User.select_by_id(user_id, 1)
 
@@ -918,7 +947,8 @@ def update(user_id):
 	else:
 		return redirect('/404')
 
-@app.route('/update_profile/<int:user_id>/', methods = ['POST'])
+@www.route('/update_profile/<int:user_id>/', methods = ['POST'])
+@pt.route('/update_profile/<int:user_id>/', methods = ['POST'])
 def update_profile(user_id):
 	user = User.select_by_id(user_id, 1)
 
@@ -984,7 +1014,8 @@ def update_profile(user_id):
 	else:
 		return redirect('/404')
 
-@app.route('/update_password/<int:user_id>/', methods = ['POST'])
+@www.route('/update_password/<int:user_id>/', methods = ['POST'])
+@pt.route('/update_password/<int:user_id>/', methods = ['POST'])
 def update_password(user_id):
 	user = User.select_by_id(user_id, 1)
 
@@ -1015,7 +1046,8 @@ def update_password(user_id):
 	else:
 		return redirect('/404')
 
-@app.route('/join/')
+@www.route('/join/')
+@pt.route('/join/')
 def join():
 	if 'user_logged_id' in session:
 		user = User.select_by_id(session['user_logged_id'], 1)[0]
@@ -1027,7 +1059,8 @@ def join():
 			redirect_url = request.args.get('redirect', '')
 		)
 
-@app.route('/signup/', methods = ['POST'])
+@www.route('/signup/', methods = ['POST'])
+@pt.route('/signup/', methods = ['POST'])
 def signup():
 	if request.is_xhr:
 		username = request.form.get('signup-username', '')
@@ -1080,7 +1113,8 @@ def signup():
 	else:
 		return redirect('/404')
 
-@app.route('/login/', methods = ['POST'])
+@www.route('/login/', methods = ['POST'])
+@pt.route('/login/', methods = ['POST'])
 def login():
 	if request.is_xhr:
 		username = request.form.get('login-username', '')
@@ -1097,13 +1131,15 @@ def login():
 	else:
 		return redirect('/404')
 
-@app.route('/logout/')
+@www.route('/logout/')
+@pt.route('/logout/')
 def logout():
 	del session['user_logged_id']
 
 	return redirect('/')
 
-@app.route('/activate_account/<random_token>/')
+@www.route('/activate_account/<random_token>/')
+@pt.route('/activate_account/<random_token>/')
 def activate_account(random_token):
 	signup_queue = Signup_Queue.select_by_id(random_token, 1)
 
@@ -1118,7 +1154,8 @@ def activate_account(random_token):
 	else:
 		return redirect('/404')
 
-@app.route('/delete_account/<random_token>/')
+@www.route('/delete_account/<random_token>/')
+@pt.route('/delete_account/<random_token>/')
 def delete_account(random_token):
 	signup_queue = Signup_Queue.select_by_id(random_token, 1)
 
@@ -1131,11 +1168,13 @@ def delete_account(random_token):
 	else:
 		return redirect('/404')
 
-@app.route('/password_reset/')
+@www.route('/password_reset/')
+@pt.route('/password_reset/')
 def password_reset_get():
 	return render_template('password_reset.html')
 
-@app.route('/password_reset/', methods = ['POST'])
+@www.route('/password_reset/', methods = ['POST'])
+@pt.route('/password_reset/', methods = ['POST'])
 def password_reset_post():
 	if request.is_xhr:
 		email = request.form.get('password-reset-email', '')
@@ -1161,7 +1200,8 @@ def password_reset_post():
 	else:
 		return redirect('/404')
 
-@app.route('/change_password/<random_token>/')
+@www.route('/change_password/<random_token>/')
+@pt.route('/change_password/<random_token>/')
 def change_password_get(random_token):
 	p_c_r = Password_Change_Requests.select_by_id(random_token, 1)
 
@@ -1177,7 +1217,8 @@ def change_password_get(random_token):
 	else:
 		return redirect('/404')
 
-@app.route('/change_password/', methods = ['POST'])
+@www.route('/change_password/', methods = ['POST'])
+@pt.route('/change_password/', methods = ['POST'])
 def change_password_post():
 	if request.is_xhr:
 		random_token = request.form.get('change-password-random-token', '')
@@ -1213,7 +1254,8 @@ def change_password_post():
 	else:
 		return redirect('/404')
 
-@app.route('/search_users/')
+@www.route('/search_users/')
+@pt.route('/search_users/')
 def search_users():
 	content = request.args.get('c', '')
 	sort_value = int(request.args.get('s', 1))
@@ -1245,7 +1287,8 @@ def search_users():
 		sort_value = sort_value,
 	)
 
-@app.route('/search_tales/')
+@www.route('/search_tales/')
+@pt.route('/search_tales/')
 def search_tales():
 	content = request.args.get('c', '')
 	genre_id = int(request.args.get('g', -1))
@@ -1302,11 +1345,13 @@ def search_tales():
 		genre_id = genre_id,
 	)
 
-@app.route('/contact')
+@www.route('/contact')
+@pt.route('/contact')
 def contact_get():
 	return render_template('contact.html')
 
-@app.route('/contact', methods = ['POST'])
+@www.route('/contact', methods = ['POST'])
+@pt.route('/contact', methods = ['POST'])
 def contact_post():
 	if request.is_xhr:
 		name = request.form.get('contact-name', '')
@@ -1319,19 +1364,22 @@ def contact_post():
 	else:
 		return redirect('/404')
 
-@app.route('/about')
+@www.route('/about')
+@pt.route('/about')
 def about():
 	return render_template(
 		'about.html',
 		total_users = User.select_count_all()[0][0]
 	)
 
-@app.route('/faq')
+@www.route('/faq')
+@pt.route('/faq')
 def faq():
 	return render_template('faq.html')
 
 # Ajax
-@app.route('/get_user_info/')
+@www.route('/get_user_info/')
+@pt.route('/get_user_info/')
 def get_user_info():
 	user_id = int(request.args.get('user_id', -1))
 	user = User.select_by_id(user_id, 1)
@@ -1347,14 +1395,16 @@ def get_user_info():
 	else:
 		return redirect('/404')
 
-@app.route('/get_update_password_form')
+@www.route('/get_update_password_form')
+@pt.route('/get_update_password_form')
 def get_update_password_form():
 	return render_template(
 		'fragment/update_password_form.html',
 		user_id = int(request.args.get('user_id', -1))
 	)
 
-@app.route('/follow/<int:tale_id>/', methods = ['POST'])
+@www.route('/follow/<int:tale_id>/', methods = ['POST'])
+@pt.route('/follow/<int:tale_id>/', methods = ['POST'])
 def follow(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -1369,7 +1419,8 @@ def follow(tale_id):
 	else:
 		abort(404)
 
-@app.route('/unfollow/<int:tale_id>/', methods = ['POST'])
+@www.route('/unfollow/<int:tale_id>/', methods = ['POST'])
+@pt.route('/unfollow/<int:tale_id>/', methods = ['POST'])
 def unfollow(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -1380,7 +1431,8 @@ def unfollow(tale_id):
 	else:
 		abort(404)
 
-@app.route('/star/<int:tale_id>/', methods = ['POST'])
+@www.route('/star/<int:tale_id>/', methods = ['POST'])
+@pt.route('/star/<int:tale_id>/', methods = ['POST'])
 def star(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -1395,7 +1447,8 @@ def star(tale_id):
 	else:
 		abort(404)
 
-@app.route('/unstar/<int:tale_id>/', methods = ['POST'])
+@www.route('/unstar/<int:tale_id>/', methods = ['POST'])
+@pt.route('/unstar/<int:tale_id>/', methods = ['POST'])
 def unstar(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
@@ -1406,7 +1459,8 @@ def unstar(tale_id):
 	else:
 		abort(404)
 
-@app.route('/get_open_contribution_requests/')
+@www.route('/get_open_contribution_requests/')
+@pt.route('/get_open_contribution_requests/')
 def get_open_contribution_requests():
 	tale_id = int(request.args.get('tale_id', 0))
 	contribution_requests = Contribution_Request.select_open_by_tale_id_order_by_datetime(tale_id)
@@ -1421,7 +1475,8 @@ def get_open_contribution_requests():
 		open_contribution_requests_list = contribution_requests
 	)
 
-@app.route('/get_closed_contribution_requests/')
+@www.route('/get_closed_contribution_requests/')
+@pt.route('/get_closed_contribution_requests/')
 def get_closed_contribution_requests():
 	tale_id = int(request.args.get('tale_id', 0))
 	contribution_requests = Contribution_Request.select_closed_by_tale_id_order_by_datetime(tale_id)
@@ -1436,7 +1491,8 @@ def get_closed_contribution_requests():
 		closed_contribution_requests_list = contribution_requests
 	)
 
-@app.route('/get_rendered_own_tales/')
+@www.route('/get_rendered_own_tales/')
+@pt.route('/get_rendered_own_tales/')
 def get_rendered_own_tales():
 	username = request.args.get('username')
 	offset = int(request.args.get('offset'))
@@ -1454,7 +1510,8 @@ def get_rendered_own_tales():
 		'next_offset': offset if len(tales) <= PAGINATION_LIMIT else (offset + PAGINATION_LIMIT)
 	})
 
-@app.route('/get_rendered_participated_tales/')
+@www.route('/get_rendered_participated_tales/')
+@pt.route('/get_rendered_participated_tales/')
 def get_rendered_participated_tales():
 	username = request.args.get('username')
 	offset = int(request.args.get('offset'))
@@ -1475,7 +1532,8 @@ def get_rendered_participated_tales():
 		'next_offset': offset if len(tales) <= PAGINATION_LIMIT else (offset + PAGINATION_LIMIT)
 	})
 
-@app.route('/get_ten_best_tales/')
+@www.route('/get_ten_best_tales/')
+@pt.route('/get_ten_best_tales/')
 def get_ten_best_tales():
 	tales = Tale.select_top_ten_order_by_star_count()
 	tales_list = list()
@@ -1500,7 +1558,8 @@ def get_ten_best_tales():
 		tales = tales_list
 	)
 
-@app.route('/get_ten_best_daily_tales/')
+@www.route('/get_ten_best_daily_tales/')
+@pt.route('/get_ten_best_daily_tales/')
 def get_ten_best_daily_tales():
 	tales = Tale.select_top_ten_order_by_star_count_today()
 	tales_list = list()
@@ -1524,6 +1583,9 @@ def get_ten_best_daily_tales():
 		'fragment/top10_tales_today.html',
 		tales = tales_list
 	)
+
+app.register_blueprint(www)
+app.register_blueprint(pt)
 
 if __name__ == "__main__":
 	app.run(host = '0.0.0.0', port = 5000)

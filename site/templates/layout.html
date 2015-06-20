@@ -8,8 +8,8 @@
 		</title>
 		<link rel="alternate" href="https://www.anaddventure.com" hreflang="en">
 		<link rel="alternate" href="https://pt.anaddventure.com" hreflang="pt">
-		<link rel="shortcut icon" href="{{url_for('static', filename = 'img/favicon2.ico')}}">
-		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/my_semantic.min.css')}}">
+		<link rel="shortcut icon" href="{{url_for('.static', filename = 'img/favicon2.ico')}}">
+		<link rel="stylesheet" type="text/css" href="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/my_semantic.min.css')}}">
 	</head>
 	<body>
 		<input type="hidden" name="selected-language" value="{{language}}">
@@ -17,7 +17,7 @@
 		<header class="ui stackable three column grid">
 			<h1 class="column">
 				<a href="/">
-					<img src="{{url_for('static', filename = 'img/logo.png')}}" alt="avatar picture" title="Avatar Picture" class="ui centered image" style="width: 250px;">
+					<img src="{{url_for('.static', filename = 'img/logo.png')}}" alt="avatar picture" title="Avatar Picture" class="ui centered image" style="width: 250px;">
 				</a>
 			</h1>
 
@@ -76,20 +76,20 @@
 
 					{% if language == 'en' %}
 						<span class="column">
-							<img src="{{url_for('static', filename = 'img/us.png')}}">
+							<img src="{{url_for('.static', filename = 'img/us.png')}}">
 							<strong>English</strong>
 						</span>
 						<span class="column">
-							<img src="{{url_for('static', filename = 'img/br.png')}}">
+							<img src="{{url_for('.static', filename = 'img/br.png')}}">
 							<a href="{{language_url}}">Portuguese</a>
 						</span>
 					{% else %}
 						<span class="column">
-							<img src="{{url_for('static', filename = 'img/us.png')}}">
+							<img src="{{url_for('.static', filename = 'img/us.png')}}">
 							<a href="{{language_url}}">Inglês</a>
 						</span>
 						<span class="column">
-							<img src="{{url_for('static', filename = 'img/br.png')}}">
+							<img src="{{url_for('.static', filename = 'img/br.png')}}">
 							<strong>Português</strong>
 						</span>
 					{% endif %}
@@ -103,14 +103,14 @@
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/modal.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/dimmer.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/transition.min.js"></script>
-			<script src="{{url_for('static', filename = 'js/main.min.js')}}"></script>
+			<script src="{{url_for('.static', filename = 'js/main.min.js')}}"></script>
 		{% else %}
-			<script src="{{url_for('static', filename = 'js/jquery-2.1.1.min.js')}}"></script>
-			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/form.min.js')}}"></script>
-			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/modal.min.js')}}"></script>
-			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/dimmer.min.js')}}"></script>
-			<script src="{{url_for('static', filename = 'Semantic-UI-1.8.1/dist/components/transition.min.js')}}"></script>
-			<script src="{{url_for('static', filename = 'js/main.js')}}"></script>
+			<script src="{{url_for('.static', filename = 'js/jquery-2.1.1.min.js')}}"></script>
+			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/form.min.js')}}"></script>
+			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/modal.min.js')}}"></script>
+			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/dimmer.min.js')}}"></script>
+			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/transition.min.js')}}"></script>
+			<script src="{{url_for('.static', filename = 'js/main.js')}}"></script>
 		{% endif %}
 	</body>
 </html>
