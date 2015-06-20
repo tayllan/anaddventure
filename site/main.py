@@ -229,8 +229,13 @@ def csrf_protect():
 def not_found(error):
 	return render_template('404.html')
 
+@app.errorhandler(500)
+def internal_error(error):
+	return render_template('500.html')
+
 @app.route('/')
 def index():
+	abort(500)
 	return render_template('index.html', genres = Genre.select_top_ten())
 
 @app.route('/tale/delete/<int:tale_id>/', methods = ['POST'])

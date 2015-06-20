@@ -456,6 +456,8 @@ STRINGS = {
 		'CONTACT_MESSAGE_2': 'or fill the form below:',
 		'CONTACT_MESSAGE_RECEIVED': 'Your message was sent. We\'ll get back to you shortly.',
 		'MIN_CHARACTERS': 'Type at least 3 characters!',
+		'INTERNAL_ERROR': 'Internal Server Error',
+		'INTERNAL_ERROR_MESSAGE': 'Sorry, something went wrong! People will get fired because of that!',
 	},
 	'pt': {
 		'TOP_10_GENRES': 'Gêneros Mais Acessados',
@@ -707,5 +709,7 @@ STRINGS = {
 		'CONTACT_MESSAGE_2': 'ou preencha o formulário abaixo:',
 		'CONTACT_MESSAGE_RECEIVED': 'Sua mensagem foi enviada. Vamos lhe retornar em pouco tempo.',
 		'MIN_CHARACTERS': 'Digite ao menos 3 caracteres!',
+		'INTERNAL_ERROR': 'Erro no Servidor',
+		'INTERNAL_ERROR_MESSAGE': 'Nos desculpe, algo deu errado! Pessoas serão demitidas por causa disso!',
 	}
 }
