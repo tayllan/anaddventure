@@ -558,9 +558,8 @@ $(document).ready(function() {
 	// END profile.html js
 
 	// BEGIN update.html js
-	var $profile = $('.profile');
-
 	if (path.indexOf('update/') !== -1) {
+		var $profile = $('.profile');
 		var $button_update_profile = $('.button-update-profile');
 
 		$profile.on('change', 'input[name="update-avatar"]', function(event) {
@@ -632,6 +631,7 @@ $(document).ready(function() {
 					{
 						inline: true,
 						onSuccess: function() {
+							$profile.find('button[name="update-profile-submit"]').addClass('loading');
 							$.ajax({
 								type: this.method,
 								url: this.action,
