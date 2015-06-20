@@ -8,8 +8,6 @@
 
 {% include "fragment/tale_upper_bar.html" %}
 
-<div class="ui divider"></div>
-
 <div class="main">
 	<div class="ui stackable two column grid">
 		<div class="thirteen wide column justified">
@@ -17,7 +15,7 @@
 				<p class="ui segment">{{tale.description}}</p>
 			{% endif %}
 
-			<div class="options-bar ui stackable three column grid">
+			<div class="options-bar ui stackable three column grid" id="disappear">
 				<p class="column">
 					<i class="wait icon"></i>
 					<a href="/contributions/{{tale.id}}">
@@ -39,8 +37,6 @@
 					</a>
 				</p>
 			</div>
-
-			<div class="ui divider"></div>
 
 			<div class="chapter">
 				{% if tale.chapter is not none %}
@@ -93,8 +89,6 @@
 							{{tale.chapter.content}}
 						{% endautoescape %}
 
-						<div class="ui divider"></div>
-
 						<div>
 							{% for next_chapter in tale.chapter.next_chapters %}
 								<p>
@@ -126,8 +120,6 @@
 						{% autoescape false %}
 							{{tale.chapter.content}}
 						{% endautoescape %}
-
-						<div class="ui divider"></div>
 
 						<div>
 							{% for next_chapter in tale.chapter.next_chapters %}
@@ -165,5 +157,13 @@
 		</div>
 	</div>
 </div>
+
+<style>
+@media only all and (max-width: 1000px) {
+	#disappear {
+		display: none !important;
+	}
+}
+</style>
 
 {% endblock %}

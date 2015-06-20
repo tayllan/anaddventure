@@ -23,8 +23,6 @@
 	</div>
 </div>
 
-<div class="ui divider"></div>
-
 <div class="search-block ui stackable two column grid">
 	<div class="side-bar four wide column">
 		<div class="ui segment">
@@ -74,8 +72,6 @@
 				</select>
 			</div>
 
-			<div class="ui divider"></div>
-
 			<div class="results">
 				{% for user in users %}
 					<div class="result ui stackable two column grid">
@@ -88,8 +84,6 @@
 							<a href="/profile/{{user.username}}">{{user.username}}</a>
 							<p><i class="wait icon"></i>{{_('JOINED_ON')}} {{user.signup_date}}</p>
 						</div>
-
-						<div class="ui divider"></div>
 					</div>
 				{% endfor %}
 			</div>

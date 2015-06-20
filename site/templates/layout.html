@@ -52,12 +52,10 @@
 		<div class="ui segment center aligned">
 			<div class="ui centered grid">
 				{% block site_header %}{% endblock %}
-				<div class="thirteen wide column">
+				<div class="thirteen wide column" id="wider">
 					{% block content %}{% endblock %}
 				</div>
 			</div>
-
-			<div class="ui divider"></div>
 
 			<footer class="ui grid center aligned">
 				<div class="doubling six column row">
@@ -113,4 +111,12 @@
 			<script src="{{url_for('.static', filename = 'js/main.js')}}"></script>
 		{% endif %}
 	</body>
+
+	<style>
+	@media only all and (max-width: 1000px) {
+		#wider {
+			width: 100% !important;
+		}
+	}
+	</style>
 </html>

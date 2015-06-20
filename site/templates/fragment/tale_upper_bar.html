@@ -13,7 +13,7 @@
 			<a href="/tale/{{tale.id}}/0">
 				{{tale.title}}
 			</a>
-			<h4 class="sub header">
+			<h4 class="sub header disappear">
 				{{_('LICENSE')}}:
 				<a href="{{license.url}}" target="_blank">{{license.name}}</a>
 			</h4>
@@ -48,3 +48,11 @@
 		</div>
 	</div>
 </div>
+
+<style>
+@media only all and (max-width: 1000px) {
+	.disappear {
+		display: none !important;
+	}
+}
+</style>
