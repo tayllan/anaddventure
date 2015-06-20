@@ -458,6 +458,7 @@ STRINGS = {
 		'MIN_CHARACTERS': 'Type at least 3 characters!',
 		'INTERNAL_ERROR': 'Internal Server Error',
 		'INTERNAL_ERROR_MESSAGE': 'Sorry, something went wrong! People will get fired because of that!',
+		'TALES_GENRES': 'Tale\'s Genres',
 	},
 	'pt': {
 		'TOP_10_GENRES': 'Gêneros Mais Acessados',
@@ -711,5 +712,6 @@ STRINGS = {
 		'MIN_CHARACTERS': 'Digite ao menos 3 caracteres!',
 		'INTERNAL_ERROR': 'Erro no Servidor',
 		'INTERNAL_ERROR_MESSAGE': 'Nos desculpe, algo deu errado! Pessoas serão demitidas por causa disso!',
+		'TALES_GENRES': 'Gêneros dos Contos',
 	}
 }
