@@ -1439,13 +1439,11 @@ def get_rendered_own_tales():
 		user_id, user_logged_id, search_string, offset, PAGINATION_LIMIT + 1
 	)
 
-	return render_template(
-		'fragment/own_tales.html',
-		tales = tales[:PAGINATION_LIMIT],
-		search_string = search_string,
-		previous_offset = 0 if (offset - PAGINATION_LIMIT < 0) else (offset - PAGINATION_LIMIT),
-		next_offset = offset if len(tales) <= PAGINATION_LIMIT else (offset + PAGINATION_LIMIT)
-	)
+	return jsonify({
+		'template': render_template('fragment/own_tales.html', tales = tales[:PAGINATION_LIMIT]),
+		'previous_offset': 0 if (offset - PAGINATION_LIMIT < 0) else (offset - PAGINATION_LIMIT),
+		'next_offset': offset if len(tales) <= PAGINATION_LIMIT else (offset + PAGINATION_LIMIT)
+	})
 
 @app.route('/get_rendered_participated_tales/')
 def get_rendered_participated_tales():
@@ -1462,13 +1460,11 @@ def get_rendered_participated_tales():
 	for tale in tales:
 		tale['creator'] = User.select_by_id(tale['creator_id'], 1)[0]
 
-	return render_template(
-		'fragment/participated_tales.html',
-		tales = tales[:PAGINATION_LIMIT],
-		search_string = search_string,
-		previous_offset = 0 if (offset - PAGINATION_LIMIT < 0) else (offset - PAGINATION_LIMIT),
-		next_offset = offset if len(tales) <= PAGINATION_LIMIT else (offset + PAGINATION_LIMIT)
-	)
+	return jsonify({
+		'template': render_template('fragment/participated_tales.html', tales = tales[:PAGINATION_LIMIT]),
+		'previous_offset': 0 if (offset - PAGINATION_LIMIT < 0) else (offset - PAGINATION_LIMIT),
+		'next_offset': offset if len(tales) <= PAGINATION_LIMIT else (offset + PAGINATION_LIMIT)
+	})
 
 @app.route('/get_ten_best_tales/')
 def get_ten_best_tales():

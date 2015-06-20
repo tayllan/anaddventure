@@ -440,7 +440,8 @@ $(document).ready(function() {
 		var $own = $('.own');
 		var $participated = $('.participated');
 
-		var render_own_tales = function(offset, search_string, dont_focus) {
+		var render_own_tales = function(offset, search_string) {
+			offset = parseInt(offset, 10);
 			$.ajax({
 				type: 'get',
 				url: '/get_rendered_own_tales',
@@ -451,21 +452,27 @@ $(document).ready(function() {
 					search_string: search_string
 				},
 				success: function(data) {
-					$own.empty().append(data);
-					if (!dont_focus) {
-						$own.find('input')[0].focus();
+					$own.find('table tbody').empty().append(data.template);
+
+					var $previous_button = $own.find('#previous-button');
+					var $next_button = $own.find('#next-button');
+
+					$previous_button.val(data.previous_offset);
+					$next_button.val(data.next_offset);
+
+					if (parseInt(data.previous_offset, 10) === offset) {
+						$previous_button.addClass('disabled');
+					}
+					else {
+						$previous_button.removeClass('disabled');
 					}
 
-					var $pagination_buttons = $own.find('#pagination-buttons button');
-
-					$pagination_buttons.each(function() {
-						if (parseInt(this.value, 10) === parseInt(offset, 10)) {
-							$(this).addClass('disabled');
-						}
-						else {
-							$(this).removeClass('disabled');
-						}
-					});
+					if (parseInt(data.next_offset, 10) === offset) {
+						$next_button.addClass('disabled');
+					}
+					else {
+						$next_button.removeClass('disabled');
+					}
 				},
 				error: function(xhr, status, error) {
 					console.log(xhr);
@@ -473,7 +480,8 @@ $(document).ready(function() {
 			});
 		};
 
-		var render_participated_tales = function(offset, search_string, dont_focus) {
+		var render_participated_tales = function(offset, search_string) {
+			offset = parseInt(offset, 10);
 			$.ajax({
 				type: 'get',
 				url: '/get_rendered_participated_tales',
@@ -484,21 +492,27 @@ $(document).ready(function() {
 					search_string: search_string
 				},
 				success: function(data) {
-					$participated.empty().append(data);
-					if (!dont_focus) {
-						$participated.find('input')[0].focus();
+					$participated.find('table tbody').empty().append(data.template);
+
+					var $previous_button = $participated.find('#previous-button');
+					var $next_button = $participated.find('#next-button');
+
+					$previous_button.val(data.previous_offset);
+					$next_button.val(data.next_offset);
+
+					if (parseInt(data.previous_offset, 10) === offset) {
+						$previous_button.addClass('disabled');
+					}
+					else {
+						$previous_button.removeClass('disabled');
 					}
 
-					var $pagination_buttons = $participated.find('#pagination-buttons button');
-
-					$pagination_buttons.each(function() {
-						if (parseInt(this.value, 10) === parseInt(offset, 10)) {
-							$(this).addClass('disabled');
-						}
-						else {
-							$(this).removeClass('disabled');
-						}
-					});
+					if (parseInt(data.next_offset, 10) === offset) {
+						$next_button.addClass('disabled');
+					}
+					else {
+						$next_button.removeClass('disabled');
+					}
 				},
 				error: function(xhr, status, error) {
 					console.log(xhr);
@@ -522,8 +536,8 @@ $(document).ready(function() {
 			return false;
 		});
 
-		render_own_tales(0, '', true);
-		render_participated_tales(0, '', true);
+		render_own_tales(0);
+		render_participated_tales(0);
 
 		$own.on('submit', 'form', function(event) {
 			event.preventDefault();
