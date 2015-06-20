@@ -13,7 +13,9 @@
 <div class="main">
 	<div class="ui stackable two column grid">
 		<div class="thirteen wide column justified">
-			<p class="ui segment">{{tale.description}}</p>
+			{% if tale.description|length != 0 %}
+				<p class="ui segment">{{tale.description}}</p>
+			{% endif %}
 
 			<div class="options-bar ui stackable three column grid">
 				<p class="column">
@@ -159,9 +161,7 @@
 		</div>
 
 		<div class="three wide column">
-			<div class="ui segment">
-				{% include "fragment/tale_right_bar.html" %}
-			</div>
+			{% include "fragment/tale_right_bar.html" %}
 		</div>
 	</div>
 </div>
