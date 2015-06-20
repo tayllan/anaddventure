@@ -25,6 +25,7 @@ app.config.update(
 	DEBUG = True,
 	SECRET_KEY = '\xe1{\xb3\x96\xbac\x1ds\xad\x04\x92@\x0e\x8d\xaf`|\x95P\x84;\xa7\x0b\x98\xbcX\x9d\xeaV\x7f',
 	MAX_CONTENT_LENGTH = 1024 * 1024,
+	SERVER_NAME = 'anaddventure.com',
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
