@@ -172,10 +172,15 @@ def inject_data():
 
 		if matches[1] == 'pt':
 			language = 'pt'
-			language_url = matches[0] + 'www' + matches[2]
+			language_url = matches[0] + 'www'
 		else:
 			language = 'en'
-			language_url = matches[0] + 'pt' + matches[2]
+			language_url = matches[0] + 'pt'
+
+		language_url += matches[2] + '?' + ''.join(list(map(
+			lambda key: key + '=' + request.args.get(key) + '&', request.args
+		)))
+		language_url = language_url[:len(language_url) - 1]
 
 		if session.get('language', None) != language:
 			session['language'] = language
