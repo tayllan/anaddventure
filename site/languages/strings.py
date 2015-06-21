@@ -15,7 +15,7 @@ def construct_new_chapter_email_object(language, tale, creator_username, chapter
 	else:
 		email_object = {
 			'title': 'Novo Capítulo em ' + tale['title'],
-			'body': '"{0}" adicionou outra verão do capítulo {1} no conto "{2}" em "{3}", o qual pode ser visualizado em {4}/tale/{5}/{6}.'.format(
+			'body': '"{0}" adicionou outra versão do capítulo {1} no conto "{2}" em "{3}", o qual pode ser visualizado em {4}/tale/{5}/{6}.'.format(
 					creator_username,
 					str(chapter_number),
 					tale['title'],
@@ -31,8 +31,8 @@ def construct_new_chapter_email_object(language, tale, creator_username, chapter
 def construct_new_contribution_request_email_object(language, tale, creator_username, SITE_NAME, SITE_URL):
 	if language == 'en':
 		email_object = {
-			'title': 'New Contribution Request on ' + tale['title'],
-			'body': '"{0}" just sent a contribution request for the tale "{1}" on "{2}", which can be viewed on {3}/contribution_requests/{4}.'.format(
+			'title': 'New Collaboration Request on ' + tale['title'],
+			'body': '"{0}" just sent a collaboration request for the tale "{1}" on "{2}", which can be viewed on {3}/contribution_requests/{4}.'.format(
 					creator_username,
 					tale['title'],
 					SITE_NAME,
@@ -42,8 +42,8 @@ def construct_new_contribution_request_email_object(language, tale, creator_user
 		}
 	else:
 		email_object = {
-			'title': 'Novo Pedido de Contribuição em ' + tale['title'],
-			'body': '"{0}" enviou um pedido de contribuição para o conto "{1}" em "{2}", o qual pode ser visualizado em {3}/contribution_requests/{4}.'.format(
+			'title': 'Novo Pedido de Colaboração em ' + tale['title'],
+			'body': '"{0}" enviou um pedido de colaboração para o conto "{1}" em "{2}", o qual pode ser visualizado em {3}/contribution_requests/{4}.'.format(
 					creator_username,
 					tale['title'],
 					SITE_NAME,
@@ -57,8 +57,8 @@ def construct_new_contribution_request_email_object(language, tale, creator_user
 def construct_contribution_request_accepted_email_object(language, tale, creator, contributor, contribution_id, SITE_NAME, SITE_URL):
 	if language == 'en':
 		email_object = {
-			'title': 'Contribution Request Accepted on ' + tale['title'],
-			'body': '"{0}" just accepted a contribution request on the tale "{1}" on "{2}" sent from "{3}". The contribution can be viewed on {4}/contribution_request/{5}/.'.format(
+			'title': 'Collaboration Request Accepted on ' + tale['title'],
+			'body': '"{0}" just accepted a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/contribution_request/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,
@@ -69,8 +69,8 @@ def construct_contribution_request_accepted_email_object(language, tale, creator
 		}
 	else:
 		email_object = {
-			'title': 'Pedido de Contribuição Aceito em ' + tale['title'],
-			'body': '"{0}" aceitou um pedido de contribuição no conto "{1}" em "{2}" enviado por "{3}". A contribuição pode ser visualizada em {4}/contribution_request/{5}/.'.format(
+			'title': 'Pedido de Colaboração Aceito em ' + tale['title'],
+			'body': '"{0}" aceitou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/contribution_request/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,
@@ -85,8 +85,8 @@ def construct_contribution_request_accepted_email_object(language, tale, creator
 def construct_contribution_request_refused_email_object(language, tale, creator, contributor, contribution_id, SITE_NAME, SITE_URL):
 	if language == 'en':
 		email_object = {
-			'title': 'Contribution Request Refused on ' + tale['title'],
-			'body': '"{0}" just refused a contribution request on the tale "{1}" on "{2}" sent from "{3}". The contribution can be viewed on {4}/contribution_request/{5}/.'.format(
+			'title': 'Collaboration Request Refused on ' + tale['title'],
+			'body': '"{0}" just refused a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/contribution_request/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,
@@ -97,8 +97,8 @@ def construct_contribution_request_refused_email_object(language, tale, creator,
 		}
 	else:
 		email_object = {
-			'title': 'Pedido de Contribuição Recusado em ' + tale['title'],
-			'body': '"{0}" recusou um pedido de contribuição no conto "{1}" em "{2}" enviado por "{3}". A contribuição pode ser visualizada em {4}/contribution_request/{5}/.'.format(
+			'title': 'Pedido de Colaboração Recusado em ' + tale['title'],
+			'body': '"{0}" recusou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/contribution_request/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,
@@ -136,7 +136,7 @@ def construct_tale_invitation_email_object(language, user, tale, creator, SITE_N
 	if language == 'en':
 		email_object = {
 			'title': 'Private Tale Invitation',
-			'body': '"{0}", you\'ve been invited to contribute to the private tale "{1}" on "{2}" by "{3}". To see the tale, click on the following link: {4}/join?redirect=/tale/{5}/0.\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.'.format(
+			'body': '"{0}", you\'ve been invited to collaborate to the private tale "{1}" on "{2}" by "{3}". To see the tale, click on the following link: {4}/join?redirect=/tale/{5}/0.\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.'.format(
 					user['name'],
 					tale['title'],
 					SITE_NAME,
@@ -148,7 +148,7 @@ def construct_tale_invitation_email_object(language, user, tale, creator, SITE_N
 	else:
 		email_object = {
 			'title': 'Convite para um Conto Privado',
-			'body': '"{0}", você foi convidado a contribuir para o conto privado "{1}" em "{2}" por "{3}". Para visualizar o conto, clique no seguinte link: {4}/join?redirect=/tale/{5}/0.\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.'.format(
+			'body': '"{0}", você foi convidado a colaborar para o conto privado "{1}" em "{2}" por "{3}". Para visualizar o conto, clique no seguinte link: {4}/join?redirect=/tale/{5}/0.\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.'.format(
 					user['name'],
 					tale['title'],
 					SITE_NAME,
@@ -235,20 +235,20 @@ STRINGS = {
 		'PUBLISHED_BY': 'published by',
 		'ON': 'on',
 		'TALE': 'Tale',
-		'CONTRIBUTE': 'Contribute',
+		'CONTRIBUTE': 'Collaborate',
 		'TITLE': 'Title',
 		'BY': 'by',
-		'CONTRIBUTION_REQUEST': 'Contribution Request',
+		'CONTRIBUTION_REQUEST': 'Collaboration Request',
 		'OPEN': 'Open',
 		'CLOSED': 'Closed',
 		'ACCEPTED': 'Accepted',
 		'REFUSED': 'Refused',
 		'CHAPTER': 'Chapter',
-		'CONTRIBUTION_REQUESTS': 'Contribution Requests',
-		'OPEN_CONTRIBUTION_REQUESTS': 'Open Contribution Requests',
-		'CLOSED_CONTRIBUTION_REQUESTS': 'Closed Contribution Requests',
-		'CONTRIBUTIONS': 'contributions',
-		'NO_CONTRIBUTIONS_TALE': 'There are no contributions for the Tale',
+		'CONTRIBUTION_REQUESTS': 'Collaboration Requests',
+		'OPEN_CONTRIBUTION_REQUESTS': 'Open Collaboration Requests',
+		'CLOSED_CONTRIBUTION_REQUESTS': 'Closed Collaboration Requests',
+		'CONTRIBUTIONS': 'collaborations',
+		'NO_CONTRIBUTIONS_TALE': 'There are no collaborations for the Tale',
 		'WRITERS': 'Writers',
 		'NEW_TALE': 'New Tale',
 		'DESCRIPTION': 'Description',
@@ -283,13 +283,13 @@ STRINGS = {
 		'TALE_SETTINGS': 'Tale Settings',
 		'UPDATE_TALE': 'Update Tale',
 		'UPDATE': 'Update',
-		'NO_CLOSED_CONTRIBUTIONS_TALE': 'There are no Closed Contribution Requests for this Tale',
-		'NO_OPEN_CONTRIBUTIONS_TALE': 'There are no Open Contribution Requests for this Tale',
+		'NO_CLOSED_CONTRIBUTIONS_TALE': 'There are no Closed Collaborations Requests for this Tale',
+		'NO_OPEN_CONTRIBUTIONS_TALE': 'There are no Open Collaborations Requests for this Tale',
 		'SUBMITTED_ON': 'submitted on',
-		'ACCEPT_CONTRIBUTION': 'Accept Contribution',
-		'REFUSE_CONTRIBUTION': 'Refuse Contribution',
+		'ACCEPT_CONTRIBUTION': 'Accept Collaboration',
+		'REFUSE_CONTRIBUTION': 'Refuse Collaboration',
 		'MY_TALES': 'My Tales',
-		'TALES_CONTRIBUTED_TO': 'Tales Contributed to',
+		'TALES_CONTRIBUTED_TO': 'Tales Collaborated to',
 		'JOINED_ON': 'Joined on',
 		'SETTINGS': 'Settings',
 		'CONTENT': 'Content',
@@ -409,32 +409,32 @@ STRINGS = {
 			''',
 		'WHAT_IS_AN_ADDVENTURE': 'What is an addventure',
 		'WHAT_IS_COLLABORATIVE_TALE': 'What is a Collaborative Tale',
-		'COLLABORATIVE_TALE_CONTENT': 'It\'s a tale to which more than one person can (and should) contribute.',
-		'SO_I_CAN_CONTRIBUTE': 'So I can contribute to any tale I want',
+		'COLLABORATIVE_TALE_CONTENT': 'It\'s a tale to which more than one person can (and should) collaborate.',
+		'SO_I_CAN_CONTRIBUTE': 'So I can collaborate to any tale I want',
 		'SO_I_CAN_CONTRIBUTE_CONTENT': '''
-			Well, you can send contributions to every Public Tale, but the acceptance of
-			your contribution still depends on the personal opinion of the creator of the tale,
-			that is, your contribution will only be a part of a tale if the owner of
+			Well, you can send collaborations to every Public Tale, but the acceptance of
+			your collaboration still depends on the personal opinion of the creator of the tale,
+			that is, your collaboration will only be a part of a tale if the owner of
 			the tale accepted it.
 			''',
 		'WHAT_IS_PUBLIC_TALE': 'What is a Public Tale',
 		'WHAT_IS_PUBLIC_TALE_CONTENT': '''
 			A Public Tale is one that can be seen by any user of the site (registered or not).
-			And any registered user can send a contribution to it (although, as previously stated,
-				the acceptance of such contribution still depends uppon the owner's opinion).
+			And any registered user can send a collaboration to it (although, as previously stated,
+				the acceptance of such collaboration still depends uppon the owner's opinion).
 			''',
 		'WHAT_IS_PRIVATE_TALE': 'And a Private one',
 		'WHAT_IS_PRIVATE_TALE_CONTENT': '''
-			A Private Tale, in contrast, can only be seen and contributed to by its owner
+			A Private Tale, in contrast, can only be seen and collaborated to by its owner
 			and whichever users the owner decides to invite (but the acceptance of the
-				contributions still depends on the owner of the Pivate Tale).
+				collaborations still depends on the owner of the Pivate Tale).
 			''',
 		'DELETE_TALE': 'Delete Tale',
 		'DELETE_TALE_CONTENT': '''
 			Once you delete a tale, there is no going back.<br>
 			<strong>This action CANNOT be undone</strong>.<br>
 			This will permanently delete the
-			tale and remove all contributions.<br>
+			tale and remove all collaborations.<br>
 			Please be certain.
 			''',
 		'DANGER_ZONE': 'Danger Zone',
@@ -490,20 +490,20 @@ STRINGS = {
 		'PUBLISHED_BY': 'publicado por',
 		'ON': 'em',
 		'TALE': 'Conto',
-		'CONTRIBUTE': 'Contribuir',
+		'CONTRIBUTE': 'Colaborar',
 		'TITLE': 'Título',
 		'BY': 'por',
-		'CONTRIBUTION_REQUEST': 'Pedido de Contribuição',
+		'CONTRIBUTION_REQUEST': 'Pedido de Colaboração',
 		'OPEN': 'Aberto',
 		'CLOSED': 'Fechado',
 		'ACCEPTED': 'Aceito',
 		'REFUSED': 'Recusado',
 		'CHAPTER': 'Capítulo',
-		'CONTRIBUTION_REQUESTS': 'Pedidos de Contribuições',
-		'OPEN_CONTRIBUTION_REQUESTS': 'Pedidos de Contribuições Abertos',
-		'CLOSED_CONTRIBUTION_REQUESTS': 'Pedidos de Contribuições Fechados',
-		'CONTRIBUTIONS': 'contribuições',
-		'NO_CONTRIBUTIONS_TALE': 'Não há contribuições para este Conto',
+		'CONTRIBUTION_REQUESTS': 'Pedidos de Colaborações',
+		'OPEN_CONTRIBUTION_REQUESTS': 'Pedidos de Colaborações Abertos',
+		'CLOSED_CONTRIBUTION_REQUESTS': 'Pedidos de Colaborações Fechados',
+		'CONTRIBUTIONS': 'colaborações',
+		'NO_CONTRIBUTIONS_TALE': 'Não há colaborações para este Conto',
 		'WRITERS': 'Escritores',
 		'NEW_TALE': 'Novo Conto',
 		'DESCRIPTION': 'Descrição',
@@ -538,13 +538,13 @@ STRINGS = {
 		'TALE_SETTINGS': 'Configurações do Conto',
 		'UPDATE_TALE': 'Atualizar Conto',
 		'UPDATE': 'Atualizar',
-		'NO_CLOSED_CONTRIBUTIONS_TALE': 'Não há Contribuições Fechadas neste Conto',
-		'NO_OPEN_CONTRIBUTIONS_TALE': 'Não há Contribuições Abertas neste Conto',
+		'NO_CLOSED_CONTRIBUTIONS_TALE': 'Não há Colaborações Fechadas neste Conto',
+		'NO_OPEN_CONTRIBUTIONS_TALE': 'Não há Colaborações Abertas neste Conto',
 		'SUBMITTED_ON': 'submetido em',
-		'ACCEPT_CONTRIBUTION': 'Aceitar Contribuição',
-		'REFUSE_CONTRIBUTION': 'Recusar Contribuição',
+		'ACCEPT_CONTRIBUTION': 'Aceitar Colaboração',
+		'REFUSE_CONTRIBUTION': 'Recusar Colaboração',
 		'MY_TALES': 'Meus Contos',
-		'TALES_CONTRIBUTED_TO': 'Contos para os quais contribui',
+		'TALES_CONTRIBUTED_TO': 'Contos para os quais colaborar',
 		'JOINED_ON': 'Cadastrou-se em',
 		'SETTINGS': 'Configurações',
 		'CONTENT': 'Conteúdo',
@@ -664,31 +664,31 @@ STRINGS = {
 			''',
 		'WHAT_IS_AN_ADDVENTURE': 'O que é uma addventure',
 		'WHAT_IS_COLLABORATIVE_TALE': 'O que é um Conto Colaborativo',
-		'COLLABORATIVE_TALE_CONTENT': 'É um conto no qual mais de uma pessoal pode (e deveria) contribuir.',
-		'SO_I_CAN_CONTRIBUTE': 'Então eu posso contribuir para o conto que eu quiser',
+		'COLLABORATIVE_TALE_CONTENT': 'É um conto no qual mais de uma pessoal pode (e deveria) colaborar.',
+		'SO_I_CAN_CONTRIBUTE': 'Então eu posso colaborar para o conto que eu quiser',
 		'SO_I_CAN_CONTRIBUTE_CONTENT': '''
-			Bom, você pode enviar contribuições para qualquer Conto Público, mas a aceitação
-			da sua contribuição vai depender da opinião pessoal do dono do conto,
-			ou seja, sua contribuição só será parte do conto se o usuário que o criou aceitá-la.
+			Bom, você pode enviar colaborações para qualquer Conto Público, mas a aceitação
+			da sua colaboração vai depender da opinião pessoal do dono do conto,
+			ou seja, sua colaboração só será parte do conto se o usuário que o criou aceitá-la.
 			''',
 		'WHAT_IS_PUBLIC_TALE': 'O que é um Conto Público',
 		'WHAT_IS_PUBLIC_TALE_CONTENT': '''
 			Um Conto Público é conto que pode ser visto por qualquer usuário do site (registrado ou não).
-			E qualquer usuário registrado pode enviar contribuições para ele (embora, como dito
-				anteriormente, a aceitação da contribuição ainda depende da opinião do dono).
+			E qualquer usuário registrado pode enviar colaborações para ele (embora, como dito
+				anteriormente, a aceitação da colaboração ainda depende da opinião do dono).
 			''',
 		'WHAT_IS_PRIVATE_TALE': 'E um Conto Privado',
 		'WHAT_IS_PRIVATE_TALE_CONTENT': '''
 			Já um Conto Privado pode ser visualizado apenas pelo seu dono e quaisquer usuários
-			que ele convide para o conto. O mesmo vale para contribuições: só podem enviá-las a
+			que ele convide para o conto. O mesmo vale para colaborações: só podem enviá-las a
 			um Conto Privado o dono do conto e os usuários convidados (mas a aceitação das
-				contribuições ainda depende do dono do conto).
+				colaborações ainda depende do dono do conto).
 			''',
 		'DELETE_TALE': 'Deletar Conto',
 		'DELETE_TALE_CONTENT': '''
 			Uma vez deletado o conto, não há volta.<br>
 			<strong>Esta ação NÃO PODE ser desfeita.</strong><br>
-			Isso vai deletar permanentemente o conto e remover todas as contribuições.<br>
+			Isso vai deletar permanentemente o conto e remover todas as colaborações.<br>
 			Por favor, tenhar certeza.
 			''',
 		'DANGER_ZONE': 'Zona de Perigo',
