@@ -631,7 +631,8 @@ $(document).ready(function() {
 					{
 						inline: true,
 						onSuccess: function() {
-							$profile.find('button[name="update-profile-submit"]').addClass('loading');
+							var $update_profile_submit = $profile.find('button[name="update-profile-submit"]');
+							$update_profile_submit.addClass('disabled loading');
 							$.ajax({
 								type: this.method,
 								url: this.action,
@@ -642,6 +643,7 @@ $(document).ready(function() {
 									window.location = data.url;
 								},
 								error: function(xhr, status, error) {
+									$update_profile_submit.removeClass('disabled loading');
 									append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
 								}
 							});
