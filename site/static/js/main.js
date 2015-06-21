@@ -1238,7 +1238,7 @@ $(document).ready(function() {
 	// END create.html js
 
 	// BEGIN contribute.html js
-	if (path.indexOf('contribute') !== -1) {
+	if (path.indexOf('/contribute') !== -1) {
 		var $contribute_form = $('.contribute-form');
 
 		tinymce.init({
@@ -1254,6 +1254,8 @@ $(document).ready(function() {
 		{
 			inline: true,
 			onSuccess: function() {
+				var $contribute_submit = $('button[name="contribute-submit"]');
+				$contribute_submit.addClass('disabled loading');
 				$.ajax({
 					type: this.method,
 					url: this.action,
@@ -1266,6 +1268,7 @@ $(document).ready(function() {
 						window.location = data.url;
 					},
 					error: function(xhr, status, error) {
+						$contribute_submit.removeClass('disabled loading');
 						append_messages_list(xhr.responseJSON.error_list, $contribute_form.find('h1'));
 					}
 				});
