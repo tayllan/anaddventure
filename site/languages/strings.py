@@ -459,6 +459,7 @@ STRINGS = {
 		'INTERNAL_ERROR': 'Internal Server Error',
 		'INTERNAL_ERROR_MESSAGE': 'Sorry, something went wrong! People will get fired because of that!',
 		'TALES_GENRES': 'Tale\'s Genres',
+		'UPDATE_CHAPTER': 'Update Chapter',
 	},
 	'pt': {
 		'TOP_10_GENRES': 'Gêneros Mais Acessados',
@@ -713,5 +714,6 @@ STRINGS = {
 		'INTERNAL_ERROR': 'Erro no Servidor',
 		'INTERNAL_ERROR_MESSAGE': 'Nos desculpe, algo deu errado! Pessoas serão demitidas por causa disso!',
 		'TALES_GENRES': 'Gêneros dos Contos',
+		'UPDATE_CHAPTER': 'Atualizar Capítulo',
 	}
 }

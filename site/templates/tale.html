@@ -133,6 +133,14 @@
 									{{_('CONTINUE_CHAPTER')}}
 								</a>
 							</p>
+
+							{% if user_logged_id == creator.id and tale.chapter.is_editable %}
+								<p class="ui yellow label">
+									<a href="/update_chapter/{{tale.chapter.id}}">
+										{{_('UPDATE_CHAPTER')}}
+									</a>
+								</p>
+							{% endif %}
 						</div>
 					</div>
 				{% else %}

@@ -1,28 +1,28 @@
 {% extends "layout.html" %}
 
 {% block title %}
-	{{_('CONTRIBUTE')}}
+	{{_('UPDATE_CHAPTER')}}
 {% endblock %}
 
 {% block content %}
 
-<form action="/contribute/{{tale_id}}/{{chapter_id}}/" method="post" class="contribute-form ui form">
+<form action="/update_chapter/{{chapter.id}}/" method="post" class="update-chapter-form ui form">
 	<h1 class="ui dividing header">
 		<i class="write icon"></i>
-		{{_('CONTRIBUTE')}}
+		{{_('UPDATE_CHAPTER')}}
 	</h1>
 
 	<div class="required field">
 		<label>{{_('TITLE')}}</label>
-		<input type="text" name="contribute-title">
+		<input type="text" name="update-chapter-title" value="{{chapter.title}}">
 	</div>
 
 	<div class="field">
-		<textarea name="contribute-content"></textarea>
+		<textarea name="update-chapter-content">{{chapter.content}}</textarea>
 	</div>
 
 	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-	<button type="submit" name="contribute-submit" class="ui green button">{{_('SUBMIT')}}</button>
+	<button type="submit" name="update-chapter-submit" class="ui green button">{{_('UPDATE_CHAPTER')}}</button>
 </form>
 
 <script src="{{url_for('.static', filename = 'js/tinymce/tinymce.min.js')}}"></script>

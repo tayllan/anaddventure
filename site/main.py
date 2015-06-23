@@ -24,7 +24,7 @@ app.config.update(
 	DEBUG = True,
 	SECRET_KEY = '\xe1{\xb3\x96\xbac\x1ds\xad\x04\x92@\x0e\x8d\xaf`|\x95P\x84;\xa7\x0b\x98\xbcX\x9d\xeaV\x7f',
 	MAX_CONTENT_LENGTH = 1024 * 1024,
-	SERVER_NAME = 'anaddventure.com', #.dev:5000',
+	SERVER_NAME = 'anaddventure.com',#.dev:5000',
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
@@ -384,6 +384,7 @@ def tale(tale_id, chapter_id):
 			chapter['datetime'] = beautify_datetime(chapter['date'])
 			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
 			chapter['next_chapters'] = next_chapters
+			chapter['is_editable'] = Chapter.is_editable_chapter(chapter['id']) is 0
 
 		tale['chapter'] = chapter
 
@@ -545,6 +546,45 @@ def update_tale_post(tale_id):
 				new_tale_genre.insert()
 
 			return jsonify(url = '/tale/' + str(tale_id) + '/0')
+	else:
+		return redirect('/404')
+
+@www.route('/update_chapter/<int:chapter_id>/')
+@pt.route('/update_chapter/<int:chapter_id>/')
+def update_chapter_get(chapter_id):
+	chapter = Chapter.select_by_id(chapter_id, 1)
+
+	if len(chapter) is not 0 and session.get('user_logged_id', None) is chapter[0]['user_id']:
+		return render_template('update_chapter.html', chapter = chapter[0])
+	else:
+		return redirect('/404')
+
+@www.route('/update_chapter/<int:chapter_id>/', methods = ['POST'])
+@pt.route('/update_chapter/<int:chapter_id>/', methods = ['POST'])
+def update_chapter_post(chapter_id):
+	chapter = Chapter.select_by_id(chapter_id, 1)
+	creator_id = session.get('user_logged_id', None)
+
+	if request.is_xhr and len(chapter) is not 0 and creator_id is chapter[0]['user_id']:
+		chapter = chapter[0]
+		title = request.form.get('update-chapter-title', '')
+		content = request.form.get('update-chapter-content', '')
+		language = session.get('language', 'en')
+
+		error_list = list()
+
+		if not Contribution_Request.is_title_valid(title):
+			error_list.append(strings.STRINGS[language]['INVALID_TITLE'])
+
+		if not Contribution_Request.is_content_valid(content):
+			error_list.append(strings.STRINGS[language]['INVALID_CONTENT'])
+
+		if len(error_list) is not 0:
+			return make_response(jsonify(error_list = error_list), 400)
+		else:
+			Chapter.update_title_and_content(chapter_id, title, content)
+
+			return jsonify(url = '/tale/' + str(chapter['tale_id']) + '/' + str(chapter_id))
 	else:
 		return redirect('/404')
 

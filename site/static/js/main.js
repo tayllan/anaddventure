@@ -523,7 +523,7 @@ $(document).ready(function() {
 		$own.on('click', '.own-pagination', function(event) {
 			event.preventDefault();
 
-			render_own_tales(this.value, $own.find('input')[0].value);
+			render_own_tales(this.value, $own.find('input').val());
 
 			return false;
 		});
@@ -531,7 +531,7 @@ $(document).ready(function() {
 		$participated.on('click', '.participated-pagination', function(event) {
 			event.preventDefault();
 
-			render_participated_tales(this.value, $participated.find('input')[0].value);
+			render_participated_tales(this.value, $participated.find('input').val());
 
 			return false;
 		});
@@ -542,7 +542,7 @@ $(document).ready(function() {
 		$own.on('submit', 'form', function(event) {
 			event.preventDefault();
 
-			render_own_tales(0, $(this).find('input')[0].value);
+			render_own_tales(0, $(this).find('input').val());
 
 			return false;
 		});
@@ -550,7 +550,7 @@ $(document).ready(function() {
 		$participated.on('submit', 'form', function(event) {
 			event.preventDefault();
 
-			render_participated_tales(0, $(this).find('input')[0].value);
+			render_participated_tales(0, $(this).find('input').val());
 
 			return false;
 		});
@@ -1260,9 +1260,9 @@ $(document).ready(function() {
 					type: this.method,
 					url: this.action,
 					data: {
-						'contribute-title': $contribute_form.find('[name="contribute-title"]')[0].value,
+						'contribute-title': $contribute_form.find('[name="contribute-title"]').val(),
 						'contribute-content': tinymce.get('contribute-content').getContent(),
-						'_csrf_token': $contribute_form.find('[name="_csrf_token"]')[0].value
+						'_csrf_token': $contribute_form.find('[name="_csrf_token"]').val()
 					},
 					success: function(data) {
 						window.location = data.url;
@@ -1286,7 +1286,7 @@ $(document).ready(function() {
 		$form_delete.on('submit', function(event) {
 			event.preventDefault();
 
-			var original_tale_title = $(this).find('button')[0].value;
+			var original_tale_title = $(this).find('button').val();
 			var delete_modal = prompt(my_messages[language]['DELETE_MODAL_MESSAGE']);
 
 			if (delete_modal) {
@@ -1360,6 +1360,48 @@ $(document).ready(function() {
 		});
 	}
 	// END contact.html js
+
+	// BEGIN update_chapter.html js
+	if (path.indexOf('/update_chapter') !== -1) {
+		var $update_chapter_form = $('.update-chapter-form');
+
+		tinymce.init({
+			selector: 'textarea[name="update-chapter-content"]'
+		});
+
+		$update_chapter_form.form({
+			title: {
+				identifier: 'update-chapter-title',
+				rules: my_rules.title
+			}
+		},
+		{
+			inline: true,
+			onSuccess: function() {
+				var $update_chapter_submit = $('button[name="update-chapter-submit"]');
+				$update_chapter_submit.addClass('disabled loading');
+				$.ajax({
+					type: this.method,
+					url: this.action,
+					data: {
+						'update-chapter-title': $update_chapter_form.find('[name="update-chapter-title"]').val(),
+						'update-chapter-content': tinymce.get('update-chapter-content').getContent(),
+						'_csrf_token': $update_chapter_form.find('[name="_csrf_token"]').val()
+					},
+					success: function(data) {
+						window.location = data.url;
+					},
+					error: function(xhr, status, error) {
+						$update_chapter_submit.removeClass('disabled loading');
+						append_messages_list(xhr.responseJSON.error_list, $update_chapter_form.find('h1'));
+					}
+				});
+
+				return false;
+			}
+		});
+	}
+	// END update_chapter.html js
 });
 
 /*

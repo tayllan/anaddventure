@@ -69,6 +69,13 @@ class Chapter(DAO):
 		)
 
 	@staticmethod
+	def update_title_and_content(chapter_id, title, content):
+		return DAO.update(
+			"UPDATE anaddventure.chapter SET chapter_title = (%s), chapter_content = (%s) WHERE chapter_id = (%s)",
+			(title, content, chapter_id)
+		)
+
+	@staticmethod
 	def update_download_count(chapter_id):
 		return DAO.update(
 			"UPDATE anaddventure.chapter SET chapter_download_count = chapter_download_count + 1 WHERE chapter_id = (%s)",
@@ -174,3 +181,10 @@ class Chapter(DAO):
 				rows
 			)
 		)
+
+	@staticmethod
+	def is_editable_chapter(chapter_id):
+		return DAO.select_by(
+			"SELECT COUNT(chapter_id) FROM anaddventure.chapter WHERE chapter_previous_chapter = (%s)",
+			(chapter_id, )
+		)[0][0]
