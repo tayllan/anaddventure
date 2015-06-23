@@ -24,7 +24,7 @@ app.config.update(
 	DEBUG = True,
 	SECRET_KEY = '\xe1{\xb3\x96\xbac\x1ds\xad\x04\x92@\x0e\x8d\xaf`|\x95P\x84;\xa7\x0b\x98\xbcX\x9d\xeaV\x7f',
 	MAX_CONTENT_LENGTH = 1024 * 1024,
-	SERVER_NAME = 'anaddventure.com',#.dev:5000',
+	SERVER_NAME = 'anaddventure.com',#'.dev:5000',
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
@@ -1621,6 +1621,11 @@ def get_ten_best_daily_tales():
 		'fragment/top10_tales_today.html',
 		tales = tales_list
 	)
+
+@www.route('/<path:no_match>/')
+@pt.route('/<path:no_match>/')
+def not_found2(no_match):
+	return render_template('404.html')
 
 app.register_blueprint(www)
 app.register_blueprint(pt)
