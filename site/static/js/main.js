@@ -452,7 +452,9 @@ $(document).ready(function() {
 					search_string: search_string
 				},
 				success: function(data) {
-					$own.find('table tbody').empty().append(data.template);
+					var $own_table = $own.find('table');
+					$own_table.removeClass('loading form');
+					$own_table.find('tbody').empty().append(data.template);
 
 					var $previous_button = $own.find('#previous-button');
 					var $next_button = $own.find('#next-button');
@@ -492,7 +494,9 @@ $(document).ready(function() {
 					search_string: search_string
 				},
 				success: function(data) {
-					$participated.find('table tbody').empty().append(data.template);
+					var $participated_table = $participated.find('table');
+					$participated_table.removeClass('loading form');
+					$participated_table.find('tbody').empty().append(data.template);
 
 					var $previous_button = $participated.find('#previous-button');
 					var $next_button = $participated.find('#next-button');
