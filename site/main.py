@@ -245,36 +245,33 @@ def index():
 @www.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
 @pt.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
 def tale_delete(tale_id):
-	if request.is_xhr:
-		user_logged_id = session.get('user_logged_id', None)
-		tale = Tale.select_by_id(tale_id, 1)
+	user_logged_id = session.get('user_logged_id', None)
+	tale = Tale.select_by_id(tale_id, 1)
 
-		if len(tale) is not 0 and tale[0]['creator_id'] is user_logged_id:
-			tale = tale[0]
-			creator = User.select_by_id(tale['creator_id'], 1)[0]
+	if request.is_xhr and len(tale) is not 0 and tale[0]['creator_id'] is user_logged_id:
+		tale = tale[0]
+		creator = User.select_by_id(tale['creator_id'], 1)[0]
 
-			email_object = strings.construct_delete_tale_email_object(
-				session.get('language', 'en'),
-				tale,
-				creator,
-				app.config['SITE_NAME']
-			)
+		email_object = strings.construct_delete_tale_email_object(
+			session.get('language', 'en'),
+			tale,
+			creator,
+			app.config['SITE_NAME']
+		)
 
-			send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
+		send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
 
-			Chapter.delete_by_tale_id(tale['id'])
-			Contribution_Request.delete_by_tale_id(tale['id'])
-			Follow.delete_by_tale_id(tale['id'])
-			Invitation.delete_by_tale_id(tale['id'])
-			Star.delete_by_tale_id(tale['id'])
-			Tale_Genre.delete_by_tale_id(tale['id'])
-			Tale.delete(tale['id'])
+		Chapter.delete_by_tale_id(tale['id'])
+		Contribution_Request.delete_by_tale_id(tale['id'])
+		Follow.delete_by_tale_id(tale['id'])
+		Invitation.delete_by_tale_id(tale['id'])
+		Star.delete_by_tale_id(tale['id'])
+		Tale_Genre.delete_by_tale_id(tale['id'])
+		Tale.delete(tale['id'])
 
-			username = User.select_by_id(user_logged_id, 1)[0]['username']
+		username = User.select_by_id(user_logged_id, 1)[0]['username']
 
-			return jsonify(url = '/profile/' + username)
-		else:
-			return redirect('/404')
+		return jsonify(url = '/profile/' + username)
 	else:
 		redirect('/404')
 
@@ -430,7 +427,7 @@ def invite_post(tale_id):
 	if len(user) is 0:
 		user = User.select_by_full_username(username, 1)
 
-	if len(user) is not 0:
+	if len(user) is not 0 and 'user_logged_id' in session:
 		user = user[0]
 		new_invitation = Invitation(session['user_logged_id'], user['id'], tale_id)
 		new_invitation.insert()
@@ -491,7 +488,10 @@ def update_tale_get(tale_id):
 @www.route('/update_tale/<int:tale_id>/', methods = ['POST'])
 @pt.route('/update_tale/<int:tale_id>/', methods = ['POST'])
 def update_tale_post(tale_id):
-	if request.is_xhr:
+	tale = Tale.select_by_id(tale_id, 1)
+
+	if request.is_xhr and len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
+		tale = tale[0]
 		title = request.form.get('update-tale-title', '')
 		description = request.form.get('update-tale-description', '')
 		category = 2 if int(request.form.get('update-tale-type', 1)) is not 1 else 1
@@ -500,7 +500,6 @@ def update_tale_post(tale_id):
 		creator_id = session['user_logged_id']
 		language = session.get('language', 'en')
 
-		tale = Tale.select_by_id(tale_id, 1)[0]
 		error_list = list()
 
 		if tale['title'] == title or Tale.is_title_available(creator_id, title):
@@ -616,104 +615,101 @@ def contribute_get(tale_id, chapter_id):
 @www.route('/contribute/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
 @pt.route('/contribute/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
 def contribute_post(tale_id, chapter_id):
-	if request.is_xhr:
-		tale = Tale.select_by_id(tale_id, 1)
+	tale = Tale.select_by_id(tale_id, 1)
 
-		if len(tale) is not 0:
-			tale = tale[0]
-			creator = tale['creator_id']
-			user_id = session['user_logged_id']
-			title = request.form.get('contribute-title', '')
-			content = request.form.get('contribute-content', '')
-			language = session.get('language', 'en')
+	if request.is_xhr and len(tale) is not 0:
+		tale = tale[0]
+		creator = tale['creator_id']
+		user_id = session['user_logged_id']
+		title = request.form.get('contribute-title', '')
+		content = request.form.get('contribute-content', '')
+		language = session.get('language', 'en')
 
-			error_list = list()
+		error_list = list()
 
-			if not Contribution_Request.is_title_valid(title):
-				error_list.append(strings.STRINGS[language]['INVALID_TITLE'])
+		if not Contribution_Request.is_title_valid(title):
+			error_list.append(strings.STRINGS[language]['INVALID_TITLE'])
 
-			if not Contribution_Request.is_content_valid(content):
-				error_list.append(strings.STRINGS[language]['INVALID_CONTENT'])
+		if not Contribution_Request.is_content_valid(content):
+			error_list.append(strings.STRINGS[language]['INVALID_CONTENT'])
 
-			if len(error_list) is not 0:
-				return make_response(jsonify(error_list = error_list), 400)
-			else:
-				email_object = {}
-				creator_username = User.select_by_id(user_id, 1)[0]['username']
+		if len(error_list) is not 0:
+			return make_response(jsonify(error_list = error_list), 400)
+		else:
+			email_object = {}
+			creator_username = User.select_by_id(user_id, 1)[0]['username']
 
-				if creator is user_id:
-					if chapter_id is 0:
-						new_chapter = Chapter(
-							user_id,
-							tale_id,
-							1,
-							title,
-							content,
-							get_current_datetime_as_string(),
-							-1
-						)
-						new_chapter.insert()
+			if creator is user_id:
+				if chapter_id is 0:
+					new_chapter = Chapter(
+						user_id,
+						tale_id,
+						1,
+						title,
+						content,
+						get_current_datetime_as_string(),
+						-1
+					)
+					new_chapter.insert()
 
-						email_object = strings.construct_new_chapter_email_object(
-							language,
-							tale,
-							creator_username,
-							1,
-							app.config['SITE_NAME'],
-							app.config['SITE_URL'],
-							0
-						)
-					else:
-						chapter = Chapter.select_by_id(chapter_id, 1)[0]
-						date = get_current_datetime_as_string()
-						new_chapter = Chapter(
-							user_id,
-							tale_id,
-							chapter['number'] + 1,
-							title,
-							content,
-							date,
-							chapter['id']
-						)
-						new_chapter.insert()
-						new_chapter_id = Chapter.select_by_date(date, 1)[0]['id']
-
-						email_object = strings.construct_new_chapter_email_object(
-							language,
-							tale,
-							creator_username,
-							chapter['number'] + 1,
-							app.config['SITE_NAME'],
-							app.config['SITE_URL'],
-							new_chapter_id
-						)
+					email_object = strings.construct_new_chapter_email_object(
+						language,
+						tale,
+						creator_username,
+						1,
+						app.config['SITE_NAME'],
+						app.config['SITE_URL'],
+						0
+					)
 				else:
 					chapter = Chapter.select_by_id(chapter_id, 1)[0]
-					new_contribution_request = Contribution_Request(
+					date = get_current_datetime_as_string()
+					new_chapter = Chapter(
 						user_id,
 						tale_id,
 						chapter['number'] + 1,
 						title,
 						content,
-						get_current_datetime_as_string(),
+						date,
 						chapter['id']
 					)
-					new_contribution_request.insert()
-					Tale.update_contribution_request_count(tale_id, 1)
+					new_chapter.insert()
+					new_chapter_id = Chapter.select_by_date(date, 1)[0]['id']
 
-					email_object = strings.construct_new_contribution_request_email_object(
+					email_object = strings.construct_new_chapter_email_object(
 						language,
 						tale,
 						creator_username,
+						chapter['number'] + 1,
 						app.config['SITE_NAME'],
-						app.config['SITE_URL']
+						app.config['SITE_URL'],
+						new_chapter_id
 					)
+			else:
+				chapter = Chapter.select_by_id(chapter_id, 1)[0]
+				new_contribution_request = Contribution_Request(
+					user_id,
+					tale_id,
+					chapter['number'] + 1,
+					title,
+					content,
+					get_current_datetime_as_string(),
+					chapter['id']
+				)
+				new_contribution_request.insert()
+				Tale.update_contribution_request_count(tale_id, 1)
 
-				send_email_to_followers(tale_id, email_object['title'], email_object['body'])
+				email_object = strings.construct_new_contribution_request_email_object(
+					language,
+					tale,
+					creator_username,
+					app.config['SITE_NAME'],
+					app.config['SITE_URL']
+				)
 
-				return jsonify(url = '/tale/' + str(tale_id) + '/' + str(chapter_id))
-		else:
-			return redirect('/404')
+			send_email_to_followers(tale_id, email_object['title'], email_object['body'])
+
+			return jsonify(url = '/tale/' + str(tale_id) + '/' + str(chapter_id))
 	else:
 		return redirect('/404')
 
