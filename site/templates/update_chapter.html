@@ -22,7 +22,9 @@
 	</div>
 
 	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-	<button type="submit" name="update-chapter-submit" class="ui green button">{{_('UPDATE_CHAPTER')}}</button>
+	<button type="submit" name="update-chapter-submit" class="ui green button">
+		{{_('UPDATE')}}
+	</button>
 </form>
 
 <script src="{{url_for('.static', filename = 'js/tinymce/tinymce.min.js')}}"></script>

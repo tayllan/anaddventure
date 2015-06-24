@@ -717,6 +717,48 @@ def contribute_post(tale_id, chapter_id):
 	else:
 		return redirect('/404')
 
+@www.route('/update_contribution_request/<int:contribution_request_id>/')
+@pt.route('/update_contribution_request/<int:contribution_request_id>/')
+def update_contribution_request_get(contribution_request_id):
+	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
+
+	if len(contribution_request) is not 0 and session.get('user_logged_id', None) is contribution_request[0]['user_id']:
+		return render_template(
+			'update_contribution_request.html',
+			contribution_request = contribution_request[0]
+		)
+	else:
+		return redirect('/404')
+
+@www.route('/update_contribution_request/<int:contribution_request_id>/', methods = ['POST'])
+@pt.route('/update_contribution_request/<int:contribution_request_id>/', methods = ['POST'])
+def update_contribution_request_post(contribution_request_id):
+	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
+	creator_id = session.get('user_logged_id', None)
+
+	if request.is_xhr and len(contribution_request) is not 0 and creator_id is contribution_request[0]['user_id']:
+		contribution_request = contribution_request[0]
+		title = request.form.get('update-contribution-request-title', '')
+		content = request.form.get('update-contribution-request-content', '')
+		language = session.get('language', 'en')
+
+		error_list = list()
+
+		if not Contribution_Request.is_title_valid(title):
+			error_list.append(strings.STRINGS[language]['INVALID_TITLE'])
+
+		if not Contribution_Request.is_content_valid(content):
+			error_list.append(strings.STRINGS[language]['INVALID_CONTENT'])
+
+		if len(error_list) is not 0:
+			return make_response(jsonify(error_list = error_list), 400)
+		else:
+			Contribution_Request.update_title_and_content(contribution_request_id, title, content)
+
+			return jsonify(url = '/contribution_request/' + str(contribution_request_id))
+	else:
+		return redirect('/404')
+
 @www.route('/contributions/<int:tale_id>/')
 @pt.route('/contributions/<int:tale_id>/')
 def contributions(tale_id):

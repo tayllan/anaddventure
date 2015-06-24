@@ -1406,6 +1406,48 @@ $(document).ready(function() {
 		});
 	}
 	// END update_chapter.html js
+
+	// BEGIN update_contribution_request.html js
+	if (path.indexOf('/update_contribution_request') !== -1) {
+		var $update_contribution_request_form = $('.update-contribution-request-form');
+
+		tinymce.init({
+			selector: 'textarea[name="update-contribution-request-content"]'
+		});
+
+		$update_contribution_request_form.form({
+			title: {
+				identifier: 'update-contribution-request-title',
+				rules: my_rules.title
+			}
+		},
+		{
+			inline: true,
+			onSuccess: function() {
+				var $update_contribution_request_submit = $('button[name="update-contribution-request-submit"]');
+				$update_contribution_request_submit.addClass('disabled loading');
+				$.ajax({
+					type: this.method,
+					url: this.action,
+					data: {
+						'update-contribution-request-title': $update_contribution_request_form.find('[name="update-contribution-request-title"]').val(),
+						'update-contribution-request-content': tinymce.get('update-contribution-request-content').getContent(),
+						'_csrf_token': $update_contribution_request_form.find('[name="_csrf_token"]').val()
+					},
+					success: function(data) {
+						window.location = data.url;
+					},
+					error: function(xhr, status, error) {
+						$update_contribution_request_submit.removeClass('disabled loading');
+						append_messages_list(xhr.responseJSON.error_list, $update_contribution_request_form.find('h1'));
+					}
+				});
+
+				return false;
+			}
+		});
+	}
+	// END update_contribution_request.html js
 });
 
 /*

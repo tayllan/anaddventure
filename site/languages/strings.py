@@ -490,6 +490,7 @@ STRINGS = {
 		'INTERNAL_ERROR_MESSAGE': 'Sorry, something went wrong! People will get fired because of that!',
 		'TALES_GENRES': 'Tale\'s Genres',
 		'UPDATE_CHAPTER': 'Update Chapter',
+		'UPDATE_CONTRIBUTION_REQUEST': 'Update Collaboration Request',
 	},
 	'pt': {
 		'TOP_10_GENRES': 'Gêneros Mais Acessados',
@@ -745,5 +746,6 @@ STRINGS = {
 		'INTERNAL_ERROR_MESSAGE': 'Nos desculpe, algo deu errado! Pessoas serão demitidas por causa disso!',
 		'TALES_GENRES': 'Gêneros dos Contos',
 		'UPDATE_CHAPTER': 'Atualizar Capítulo',
+		'UPDATE_CONTRIBUTION_REQUEST': 'Atualizar Pedido de Colaboração',
 	}
 }

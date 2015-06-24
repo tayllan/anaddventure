@@ -47,6 +47,14 @@
 					{% autoescape false %}
 						{{contribution.content}}
 					{% endautoescape %}
+
+					{% if user_logged_id == contribution.user_id and not contribution.was_closed %}
+						<p class="ui yellow label">
+							<a href="/update_contribution_request/{{contribution.id}}">
+								{{_('UPDATE_CONTRIBUTION_REQUEST')}}
+							</a>
+						</p>
+					{% endif %}
 				</div>
 			</div>
 		</div>

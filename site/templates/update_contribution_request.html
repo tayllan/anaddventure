@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('UPDATE_CONTRIBUTION_REQUEST')}}
+{% endblock %}
+
+{% block content %}
+
+<form action="/update_contribution_request/{{contribution_request.id}}/" method="post" class="update-contribution-request-form ui form">
+	<h1 class="ui dividing header">
+		<i class="write icon"></i>
+		{{_('UPDATE_CONTRIBUTION_REQUEST')}}
+	</h1>
+
+	<div class="required field">
+		<label>{{_('TITLE')}}</label>
+		<input type="text" name="update-contribution-request-title" value="{{contribution_request.title}}">
+	</div>
+
+	<div class="field">
+		<textarea name="update-contribution-request-content">{{contribution_request.content}}</textarea>
+	</div>
+
+	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+	<button type="submit" name="update-contribution-request-submit" class="ui green button">
+		{{_('UPDATE')}}
+	</button>
+</form>
+
+<script src="{{url_for('.static', filename = 'js/tinymce/tinymce.min.js')}}"></script>
+
+{% endblock %}

@@ -93,6 +93,18 @@ class Contribution_Request(DAO):
 		)
 
 	@staticmethod
+	def update_title_and_content(contribution_request_id, title, content):
+		return DAO.update(
+			'''
+			UPDATE anaddventure.contribution_request
+				SET contribution_request_title = (%s),
+					contribution_request_content = (%s)
+				WHERE contribution_request_id = (%s)
+			''',
+			(title, content, contribution_request_id)
+		)
+
+	@staticmethod
 	def select_by_id(contribution_request_id, rows = None):
 		return Contribution_Request._construct_contribution_request_objects(
 			DAO.select_by(
