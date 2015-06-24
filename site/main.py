@@ -583,6 +583,19 @@ def update_chapter_post(chapter_id):
 			return make_response(jsonify(error_list = error_list), 400)
 		else:
 			Chapter.update_title_and_content(chapter_id, title, content)
+			tale = Tale.select_by_id(chapter['tale_id'], 1)[0]
+
+			email_object = strings.construct_updated_chapter_email_object(
+				language,
+				tale,
+				User.select_by_id(creator_id, 1)[0]['username'],
+				chapter['number'],
+				app.config['SITE_NAME'],
+				app.config['SITE_URL'],
+				chapter['id']
+			)
+
+			send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
 
 			return jsonify(url = '/tale/' + str(chapter['tale_id']) + '/' + str(chapter_id))
 	else:

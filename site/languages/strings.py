@@ -204,6 +204,36 @@ def construct_password_reset_email_object(language, p_c_r_id, SITE_NAME, SITE_UR
 
 	return email_object
 
+def construct_updated_chapter_email_object(language, tale, creator_username, chapter_number, SITE_NAME, SITE_URL, chapter_id):
+	if language == 'en':
+		email_object = {
+			'title': 'Chapter Updated on ' + tale['title'],
+			'body': '"{0}" just updated the chapter {1} on the tale "{2}" on "{3}", which can be viewed on {4}/tale/{5}/{6}.'.format(
+					creator_username,
+					str(chapter_number),
+					tale['title'],
+					SITE_NAME,
+					SITE_URL,
+					str(tale['id']),
+					str(chapter_id)
+				)
+		}
+	else:
+		email_object = {
+			'title': 'Capítulo Atualizado em ' + tale['title'],
+			'body': '"{0}" atualizou o capítulo {1} no conto "{2}" em "{3}", o qual pode ser visualizado em {4}/tale/{5}/{6}.'.format(
+					creator_username,
+					str(chapter_number),
+					tale['title'],
+					SITE_NAME,
+					SITE_URL,
+					str(tale['id']),
+					str(chapter_id)
+				)
+		}
+
+	return email_object
+
 STRINGS = {
 	'en': {
 		'TOP_10_GENRES': 'Hot Genres',
