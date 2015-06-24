@@ -24,24 +24,40 @@
 		{% if this_user_is_following is sameas true %}
 			<form action="/unfollow/{{tale.id}}/" method="post" class="form-unfollow" style="display: inline !important">
 				<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-				<button type="submit" class="ui button"><i class="unhide icon"></i>{{_('UNWATCH')}} {{tale.followers}}</button>
+				<button type="submit" class="ui button">
+					{{tale.followers}}
+					<i class="unhide icon"></i>
+					{{_('UNWATCH')}}
+				</button>
 			</form>
 		{% else %}
 			<form action="/follow/{{tale.id}}/" method="post" class="form-follow" style="display: inline !important">
 				<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-				<button type="submit" class="ui button"><i class="unhide icon"></i>{{_('WATCH')}} {{tale.followers}}</button>
+				<button type="submit" class="ui button">
+					{{tale.followers}}
+					<i class="unhide icon"></i>
+					{{_('WATCH')}}
+				</button>
 			</form>
 		{% endif %}
 
 		{% if this_user_gave_star is sameas true %}
 			<form action="/unstar/{{tale.id}}/" method="post" class="form-unstar" style="display: inline !important">
 				<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-				<button type="submit" class="ui button"><i class="star icon"></i>{{_('UNSTAR')}} {{tale.stars}}</button>
+				<button type="submit" class="ui button">
+					{{tale.stars}}
+					<i class="star icon"></i>
+					{{_('UNSTAR')}}
+				</button>
 			</form>
 		{% else %}
 			<form action="/star/{{tale.id}}/" method="post" class="form-star" style="display: inline !important">
 				<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-				<button type="submit" class="ui button"><i class="star icon"></i>{{_('STAR')}} {{tale.stars}}</button>
+				<button type="submit" class="ui button">
+					{{tale.stars}}
+					<i class="star icon"></i>
+					{{_('STAR')}}
+				</button>
 			</form>
 		{% endif %}
 	</div>

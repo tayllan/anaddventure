@@ -789,8 +789,8 @@ $(document).ready(function() {
 				success: function(data) {
 					var $form_unfollow_button = $form_unfollow.find('button')[0];
 
-					$form_unfollow_button.innerHTML = '<i class="unhide icon"></i>' +
-						my_messages[language]['WATCH'] + ' ' + data.followers;
+					$form_unfollow_button.innerHTML = data.followers + ' ' +
+						'<i class="unhide icon"></i>' + my_messages[language]['WATCH'];
 
 					$form_unfollow.attr(
 						'action',
@@ -827,8 +827,8 @@ $(document).ready(function() {
 					if (!data.error) {
 						var $form_follow_button = $form_follow.find('button')[0];
 
-						$form_follow_button.innerHTML = '<i class="unhide icon"></i>' +
-							my_messages[language]['UNWATCH'] + ' ' + data.followers;
+						$form_follow_button.innerHTML = data.followers + ' ' +
+							'<i class="unhide icon"></i>' + my_messages[language]['UNWATCH'];
 
 						$form_follow.attr(
 							'action',
@@ -868,8 +868,8 @@ $(document).ready(function() {
 				success: function(data) {
 					var $form_unstar_button = $form_unstar.find('button')[0];
 
-					$form_unstar_button.innerHTML = '<i class="star icon"></i>' +
-						my_messages[language]['STAR'] + ' ' + data.stars;
+					$form_unstar_button.innerHTML = data.stars + ' ' +
+						'<i class="star icon"></i>' + my_messages[language]['STAR'];
 
 					$form_unstar.attr(
 						'action',
@@ -906,8 +906,8 @@ $(document).ready(function() {
 					if (!data.error) {
 						var $form_star_button = $form_star.find('button')[0];
 
-						$form_star_button.innerHTML = '<i class="star icon"></i>' +
-							my_messages[language]['UNSTAR'] + ' ' + data.stars;
+						$form_star_button.innerHTML = data.stars + ' ' +
+							'<i class="star icon"></i>' + my_messages[language]['UNSTAR'];
 
 						$form_star.attr(
 							'action',

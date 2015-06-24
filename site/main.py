@@ -24,7 +24,7 @@ app.config.update(
 	DEBUG = True,
 	SECRET_KEY = '\xe1{\xb3\x96\xbac\x1ds\xad\x04\x92@\x0e\x8d\xaf`|\x95P\x84;\xa7\x0b\x98\xbcX\x9d\xeaV\x7f',
 	MAX_CONTENT_LENGTH = 1024 * 1024,
-	SERVER_NAME = 'anaddventure.com',#'.dev:5000',
+	SERVER_NAME = 'anaddventure.com',#.dev:5000',
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
@@ -1451,7 +1451,7 @@ def follow(tale_id):
 			new_follow = Follow(session['user_logged_id'], tale_id)
 			new_follow.insert()
 
-			return jsonify({'followers': tale[0]['followers']})
+			return jsonify({'followers': tale[0]['followers'] + 1})
 		else:
 			return jsonify({'error' : '/join/?redirect=/tale/' + str(tale_id) + '/0'})
 	else:
@@ -1462,10 +1462,10 @@ def follow(tale_id):
 def unfollow(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
-	if len(tale) is not 0:
+	if len(tale) is not 0 and 'user_logged_id' in session:
 		Follow.delete_by_user_id(session['user_logged_id'])
 
-		return jsonify({'followers': tale[0]['followers']})
+		return jsonify({'followers': tale[0]['followers'] - 1})
 	else:
 		abort(404)
 
@@ -1479,7 +1479,7 @@ def star(tale_id):
 			new_star = Star(session['user_logged_id'], tale_id, get_current_datetime_as_string())
 			new_star.insert()
 
-			return jsonify({'stars': tale[0]['stars']})
+			return jsonify({'stars': tale[0]['stars'] + 1})
 		else:
 			return jsonify({'error' : '/join/?redirect=/tale/' + str(tale_id) + '/0'})
 	else:
@@ -1490,10 +1490,10 @@ def star(tale_id):
 def unstar(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
-	if len(tale) is not 0:
+	if len(tale) is not 0 and 'user_logged_id' in session:
 		Star.delete_by_user_id(session['user_logged_id'])
 
-		return jsonify({'stars': Tale.select_by_id(tale_id, 1)[0]['stars']})
+		return jsonify({'stars': tale[0]['stars'] - 1})
 	else:
 		abort(404)
 
