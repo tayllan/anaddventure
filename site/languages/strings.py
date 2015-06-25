@@ -58,7 +58,7 @@ def construct_contribution_request_accepted_email_object(language, tale, creator
 	if language == 'en':
 		email_object = {
 			'title': 'Collaboration Request Accepted on ' + tale['title'],
-			'body': '"{0}" just accepted a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/contribution_request/{5}/.'.format(
+			'body': '"{0}" just accepted a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/collaboration/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,
@@ -70,7 +70,7 @@ def construct_contribution_request_accepted_email_object(language, tale, creator
 	else:
 		email_object = {
 			'title': 'Pedido de Colaboração Aceito em ' + tale['title'],
-			'body': '"{0}" aceitou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/contribution_request/{5}/.'.format(
+			'body': '"{0}" aceitou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/collaboration/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,
@@ -86,7 +86,7 @@ def construct_contribution_request_refused_email_object(language, tale, creator,
 	if language == 'en':
 		email_object = {
 			'title': 'Collaboration Request Refused on ' + tale['title'],
-			'body': '"{0}" just refused a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/contribution_request/{5}/.'.format(
+			'body': '"{0}" just refused a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/collaboration/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,
@@ -98,7 +98,7 @@ def construct_contribution_request_refused_email_object(language, tale, creator,
 	else:
 		email_object = {
 			'title': 'Pedido de Colaboração Recusado em ' + tale['title'],
-			'body': '"{0}" recusou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/contribution_request/{5}/.'.format(
+			'body': '"{0}" recusou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/collaboration/{5}/.'.format(
 					creator['username'],
 					tale['title'],
 					SITE_NAME,

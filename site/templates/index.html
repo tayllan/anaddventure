@@ -47,4 +47,57 @@
 		</div>
 	</div>
 </div>
+
+<script>
+$(document).ready(function() {
+	var $top_all = $('#top-all');
+	var $top_today = $('#top-today');
+	var $top_tales = $('.top-tales');
+
+	$top_all.on('click', function(event) {
+		$top_today.removeClass('active');
+		$top_all.addClass('active');
+
+		$.ajax({
+			type: 'get',
+			url: '/get_ten_best_tales',
+			data: {
+				timezone_offset: (new Date()).getTimezoneOffset()
+			},
+			datatype: 'json',
+			success: function(data) {
+				$top_tales.find('div').remove();
+				$top_tales.append(data);
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	});
+
+	$top_today.on('click', function(event) {
+		$top_all.removeClass('active');
+		$top_today.addClass('active');
+
+		$.ajax({
+			type: 'get',
+			url: '/get_ten_best_daily_tales',
+			data: {
+				timezone_offset: (new Date()).getTimezoneOffset()
+			},
+			datatype: 'json',
+			success: function(data) {
+				$top_tales.find('div').remove();
+				$top_tales.append(data);
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	});
+
+	$top_today.trigger('click');
+});
+</script>
+
 {% endblock %}

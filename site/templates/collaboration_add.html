@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('CONTRIBUTE')}}
+{% endblock %}
+
+{% block content %}
+
+<form action="/collaboration/add/{{tale_id}}/{{chapter_id}}/" method="post" class="collaboration-add-form ui form">
+	<h1 class="ui dividing header">
+		<i class="write icon"></i>
+		{{_('CONTRIBUTE')}}
+	</h1>
+
+	<div class="required field">
+		<label>{{_('TITLE')}}</label>
+		<input type="text" name="collaboration-add-title">
+	</div>
+
+	<div class="field">
+		<textarea name="collaboration-add-content"></textarea>
+	</div>
+
+	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+	<button type="submit" name="collaboration-add-submit" class="ui green button">{{_('SUBMIT')}}</button>
+</form>
+
+<script src="{{url_for('.static', filename = 'js/tinymce/tinymce.min.js')}}"></script>
+
+<script>
+$(document).ready(function() {
+	var $collaboration_add_form = $('.collaboration-add-form');
+
+	tinymce.init({
+		selector: 'textarea[name="collaboration-add-content"]'
+	});
+
+	$collaboration_add_form.form({
+		title: {
+			identifier: 'collaboration-add-title',
+			rules: my_rules.title
+		}
+	},
+	{
+		inline: true,
+		onSuccess: function() {
+			var $collaboration_add_submit = $('button[name="collaboration-add-submit"]');
+			$collaboration_add_submit.addClass('disabled loading');
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: {
+					'collaboration-add-title': $collaboration_add_form.find('[name="collaboration-add-title"]').val(),
+					'collaboration-add-content': tinymce.get('collaboration-add-content').getContent(),
+					'_csrf_token': $collaboration_add_form.find('[name="_csrf_token"]').val()
+				},
+				success: function(data) {
+					window.location = data.url;
+				},
+				error: function(xhr, status, error) {
+					$collaboration_add_submit.removeClass('disabled loading');
+					append_messages_list(xhr.responseJSON.error_list, $collaboration_add_form.find('h1'));
+				}
+			});
+
+			return false;
+		}
+	});
+});
+</script>
+{% endblock %}

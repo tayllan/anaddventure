@@ -17,14 +17,14 @@
 				<div class="doubling three column row">
 					{% if user.id == user_logged_id %}
 						<div class="column">
-							<a href="/create" class="ui green button">
+							<a href="/tale/add/" class="ui green button">
 								<i class="plus icon"></i>
 								{{_('CREATE_TALE')}}
 							</a>
 						</div>
 
 						<div class="column">
-							<a href="/update/{{user_logged_id}}" class="ui button edit-profile">
+							<a href="/profile/edit/{{user_logged_id}}" class="ui button edit-profile">
 								<i class="edit icon"></i>
 								{{_('EDIT_PROFILE')}}
 							</a>
@@ -121,4 +121,132 @@
 		{% endautoescape %}
 	</p>
 </div>
+
+<script>
+$(document).ready(function() {
+	var username = '{{user.username}}';
+	var $own = $('.own');
+	var $participated = $('.participated');
+
+	var render_own_tales = function(offset, search_string) {
+		offset = parseInt(offset, 10);
+		$.ajax({
+			type: 'get',
+			url: '/get_rendered_own_tales',
+			datatype: 'json',
+			data: {
+				username: username,
+				offset: offset,
+				search_string: search_string
+			},
+			success: function(data) {
+				var $own_table = $own.find('table');
+				$own_table.removeClass('loading form');
+				$own_table.find('tbody').empty().append(data.template);
+
+				var $previous_button = $own.find('#previous-button');
+				var $next_button = $own.find('#next-button');
+
+				$previous_button.val(data.previous_offset);
+				$next_button.val(data.next_offset);
+
+				if (parseInt(data.previous_offset, 10) === offset) {
+					$previous_button.addClass('disabled');
+				}
+				else {
+					$previous_button.removeClass('disabled');
+				}
+
+				if (parseInt(data.next_offset, 10) === offset) {
+					$next_button.addClass('disabled');
+				}
+				else {
+					$next_button.removeClass('disabled');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	};
+
+	var render_participated_tales = function(offset, search_string) {
+		offset = parseInt(offset, 10);
+		$.ajax({
+			type: 'get',
+			url: '/get_rendered_participated_tales',
+			datatype: 'json',
+			data: {
+				username: username,
+				offset: offset,
+				search_string: search_string
+			},
+			success: function(data) {
+				var $participated_table = $participated.find('table');
+				$participated_table.removeClass('loading form');
+				$participated_table.find('tbody').empty().append(data.template);
+
+				var $previous_button = $participated.find('#previous-button');
+				var $next_button = $participated.find('#next-button');
+
+				$previous_button.val(data.previous_offset);
+				$next_button.val(data.next_offset);
+
+				if (parseInt(data.previous_offset, 10) === offset) {
+					$previous_button.addClass('disabled');
+				}
+				else {
+					$previous_button.removeClass('disabled');
+				}
+
+				if (parseInt(data.next_offset, 10) === offset) {
+					$next_button.addClass('disabled');
+				}
+				else {
+					$next_button.removeClass('disabled');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	};
+
+	$own.on('click', '.own-pagination', function(event) {
+		event.preventDefault();
+
+		render_own_tales(this.value, $own.find('input').val());
+
+		return false;
+	});
+
+	$participated.on('click', '.participated-pagination', function(event) {
+		event.preventDefault();
+
+		render_participated_tales(this.value, $participated.find('input').val());
+
+		return false;
+	});
+
+	render_own_tales(0);
+	render_participated_tales(0);
+
+	$own.on('submit', 'form', function(event) {
+		event.preventDefault();
+
+		render_own_tales(0, $(this).find('input').val());
+
+		return false;
+	});
+
+	$participated.on('submit', 'form', function(event) {
+		event.preventDefault();
+
+		render_participated_tales(0, $(this).find('input').val());
+
+		return false;
+	});
+});
+</script>
+
 {% endblock %}

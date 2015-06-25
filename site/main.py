@@ -242,105 +242,57 @@ def internal_error(error):
 def index():
 	return render_template('index.html', genres = Genre.select_top_ten())
 
-@www.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
-@pt.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
-def tale_delete(tale_id):
-	user_logged_id = session.get('user_logged_id', None)
+@www.route('/settings/<int:tale_id>/')
+@pt.route('/settings/<int:tale_id>/')
+def settings(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
-	if request.is_xhr and len(tale) is not 0 and tale[0]['creator_id'] is user_logged_id:
-		tale = tale[0]
+	if len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
+		return return_rendered_tale_template(tale[0], 'settings.html')
+	else:
+		return redirect('/404')
+
+@www.route('/invite/<int:tale_id>/')
+@pt.route('/invite/<int:tale_id>/')
+def invite_get(tale_id):
+	tale = Tale.select_by_id(tale_id, 1)
+
+	if len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
+		return return_rendered_tale_template(tale[0], 'invite.html')
+	else:
+		return redirect('/404')
+
+@www.route('/invite/<int:tale_id>/', methods = ['POST'])
+@pt.route('/invite/<int:tale_id>/', methods = ['POST'])
+def invite_post(tale_id):
+	username = request.form.get('invite-username', '')
+	user = User.select_by_email(username, 1)
+
+	if len(user) is 0:
+		user = User.select_by_full_username(username, 1)
+
+	if len(user) is not 0 and 'user_logged_id' in session:
+		user = user[0]
+		new_invitation = Invitation(session['user_logged_id'], user['id'], tale_id)
+		new_invitation.insert()
+
+		tale = Tale.select_by_id(tale_id, 1)[0]
 		creator = User.select_by_id(tale['creator_id'], 1)[0]
 
-		email_object = strings.construct_delete_tale_email_object(
+		email_object = strings.construct_tale_invitation_email_object(
 			session.get('language', 'en'),
+			user,
 			tale,
 			creator,
-			app.config['SITE_NAME']
+			app.config['SITE_NAME'],
+			app.config['SITE_URL']
 		)
 
-		send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
+		send_email(email_object['title'], user['email'], email_object['body'])
 
-		Chapter.delete_by_tale_id(tale['id'])
-		Contribution_Request.delete_by_tale_id(tale['id'])
-		Follow.delete_by_tale_id(tale['id'])
-		Invitation.delete_by_tale_id(tale['id'])
-		Star.delete_by_tale_id(tale['id'])
-		Tale_Genre.delete_by_tale_id(tale['id'])
-		Tale.delete(tale['id'])
+	return redirect('/tale/' + str(tale_id) + '/0')
 
-		username = User.select_by_id(user_logged_id, 1)[0]['username']
-
-		return jsonify(url = '/profile/' + username)
-	else:
-		redirect('/404')
-
-@www.route('/create/')
-@pt.route('/create/')
-def create_tale_get():
-	if 'user_logged_id' in session:
-		return render_template(
-			'create.html',
-			genres = Genre.select_all(),
-			licenses = License.select_all()
-		)
-	else:
-		return redirect('/404')
-
-@www.route('/create/', methods = ['POST'])
-@pt.route('/create/', methods = ['POST'])
-def create_tale_post():
-	if request.is_xhr and 'user_logged_id' in session:
-		title = request.form.get('create-title', '')
-		description = request.form.get('create-description', '')
-		category = 2 if int(request.form.get('create-type', 1)) is  not 1 else 1
-		genres = request.form.getlist('create-genres')
-		license_id = request.form.get('create-license', -1)
-		creator_id = session['user_logged_id']
-		language = session.get('language', 'en')
-
-		error_list = list()
-
-		if Tale.is_title_available(creator_id, title):
-			if not Tale.is_title_valid(title):
-				error_list.append(strings.STRINGS[language]['INVALID_TITLE'])
-		else:
-			error_list.append(strings.STRINGS[language]['TITLE_TAKEN'])
-
-		if not Tale.is_description_valid(description):
-			error_list.append(strings.STRINGS[language]['INVALID_DESCRIPTION'])
-
-		if not License.is_license_id_valid(license_id):
-			error_list.append(strings.STRINGS[language]['INVALID_LICENSE'])
-
-		if len(genres) is not 0:
-			for genre_id in genres:
-				if not Genre.is_genre_id_valid(genre_id):
-					error_list.append(strings.STRINGS[language]['INVALID_GENRE'])
-					break
-		else:
-			error_list.append(strings.STRINGS[language]['NO_GENRES'])
-
-		if len(error_list) is not 0:
-			return make_response(jsonify(error_list = error_list), 400)
-		else:
-			new_tale = Tale(title, description, category, creator_id, license_id, get_current_datetime_as_string())
-			new_tale.insert()
-
-			tale_id = Tale.select_by_creator_id_and_full_title(creator_id, title, 1)[0]['id']
-
-			for genre_id in genres:
-				new_tale_genre = Tale_Genre(tale_id, genre_id)
-				new_tale_genre.insert()
-
-			if category is 2:
-				invitation = Invitation(creator_id, creator_id, tale_id)
-				invitation.insert()
-
-			return jsonify(url = '/tale/' + str(tale_id) + '/0')
-	else:
-		return redirect('/404')
-
+# BEGIN Tale Controller
 @www.route('/tale/<int:tale_id>/<int:chapter_id>/')
 @pt.route('/tale/<int:tale_id>/<int:chapter_id>/')
 @www.route('/tale/<int:tale_id>/<int:chapter_id>/fullscreen')
@@ -398,59 +350,71 @@ def tale(tale_id, chapter_id):
 	else:
 		return redirect('/404')
 
-@www.route('/settings/<int:tale_id>/')
-@pt.route('/settings/<int:tale_id>/')
-def settings(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
-
-	if len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
-		return return_rendered_tale_template(tale[0], 'settings.html')
+@www.route('/tale/add/')
+@pt.route('/tale/add/')
+def tale_add_get():
+	if 'user_logged_id' in session:
+		return render_template('tale_add.html', genres = Genre.select_all(), licenses = License.select_all())
 	else:
 		return redirect('/404')
 
-@www.route('/invite/<int:tale_id>/')
-@pt.route('/invite/<int:tale_id>/')
-def invite_get(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+@www.route('/tale/add/', methods = ['POST'])
+@pt.route('/tale/add/', methods = ['POST'])
+def tale_add_post():
+	if request.is_xhr and 'user_logged_id' in session:
+		title = request.form.get('tale-add-title', '')
+		description = request.form.get('tale-add-description', '')
+		category = 2 if int(request.form.get('tale-add-type', 1)) is  not 1 else 1
+		genres = request.form.getlist('tale-add-genres')
+		license_id = request.form.get('tale-add-license', -1)
+		creator_id = session['user_logged_id']
+		language = session.get('language', 'en')
 
-	if len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
-		return return_rendered_tale_template(tale[0], 'invite.html')
+		error_list = list()
+
+		if Tale.is_title_available(creator_id, title):
+			if not Tale.is_title_valid(title):
+				error_list.append(strings.STRINGS[language]['INVALID_TITLE'])
+		else:
+			error_list.append(strings.STRINGS[language]['TITLE_TAKEN'])
+
+		if not Tale.is_description_valid(description):
+			error_list.append(strings.STRINGS[language]['INVALID_DESCRIPTION'])
+
+		if not License.is_license_id_valid(license_id):
+			error_list.append(strings.STRINGS[language]['INVALID_LICENSE'])
+
+		if len(genres) is not 0:
+			for genre_id in genres:
+				if not Genre.is_genre_id_valid(genre_id):
+					error_list.append(strings.STRINGS[language]['INVALID_GENRE'])
+					break
+		else:
+			error_list.append(strings.STRINGS[language]['NO_GENRES'])
+
+		if len(error_list) is not 0:
+			return make_response(jsonify(error_list = error_list), 400)
+		else:
+			new_tale = Tale(title, description, category, creator_id, license_id, get_current_datetime_as_string())
+			new_tale.insert()
+
+			tale_id = Tale.select_by_creator_id_and_full_title(creator_id, title, 1)[0]['id']
+
+			for genre_id in genres:
+				new_tale_genre = Tale_Genre(tale_id, genre_id)
+				new_tale_genre.insert()
+
+			if category is 2:
+				invitation = Invitation(creator_id, creator_id, tale_id)
+				invitation.insert()
+
+			return jsonify(url = '/tale/' + str(tale_id) + '/0')
 	else:
 		return redirect('/404')
 
-@www.route('/invite/<int:tale_id>/', methods = ['POST'])
-@pt.route('/invite/<int:tale_id>/', methods = ['POST'])
-def invite_post(tale_id):
-	username = request.form.get('invite-username', '')
-	user = User.select_by_email(username, 1)
-
-	if len(user) is 0:
-		user = User.select_by_full_username(username, 1)
-
-	if len(user) is not 0 and 'user_logged_id' in session:
-		user = user[0]
-		new_invitation = Invitation(session['user_logged_id'], user['id'], tale_id)
-		new_invitation.insert()
-
-		tale = Tale.select_by_id(tale_id, 1)[0]
-		creator = User.select_by_id(tale['creator_id'], 1)[0]
-
-		email_object = strings.construct_tale_invitation_email_object(
-			session.get('language', 'en'),
-			user,
-			tale,
-			creator,
-			app.config['SITE_NAME'],
-			app.config['SITE_URL']
-		)
-
-		send_email(email_object['title'], user['email'], email_object['body'])
-
-	return redirect('/tale/' + str(tale_id) + '/0')
-
-@www.route('/update_tale/<int:tale_id>/')
-@pt.route('/update_tale/<int:tale_id>/')
-def update_tale_get(tale_id):
+@www.route('/tale/edit/<int:tale_id>/')
+@pt.route('/tale/edit/<int:tale_id>/')
+def tale_edit_get(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
 	if len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
@@ -478,25 +442,25 @@ def update_tale_get(tale_id):
 
 		return return_rendered_tale_template(
 			tale,
-			'update_tale.html',
+			'tale_edit.html',
 			genres_list = genres_list,
 			licenses_list = licenses_list
 		)
 	else:
 		return redirect('/404')
 
-@www.route('/update_tale/<int:tale_id>/', methods = ['POST'])
-@pt.route('/update_tale/<int:tale_id>/', methods = ['POST'])
-def update_tale_post(tale_id):
+@www.route('/tale/edit/<int:tale_id>/', methods = ['POST'])
+@pt.route('/tale/edit/<int:tale_id>/', methods = ['POST'])
+def tale_edit_post(tale_id):
 	tale = Tale.select_by_id(tale_id, 1)
 
 	if request.is_xhr and len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
 		tale = tale[0]
-		title = request.form.get('update-tale-title', '')
-		description = request.form.get('update-tale-description', '')
-		category = 2 if int(request.form.get('update-tale-type', 1)) is not 1 else 1
-		genres = request.form.getlist('update-tale-genres')
-		license_id = request.form.get('update-tale-license', -1)
+		title = request.form.get('tale-edit-title', '')
+		description = request.form.get('tale-edit-description', '')
+		category = 2 if int(request.form.get('tale-edit-type', 1)) is not 1 else 1
+		genres = request.form.getlist('tale-edit-genres')
+		license_id = request.form.get('tale-edit-license', -1)
 		creator_id = session['user_logged_id']
 		language = session.get('language', 'en')
 
@@ -548,26 +512,148 @@ def update_tale_post(tale_id):
 	else:
 		return redirect('/404')
 
-@www.route('/update_chapter/<int:chapter_id>/')
-@pt.route('/update_chapter/<int:chapter_id>/')
-def update_chapter_get(chapter_id):
-	chapter = Chapter.select_by_id(chapter_id, 1)
+@www.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
+@pt.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
+def tale_delete(tale_id):
+	user_logged_id = session.get('user_logged_id', None)
+	tale = Tale.select_by_id(tale_id, 1)
 
-	if len(chapter) is not 0 and session.get('user_logged_id', None) is chapter[0]['user_id']:
-		return render_template('update_chapter.html', chapter = chapter[0])
+	if request.is_xhr and len(tale) is not 0 and tale[0]['creator_id'] is user_logged_id:
+		tale = tale[0]
+		creator = User.select_by_id(tale['creator_id'], 1)[0]
+
+		email_object = strings.construct_delete_tale_email_object(
+			session.get('language', 'en'),
+			tale,
+			creator,
+			app.config['SITE_NAME']
+		)
+
+		send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
+
+		Chapter.delete_by_tale_id(tale['id'])
+		Contribution_Request.delete_by_tale_id(tale['id'])
+		Follow.delete_by_tale_id(tale['id'])
+		Invitation.delete_by_tale_id(tale['id'])
+		Star.delete_by_tale_id(tale['id'])
+		Tale_Genre.delete_by_tale_id(tale['id'])
+		Tale.delete(tale['id'])
+
+		username = User.select_by_id(user_logged_id, 1)[0]['username']
+
+		return jsonify(url = '/profile/' + username)
+	else:
+		redirect('/404')
+
+@www.route('/tale/collaborations/<int:tale_id>/')
+@pt.route('/tale/collaborations/<int:tale_id>/')
+def collaborations(tale_id):
+	tale = Tale.select_by_id(tale_id, 1)
+
+	if len(tale) is not 0:
+		tale = tale[0]
+
+		chapters = Chapter.select_by_tale_id_order_by_date(tale_id)
+		chapters_dict = dict()
+
+		for chapter in chapters:
+			date = beautify_datetime(chapter['date'])
+
+			if date not in chapters_dict:
+				chapters_dict[date] = list()
+
+			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
+			chapters_dict[date].append(chapter)
+
+		keys = list(chapters_dict.keys())
+		keys.sort(reverse = True)
+
+		return return_rendered_tale_template(
+			tale,
+			'collaborations.html',
+			contributions_object = {
+				'keys': keys,
+				'content': chapters_dict
+			}
+		)
 	else:
 		return redirect('/404')
 
-@www.route('/update_chapter/<int:chapter_id>/', methods = ['POST'])
-@pt.route('/update_chapter/<int:chapter_id>/', methods = ['POST'])
-def update_chapter_post(chapter_id):
+@www.route('/tale/branches/<int:tale_id>/')
+@pt.route('/tale/branches/<int:tale_id>/')
+def branches(tale_id):
+	tale = Tale.select_by_id(tale_id, 1)
+
+	if len(tale) is not 0:
+		tale = tale[0]
+
+		chapters = Chapter.select_by_tale_id(tale_id)
+		number_bundle = dict()
+
+		for chapter in chapters:
+			number = chapter['number']
+
+			if number not in number_bundle:
+				number_bundle[number] = {'number': number, 'contributions': list()}
+
+			chapter['date'] = beautify_datetime(chapter['date'])
+			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
+			number_bundle[number]['contributions'].append(chapter)
+
+		return return_rendered_tale_template(tale, 'branches.html', branches_object = number_bundle)
+	else:
+		return redirect('/404')
+
+@www.route('/tale/contributors/<int:tale_id>/')
+@pt.route('/tale/contributors/<int:tale_id>/')
+def contributors(tale_id):
+	tale = Tale.select_by_id(tale_id, 1)
+
+	if len(tale) is not 0:
+		tale = tale[0]
+
+		contributors = Chapter.select_by_tale_id(tale_id)
+		contributors_dict = dict()
+
+		creator = User.select_by_id(tale['creator_id'], 1)[0]
+		contributors_dict[creator['id']] = {'username': creator['username'], 'count': 0}
+
+		for c in contributors:
+			contributor = User.select_by_id(c['user_id'], 1)[0]
+
+			if contributor['id'] not in contributors_dict:
+				contributors_dict[contributor['id']] = {'username': contributor['username'], 'count': 0}
+
+			contributors_dict[contributor['id']]['count'] += 1
+
+		return return_rendered_tale_template(
+			tale, 'contributors.html', contributors_object = contributors_dict
+		)
+	else:
+		return redirect('/404')
+# END Tale Controller
+
+# BEGIN Chapter Controller
+@www.route('/chapter/edit/<int:chapter_id>/')
+@pt.route('/chapter/edit/<int:chapter_id>/')
+def chapter_edit_get(chapter_id):
+	chapter = Chapter.select_by_id(chapter_id, 1)
+
+	if len(chapter) is not 0 and session.get('user_logged_id', None) is chapter[0]['user_id']:
+		return render_template('chapter_edit.html', chapter = chapter[0])
+	else:
+		return redirect('/404')
+
+@www.route('/chapter/edit/<int:chapter_id>/', methods = ['POST'])
+@pt.route('/chapter/edit/<int:chapter_id>/', methods = ['POST'])
+def chapter_edit_post(chapter_id):
 	chapter = Chapter.select_by_id(chapter_id, 1)
 	creator_id = session.get('user_logged_id', None)
 
 	if request.is_xhr and len(chapter) is not 0 and creator_id is chapter[0]['user_id']:
 		chapter = chapter[0]
-		title = request.form.get('update-chapter-title', '')
-		content = request.form.get('update-chapter-content', '')
+		title = request.form.get('chapter-edit-title', '')
+		content = request.form.get('chapter-edit-content', '')
 		language = session.get('language', 'en')
 
 		error_list = list()
@@ -600,29 +686,100 @@ def update_chapter_post(chapter_id):
 	else:
 		return redirect('/404')
 
-@www.route('/contribute/<int:tale_id>/<int:chapter_id>/')
-@pt.route('/contribute/<int:tale_id>/<int:chapter_id>/')
-def contribute_get(tale_id, chapter_id):
-	if 'user_logged_id' in session:
-		return render_template(
-			'contribute.html',
-			tale_id = tale_id,
-			chapter_id = chapter_id
-		)
-	else:
-		return redirect('/join?redirect=/tale/' + str(tale_id) + '/' + str(chapter_id))
+@www.route('/chapter/download/<int:chapter_id>/', methods = ['GET', 'POST'])
+@pt.route('/chapter/download/<int:chapter_id>/', methods = ['GET', 'POST'])
+def chapter_download(chapter_id):
+	chapter = Chapter.select_by_id(chapter_id, 1)
 
-@www.route('/contribute/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
-@pt.route('/contribute/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
-def contribute_post(tale_id, chapter_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	if len(chapter) is not 0:
+		chapter = chapter[0]
+		chapter['datetime'] = beautify_datetime(chapter['date'])
+		chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
+
+		if request.method == 'POST':
+			Chapter.update_download_count(chapter_id)
+
+		return render_template('fragment/downloadable_chapter.html', chapter = chapter)
+	else:
+		return redirect('/404')
+
+@www.route('/chapter/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
+@pt.route('/chapter/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
+def chapter_download_all(chapter_id):
+	chapter = Chapter.select_by_id(chapter_id, 1)
+
+	if len(chapter) is not 0:
+		chapter = chapter[0]
+		chapter_list = list()
+		chapters_ids_list = list()
+		previous_chapter_id = chapter_id
+		tale = Tale.select_by_id(chapter['tale_id'], 1)[0]
+
+		while previous_chapter_id is not -1:
+			chapters_ids_list.append(previous_chapter_id)
+			chapter = Chapter.select_by_id(previous_chapter_id, 1)[0]
+			previous_chapter_id = chapter['previous_chapter_id']
+
+		for chapter_id in reversed(chapters_ids_list):
+			chapter = Chapter.select_by_id(chapter_id, 1)[0]
+
+			if request.method == 'POST':
+				Chapter.update_download_count(chapter_id)
+
+			chapter['datetime'] = beautify_datetime(chapter['date'])
+			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
+			chapter_list.append(chapter)
+
+		return render_template('fragment/downloadable_all.html', tale = tale, chapters = chapter_list)
+	else:
+		return redirect('/404')
+# END Chapter Controller
+
+# BEGIN Collaboration Controller
+@www.route('/collaboration/<int:contribution_request_id>/')
+@pt.route('/collaboration/<int:contribution_request_id>/')
+def collaboration(contribution_request_id):
+	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
+
+	if len(contribution_request) is not 0:
+		contribution_request = contribution_request[0]
+		tale = Tale.select_by_id(contribution_request['tale_id'], 1)[0]
+
+		contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
+		contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
+
+		return return_rendered_tale_template(tale, 'collaboration.html', contribution = contribution_request)
+	else:
+		return redirect('/404')
+
+@www.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/')
+@pt.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/')
+def collaboration_add_get(tale_id, chapter_id):
+	chapter = Chapter.select_by_id(chapter_id, 1)
+
+	if len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id:
+		return redirect('/404')
+	elif 'user_logged_id' in session:
+		return render_template('collaboration_add.html', tale_id = tale_id, chapter_id = chapter_id)
+	else:
+		return redirect('/join?redirect=/collaboration/add/' + str(tale_id) + '/' + str(chapter_id))
+
+@www.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
+@pt.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
+def collaboration_add_post(tale_id, chapter_id):
+	chapter = Chapter.select_by_id(chapter_id, 1)
+
+	if len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id:
+		return redirect('/404')
+
+	tale = Tale.select_by_id(chapter[0]['tale_id'], 1)
 
 	if request.is_xhr and len(tale) is not 0:
 		tale = tale[0]
 		creator = tale['creator_id']
 		user_id = session['user_logged_id']
-		title = request.form.get('contribute-title', '')
-		content = request.form.get('contribute-content', '')
+		title = request.form.get('collaboration-add-title', '')
+		content = request.form.get('collaboration-add-content', '')
 		language = session.get('language', 'en')
 
 		error_list = list()
@@ -713,29 +870,26 @@ def contribute_post(tale_id, chapter_id):
 	else:
 		return redirect('/404')
 
-@www.route('/update_contribution_request/<int:contribution_request_id>/')
-@pt.route('/update_contribution_request/<int:contribution_request_id>/')
-def update_contribution_request_get(contribution_request_id):
+@www.route('/collaboration/edit/<int:contribution_request_id>/')
+@pt.route('/collaboration/edit/<int:contribution_request_id>/')
+def collaboration_edit_get(contribution_request_id):
 	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
 
 	if len(contribution_request) is not 0 and session.get('user_logged_id', None) is contribution_request[0]['user_id']:
-		return render_template(
-			'update_contribution_request.html',
-			contribution_request = contribution_request[0]
-		)
+		return render_template('collaboration_edit.html', contribution_request = contribution_request[0])
 	else:
 		return redirect('/404')
 
-@www.route('/update_contribution_request/<int:contribution_request_id>/', methods = ['POST'])
-@pt.route('/update_contribution_request/<int:contribution_request_id>/', methods = ['POST'])
-def update_contribution_request_post(contribution_request_id):
+@www.route('/collaboration/edit/<int:contribution_request_id>/', methods = ['POST'])
+@pt.route('/collaboration/edit/<int:contribution_request_id>/', methods = ['POST'])
+def collaboration_edit_post(contribution_request_id):
 	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
 	creator_id = session.get('user_logged_id', None)
 
 	if request.is_xhr and len(contribution_request) is not 0 and creator_id is contribution_request[0]['user_id']:
 		contribution_request = contribution_request[0]
-		title = request.form.get('update-contribution-request-title', '')
-		content = request.form.get('update-contribution-request-content', '')
+		title = request.form.get('collaboration-edit-title', '')
+		content = request.form.get('collaboration-edit-content', '')
 		language = session.get('language', 'en')
 
 		error_list = list()
@@ -751,98 +905,10 @@ def update_contribution_request_post(contribution_request_id):
 		else:
 			Contribution_Request.update_title_and_content(contribution_request_id, title, content)
 
-			return jsonify(url = '/contribution_request/' + str(contribution_request_id))
+			return jsonify(url = '/collaboration/' + str(contribution_request_id))
 	else:
 		return redirect('/404')
-
-@www.route('/contributions/<int:tale_id>/')
-@pt.route('/contributions/<int:tale_id>/')
-def contributions(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
-
-	if len(tale) is not 0:
-		tale = tale[0]
-
-		chapters = Chapter.select_by_tale_id_order_by_date(tale_id)
-		chapters_dict = dict()
-
-		for chapter in chapters:
-			date = beautify_datetime(chapter['date'])
-
-			if date not in chapters_dict:
-				chapters_dict[date] = list()
-
-			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
-			chapters_dict[date].append(chapter)
-
-		keys = list(chapters_dict.keys())
-		keys.sort(reverse = True)
-
-		return return_rendered_tale_template(
-			tale,
-			'contributions.html',
-			contributions_object = {
-				'keys': keys,
-				'content': chapters_dict
-			}
-		)
-	else:
-		return redirect('/404')
-
-@www.route('/branches/<int:tale_id>/')
-@pt.route('/branches/<int:tale_id>/')
-def branches(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
-
-	if len(tale) is not 0:
-		tale = tale[0]
-
-		chapters = Chapter.select_by_tale_id(tale_id)
-		number_bundle = dict()
-
-		for chapter in chapters:
-			number = chapter['number']
-
-			if number not in number_bundle:
-				number_bundle[number] = {'number': number, 'contributions': list()}
-
-			chapter['date'] = beautify_datetime(chapter['date'])
-			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
-			number_bundle[number]['contributions'].append(chapter)
-
-		return return_rendered_tale_template(
-			tale, 'branches.html', branches_object = number_bundle
-		)
-	else:
-		return redirect('/404')
-
-@www.route('/contributors/<int:tale_id>/')
-@pt.route('/contributors/<int:tale_id>/')
-def contributors(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
-
-	if len(tale) is not 0:
-		tale = tale[0]
-
-		contributors = Chapter.select_by_tale_id(tale_id)
-		contributors_dict = dict()
-
-		creator = User.select_by_id(tale['creator_id'], 1)[0]
-		contributors_dict[creator['id']] = {'username': creator['username'], 'count': 0}
-
-		for c in contributors:
-			contributor = User.select_by_id(c['user_id'], 1)[0]
-
-			if contributor['id'] not in contributors_dict:
-				contributors_dict[contributor['id']] = {'username': contributor['username'], 'count': 0}
-
-			contributors_dict[contributor['id']]['count'] += 1
-
-		return return_rendered_tale_template(
-			tale, 'contributors.html', contributors_object = contributors_dict
-		)
-	else:
-		return redirect('/404')
+# END Collaboration Controller
 
 @www.route('/contribution_requests/<int:tale_id>/')
 @pt.route('/contribution_requests/<int:tale_id>/')
@@ -926,69 +992,7 @@ def contribution_requests_refuse():
 	else:
 		return redirect('/404')
 
-@www.route('/contribution_request/<int:contribution_request_id>/')
-@pt.route('/contribution_request/<int:contribution_request_id>/')
-def contribution_request(contribution_request_id):
-	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
-
-	if len(contribution_request) is not 0:
-		contribution_request = contribution_request[0]
-		tale = Tale.select_by_id(contribution_request['tale_id'], 1)[0]
-
-		contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
-		contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
-
-		return return_rendered_tale_template(
-			tale,
-			'contribution_request.html',
-			contribution = contribution_request
-		)
-	else:
-		return redirect('/404')
-
-@www.route('/download_chapter/<int:chapter_id>/', methods = ['GET', 'POST'])
-@pt.route('/download_chapter/<int:chapter_id>/', methods = ['GET', 'POST'])
-def download_chapter(chapter_id):
-	chapter = Chapter.select_by_id(chapter_id, 1)[0]
-	chapter['datetime'] = beautify_datetime(chapter['date'])
-	chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
-
-	if request.method == 'POST':
-		Chapter.update_download_count(chapter_id)
-
-	return render_template('fragment/downloadable_chapter.html', chapter = chapter)
-
-@www.route('/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
-@pt.route('/download_all/<int:chapter_id>/', methods = ['GET', 'POST'])
-def download_all(chapter_id):
-	chapter_list = list()
-	chapters_ids_list = list()
-	previous_chapter_id = chapter_id
-	tale = Tale.select_by_id(
-		Chapter.select_by_id(chapter_id, 1)[0]['tale_id'], 1
-	)[0]
-
-	while previous_chapter_id is not -1:
-		chapters_ids_list.append(previous_chapter_id)
-		chapter = Chapter.select_by_id(previous_chapter_id, 1)[0]
-		previous_chapter_id = chapter['previous_chapter_id']
-
-	for chapter_id in reversed(chapters_ids_list):
-		chapter = Chapter.select_by_id(chapter_id, 1)[0]
-
-		if request.method == 'POST':
-			Chapter.update_download_count(chapter_id)
-
-		chapter['datetime'] = beautify_datetime(chapter['date'])
-		chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
-		chapter_list.append(chapter)
-
-	return render_template(
-		'fragment/downloadable_all.html',
-		tale = tale,
-		chapters = chapter_list
-	)
-
+# BEGIN User Controller
 @www.route('/profile/<username>/')
 @pt.route('/profile/<username>/')
 def profile(username):
@@ -1006,24 +1010,63 @@ def profile(username):
 	else:
 		return redirect('/404')
 
-@www.route('/avatars/<int:user_id>/')
-@pt.route('/avatars/<int:user_id>/')
-def avatars(user_id):
-	for extension in ALLOWED_EXTENSIONS:
-		if os.path.exists('anaddventure/site/static/avatars/' + str(user_id) + '.' + extension):
-			return send_file(
-				'static/avatars/' + str(user_id) + '.' + extension,
-				mimetype = 'image/' + extension
+@www.route('/profile/add/', methods = ['POST'])
+@pt.route('/profile/add/', methods = ['POST'])
+def profile_add():
+	if request.is_xhr:
+		username = request.form.get('profile-add-username', '')
+		email = request.form.get('profile-add-email', '')
+		password = request.form.get('profile-add-password', '')
+		repeat_password = request.form.get('profile-add-repeat-password', '')
+		language = session.get('language', 'en')
+
+		error_list = list()
+
+		if User.is_username_available(username):
+			if not User.is_username_valid(username):
+				error_list.append(strings.STRINGS[language]['INVALID_USERNAME'])
+		else:
+			error_list.append(strings.STRINGS[language]['USERNAME_TAKEN'])
+
+		if User.is_email_available(email):
+			if not User.is_email_valid(email):
+				error_list.append(strings.STRINGS[language]['INVALID_EMAIL'])
+		else:
+			error_list.append(strings.STRINGS[language]['EMAIL_TAKEN'])
+
+		if not User.is_password_valid(password):
+			error_list.append(strings.STRINGS[language]['INVALID_PASSWORD'])
+
+		if password != repeat_password:
+			error_list.append(strings.STRINGS[language]['PASSWORD_NO_MATCH'])
+
+		if len(error_list) is not 0:
+			return make_response(jsonify(error_list = error_list), 400)
+		else:
+			new_user = User(username, username, email, password, get_current_datetime_as_string(), '')
+			new_user.insert()
+
+			user_id = User.select_by_full_username(username, 1)[0]['id']
+
+			signup_queue = Signup_Queue(user_id)
+			signup_queue.insert()
+
+			email_object = strings.construct_signup_email_object(
+				language,
+				signup_queue.id,
+				app.config['SITE_NAME'],
+				app.config['SITE_URL']
 			)
 
-	return send_file(
-		'static/avatars/identicons/' + str(user_id % 60) + '.png',
-		mimetype = 'image/png'
-	)
+			send_email(email_object['title'], email, email_object['body'])
 
-@www.route('/update/<int:user_id>/')
-@pt.route('/update/<int:user_id>/')
-def update(user_id):
+			return jsonify(message = strings.STRINGS[language]['SIGN_UP_MESSAGE'] + ' ' + email + '.')
+	else:
+		return redirect('/404')
+
+@www.route('/profile/edit/<int:user_id>/')
+@pt.route('/profile/edit/<int:user_id>/')
+def profile_edit_get(user_id):
 	user = User.select_by_id(user_id, 1)
 
 	if len(user) is not 0 and session.get('user_logged_id', None) is user[0]['id']:
@@ -1031,25 +1074,22 @@ def update(user_id):
 		user['signup_date'] = beautify_datetime(user['signup_date'])
 		user['is_email_visible'] = True
 
-		return render_template(
-			'update.html',
-			user = user
-		)
+		return render_template('profile_edit.html', user = user)
 	else:
 		return redirect('/404')
 
-@www.route('/update_profile/<int:user_id>/', methods = ['POST'])
-@pt.route('/update_profile/<int:user_id>/', methods = ['POST'])
-def update_profile(user_id):
+@www.route('/profile/edit/<int:user_id>/', methods = ['POST'])
+@pt.route('/profile/edit/<int:user_id>/', methods = ['POST'])
+def profile_edit_post(user_id):
 	user = User.select_by_id(user_id, 1)
 
 	if request.is_xhr and len(user) is not 0 and session.get('user_logged_id') is user[0]['id']:
 		user = user[0]
-		uploaded_file = request.files['update-avatar']
-		name = request.form.get('update-name', '')
-		email = request.form.get('update-email', '')
-		is_email_visible = True if request.form.get('update-email-visibility', False) == 'true' else False
-		biography = request.form.get('update-biography', '')
+		uploaded_file = request.files['profile-edit-avatar']
+		name = request.form.get('profile-edit-name', '')
+		email = request.form.get('profile-edit-email', '')
+		is_email_visible = True if request.form.get('profile-edit-email-visibility', False) == 'true' else False
+		biography = request.form.get('profile-edit-biography', '')
 		language = session.get('language', 'en')
 
 		error_list = list()
@@ -1103,16 +1143,16 @@ def update_profile(user_id):
 	else:
 		return redirect('/404')
 
-@www.route('/update_password/<int:user_id>/', methods = ['POST'])
-@pt.route('/update_password/<int:user_id>/', methods = ['POST'])
-def update_password(user_id):
+@www.route('/profile/edit/password/<int:user_id>/', methods = ['POST'])
+@pt.route('/profile/edit/password/<int:user_id>/', methods = ['POST'])
+def profile_edit_password(user_id):
 	user = User.select_by_id(user_id, 1)
 
 	if request.is_xhr and len(user) is not 0 and session.get('user_logged_id', None) is user[0]['id']:
 		user = user[0]
-		old_password = request.form.get('update-old-password', '')
-		new_password = request.form.get('update-new-password', '')
-		confirm_new_password = request.form.get('update-confirm-new-password', '')
+		old_password = request.form.get('profile-edit-password-old-password', '')
+		new_password = request.form.get('profile-edit-password-new-password', '')
+		confirm_new_password = request.form.get('profile-edit-password-confirm-new-password', '')
 		language = session.get('language', 'en')
 
 		error_list = list()
@@ -1134,6 +1174,22 @@ def update_password(user_id):
 			return jsonify(url = '/profile/' + user['username'])
 	else:
 		return redirect('/404')
+# END User Controller
+
+@www.route('/avatars/<int:user_id>/')
+@pt.route('/avatars/<int:user_id>/')
+def avatars(user_id):
+	for extension in ALLOWED_EXTENSIONS:
+		if os.path.exists('anaddventure/site/static/avatars/' + str(user_id) + '.' + extension):
+			return send_file(
+				'static/avatars/' + str(user_id) + '.' + extension,
+				mimetype = 'image/' + extension
+			)
+
+	return send_file(
+		'static/avatars/identicons/' + str(user_id % 60) + '.png',
+		mimetype = 'image/png'
+	)
 
 @www.route('/join/')
 @pt.route('/join/')
@@ -1147,60 +1203,6 @@ def join():
 			'join.html',
 			redirect_url = request.args.get('redirect', '')
 		)
-
-@www.route('/signup/', methods = ['POST'])
-@pt.route('/signup/', methods = ['POST'])
-def signup():
-	if request.is_xhr:
-		username = request.form.get('signup-username', '')
-		email = request.form.get('signup-email', '')
-		password = request.form.get('signup-password', '')
-		repeat_password = request.form.get('signup-repeat-password', '')
-		language = session.get('language', 'en')
-
-		error_list = list()
-
-		if User.is_username_available(username):
-			if not User.is_username_valid(username):
-				error_list.append(strings.STRINGS[language]['INVALID_USERNAME'])
-		else:
-			error_list.append(strings.STRINGS[language]['USERNAME_TAKEN'])
-
-		if User.is_email_available(email):
-			if not User.is_email_valid(email):
-				error_list.append(strings.STRINGS[language]['INVALID_EMAIL'])
-		else:
-			error_list.append(strings.STRINGS[language]['EMAIL_TAKEN'])
-
-		if not User.is_password_valid(password):
-			error_list.append(strings.STRINGS[language]['INVALID_PASSWORD'])
-
-		if password != repeat_password:
-			error_list.append(strings.STRINGS[language]['PASSWORD_NO_MATCH'])
-
-		if len(error_list) is not 0:
-			return make_response(jsonify(error_list = error_list), 400)
-		else:
-			new_user = User(username, username, email, password, get_current_datetime_as_string(), '')
-			new_user.insert()
-
-			user_id = User.select_by_full_username(username, 1)[0]['id']
-
-			signup_queue = Signup_Queue(user_id)
-			signup_queue.insert()
-
-			email_object = strings.construct_signup_email_object(
-				language,
-				signup_queue.id,
-				app.config['SITE_NAME'],
-				app.config['SITE_URL']
-			)
-
-			send_email(email_object['title'], email, email_object['body'])
-
-			return jsonify(message = strings.STRINGS[language]['SIGN_UP_MESSAGE'] + ' ' + email + '.')
-	else:
-		return redirect('/404')
 
 @www.route('/login/', methods = ['POST'])
 @pt.route('/login/', methods = ['POST'])
@@ -1477,20 +1479,14 @@ def get_user_info():
 		user = user[0]
 		user['biography'] = user['biography'].replace("<br>", "\r\n")
 
-		return render_template(
-			'fragment/update_profile_form.html',
-			user = user
-		)
+		return render_template('fragment/profile_edit_form.html', user = user)
 	else:
 		return redirect('/404')
 
-@www.route('/get_update_password_form')
-@pt.route('/get_update_password_form')
+@www.route('/get_update_password_form/')
+@pt.route('/get_update_password_form/')
 def get_update_password_form():
-	return render_template(
-		'fragment/update_password_form.html',
-		user_id = int(request.args.get('user_id', -1))
-	)
+	return render_template('fragment/profile_edit_password_form.html', user_id = int(request.args.get('user_id', -1)))
 
 @www.route('/follow/<int:tale_id>/', methods = ['POST'])
 @pt.route('/follow/<int:tale_id>/', methods = ['POST'])

@@ -10,6 +10,11 @@
 		<link rel="alternate" href="https://pt.anaddventure.com" hreflang="pt">
 		<link rel="shortcut icon" href="{{url_for('.static', filename = 'img/favicon2.ico')}}">
 		<link rel="stylesheet" type="text/css" href="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/my_semantic.min.css')}}">
+		{% if conf_production == true %}
+			<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+		{% else %}
+			<script src="{{url_for('.static', filename = 'js/jquery-2.1.1.min.js')}}"></script>
+		{% endif %}
 	</head>
 	<body>
 		<input type="hidden" name="selected-language" value="{{language}}">
@@ -96,14 +101,12 @@
 		</div>
 
 		{% if conf_production == true %}
-			<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/form.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/modal.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/dimmer.min.js"></script>
 			<script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.8.1/components/transition.min.js"></script>
 			<script src="{{url_for('.static', filename = 'js/main.min.js')}}"></script>
 		{% else %}
-			<script src="{{url_for('.static', filename = 'js/jquery-2.1.1.min.js')}}"></script>
 			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/form.min.js')}}"></script>
 			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/modal.min.js')}}"></script>
 			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/dimmer.min.js')}}"></script>
@@ -113,7 +116,7 @@
 	</body>
 
 	<style>
-	@media only all and (max-width: 1000px) {
+	@media only screen and (max-width: 1000px) {
 		#wider {
 			width: 100% !important;
 		}

@@ -13,7 +13,7 @@
 		<div class="thirteen wide column justified">
 			<ul class="ui list">
 				<li class="item">
-					<a href="/update_tale/{{tale.id}}" class="ui button">{{_('UPDATE_TALE_INFO')}}</a>
+					<a href="/tale/edit/{{tale.id}}" class="ui button">{{_('UPDATE_TALE_INFO')}}</a>
 					<br>
 				</li>
 
@@ -36,7 +36,9 @@
 					</p>
 					<form action="/tale/delete/{{tale.id}}/" method="post" id="form-delete">
 						<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-						<button type="submit" name="delete-submit" value="{{tale.title}}" class="ui red button">{{_('DELETE_TALE')}}</button>
+						<button type="submit" name="delete-submit" value="{{tale.title}}" class="ui red button">
+							{{_('DELETE_TALE')}}
+						</button>
 					</form>
 				</li>
 			</ul>
@@ -47,5 +49,43 @@
 		</div>
 	</div>
 </div>
+
+<script>
+$(document).ready(function() {
+	var $form_delete = $('#form-delete');
+
+	$form_delete.on('submit', function(event) {
+		event.preventDefault();
+
+		var original_tale_title = $(this).find('button').val();
+		var delete_modal = prompt(my_messages[language]['DELETE_MODAL_MESSAGE']);
+
+		if (delete_modal) {
+			if (delete_modal === original_tale_title) {
+				$.ajax({
+					type: this.method,
+					url: this.action,
+					datatype: 'json',
+					data: new FormData(this),
+					processData: false,
+					contentType: false,
+					success: function(data) {
+						window.location = data.url;
+					},
+					error: function(xhr, status, error) {
+						console.log(xhr);
+					}
+				});
+			}
+			else {
+				$(this).find('div').remove();
+				$(this).append('<div class="ui red message">' + my_messages[language]['DELETE_MODAL_WRONG_TITLE'] + '</div>');
+			}
+		}
+
+		return false;
+	});
+});
+</script>
 
 {% endblock %}

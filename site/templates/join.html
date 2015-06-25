@@ -48,15 +48,15 @@
 			</form>
 		</div>
 
-		<div class="signup column ui form">
-			<form action="/signup/?redirect={{redirect_url}}" method="post">
+		<div class="profile_add column ui form">
+			<form action="/profile/add/?redirect={{redirect_url}}" method="post">
 				<h2 class="ui dividing header">{{_('SIGN_UP')}}</h2>
 
 				<div class="required field">
 					<label>Username</label>
 
 					<div class="ui left icon input">
-						<input type="text" name="signup-username" tabindex="4">
+						<input type="text" name="profile-add-username" tabindex="4">
 						<i class="user icon"></i>
 					</div>
 				</div>
@@ -64,7 +64,7 @@
 					<label>Email</label>
 
 					<div class="ui left icon input">
-						<input type="email" name="signup-email" tabindex="5">
+						<input type="email" name="profile-add-email" tabindex="5">
 						<i class="mail icon"></i>
 					</div>
 				</div>
@@ -73,7 +73,7 @@
 
 					<div class="ui right labeled left icon input">
 						<i class="lock icon"></i>
-						<input type="password" name="signup-password" tabindex="6">
+						<input type="password" name="profile-add-password" tabindex="6">
 						<div class="password-strength ui yellow label">
 							{{_('TOO_WEAK')}}
 						</div>
@@ -83,15 +83,133 @@
 					<label>{{_('REPEAT_PASSWORD')}}</label>
 
 					<div class="ui left icon input">
-						<input type="password" name="signup-repeat-password" tabindex="7">
+						<input type="password" name="profile-add-repeat-password" tabindex="7">
 						<i class="lock icon"></i>
 					</div>
 				</div>
 
 				<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
-				<button type="submit" name="signup-submit" class="ui button" tabindex="8">{{_('SIGN_UP')}}</button>
+				<button type="submit" name="profile-add-submit" class="ui button" tabindex="8">{{_('SIGN_UP')}}</button>
 			</form>
 		</div>
 	</div>
 </div>
+
+<script>
+$(document).ready(function() {
+	var $login = $('.login');
+	var $profile_add = $('.profile_add');
+	var $password_strength = $profile_add.find('.password-strength');
+
+	$profile_add.find('input[name="profile-add-password"]').on('keyup', function(event) {
+		var password = this.value;
+		var strength = calculate_password_strength(password);
+
+		$password_strength.removeClass();
+
+		switch (strength) {
+			case 0:
+				$password_strength.addClass('ui yellow label').html(my_messages[language]['TOO_WEAK']);
+				break;
+			case 1:
+				$password_strength.addClass('ui green label').html(my_messages[language]['WEAK']);
+				break;
+			case 2:
+				$password_strength.addClass('ui blue label').html(my_messages[language]['GOOD']);
+				break;
+			default:
+				$password_strength.addClass('ui red label').html(my_messages[language]['STRONG']);
+		}
+	});
+
+	$login.find('form').form({
+		username: {
+			identifier: 'login-username',
+			rules: my_rules.username
+		},
+		password: {
+			identifier: 'login-password',
+			rules: my_rules.password
+		}
+	},
+	{
+		inline: true,
+		onSuccess: function() {
+			var input_password = $(this).find('input[type="password"]')[0];
+			var password = input_password.value;
+			var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
+
+			input_password.value = hash;
+
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: new FormData(this),
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					window.location = data.url;
+				},
+				error: function(xhr, status, error) {
+					append_messages_list(xhr.responseJSON.error_list, $login.find('h2'));
+				}
+			});
+
+			return false;
+		}
+	});
+
+	$profile_add.find('form').form({
+		username: {
+			identifier: 'profile-add-username',
+			rules: my_rules.username
+		},
+		email: {
+			identifier: 'profile-add-email',
+			rules: my_rules.email
+		},
+		password: {
+			identifier: 'profile-add-password',
+			rules: my_rules.password
+		},
+		repeat_password: {
+			identifier: 'profile-add-repeat-password',
+			rules: my_rules.match('profile-add-password')
+		}
+	},
+	{
+		inline: true,
+		onSuccess: function() {
+			var input_password = $(this).find('input[name="profile-add-password"]')[0];
+			var password = input_password.value;
+			var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
+
+			input_password.value = hash;
+
+			var input_password_repeat_password = $(this).find('input[name="profile-add-repeat-password"]')[0];
+			password = input_password_repeat_password.value;
+			hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
+
+			input_password_repeat_password.value = hash;
+
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: new FormData(this),
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					append_messages_list([data.message], $profile_add.find('h2'), true);
+				},
+				error: function(xhr, status, error) {
+					append_messages_list(xhr.responseJSON.error_list, $profile_add.find('h2'));
+				}
+			});
+
+			return false;
+		}
+	});
+});
+</script>
+
 {% endblock %}

@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('UPDATE_CHAPTER')}}
+{% endblock %}
+
+{% block content %}
+
+<form action="/chapter/edit/{{chapter.id}}/" method="post" class="chapter-edit-form ui form">
+	<h1 class="ui dividing header">
+		<i class="write icon"></i>
+		{{_('UPDATE_CHAPTER')}}
+	</h1>
+
+	<div class="required field">
+		<label>{{_('TITLE')}}</label>
+		<input type="text" name="chapter-edit-title" value="{{chapter.title}}">
+	</div>
+
+	<div class="field">
+		<textarea name="chapter-edit-content">{{chapter.content}}</textarea>
+	</div>
+
+	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+	<button type="submit" name="chapter-edit-submit" class="ui green button">
+		{{_('UPDATE')}}
+	</button>
+</form>
+
+<script src="{{url_for('.static', filename = 'js/tinymce/tinymce.min.js')}}"></script>
+
+<script>
+$(document).ready(function() {
+	var $chapter_edit_form = $('.chapter-edit-form');
+
+	tinymce.init({
+		selector: 'textarea[name="chapter-edit-content"]'
+	});
+
+	$chapter_edit_form.form({
+		title: {
+			identifier: 'chapter-edit-title',
+			rules: my_rules.title
+		}
+	},
+	{
+		inline: true,
+		onSuccess: function() {
+			var $chapter_edit_submit = $('button[name="chapter-edit-submit"]');
+			$chapter_edit_submit.addClass('disabled loading');
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: {
+					'chapter-edit-title': $chapter_edit_form.find('[name="chapter-edit-title"]').val(),
+					'chapter-edit-content': tinymce.get('chapter-edit-content').getContent(),
+					'_csrf_token': $chapter_edit_form.find('[name="_csrf_token"]').val()
+				},
+				success: function(data) {
+					window.location = data.url;
+				},
+				error: function(xhr, status, error) {
+					$chapter_edit_submit.removeClass('disabled loading');
+					append_messages_list(xhr.responseJSON.error_list, $chapter_edit_form.find('h1'));
+				}
+			});
+
+			return false;
+		}
+	});
+});
+</script>
+
+{% endblock %}

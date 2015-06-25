@@ -1,1466 +1,181 @@
-$(document).ready(function() {
-	'use strict';
+'use strict';
 
-	var language = $('[name="selected-language"]').val();
-
-	var path = window.location.pathname;
-
-	var my_messages = {
-		en: {
-			NAME_MIN: 'Must have at least 3 characters',
-			NAME_MAX: 'Can have at most 50 characters',
-			USERNAME_MIN: 'Must have at least 3 characters',
-			USERNAME_MAX: 'Can have at most 50 characters',
-			EMAIL: 'This is not a valid email address',
-			EMAIL_MAX: 'Can have at most 50 characters',
-			PASSWORD_MIN: 'Must have at least 6 characters',
-			BIOGRAPHY_MAX: 'Can have at most 500 characters',
-			TITLE_MAX: 'Can have at most 500 characters',
-			DESCRIPTION_MAX: 'Can have at most 500 characters',
-			EMPTY: 'This field is required',
-			CHECKED: 'This field is required',
-			UNWATCH: 'Unwatch',
-			WATCH: 'Watch',
-			UNSTAR: 'Unstar',
-			STAR: 'Star',
-			MATCH: 'This field must match the field above',
-			AVATAR_FORMAT: 'Unfortunately, we only support PNG, GIF, or JPG pictures',
-			AVATAR_SIZE: 'Unfortunately, we only support pictures with up to 1 MB size',
-			ADD_AVATAR: 'Upload new picture',
-			TOO_WEAK: 'Too Weak',
-			WEAK: 'Weak',
-			GOOD: 'Good',
-			STRONG: 'Strong',
-			DELETE_MODAL_MESSAGE: 'Are you ABSOLUTELY sure?\nIf so, please type in the title of the tale to confirm.',
-			DELETE_MODAL_WRONG_TITLE: 'Wrong tale title'
+var language = $('[name="selected-language"]').val();
+var my_messages = {
+	en: {
+		NAME_MIN: 'Must have at least 3 characters',
+		NAME_MAX: 'Can have at most 50 characters',
+		USERNAME_MIN: 'Must have at least 3 characters',
+		USERNAME_MAX: 'Can have at most 50 characters',
+		EMAIL: 'This is not a valid email address',
+		EMAIL_MAX: 'Can have at most 50 characters',
+		PASSWORD_MIN: 'Must have at least 6 characters',
+		BIOGRAPHY_MAX: 'Can have at most 500 characters',
+		TITLE_MAX: 'Can have at most 500 characters',
+		DESCRIPTION_MAX: 'Can have at most 500 characters',
+		EMPTY: 'This field is required',
+		CHECKED: 'This field is required',
+		UNWATCH: 'Unwatch',
+		WATCH: 'Watch',
+		UNSTAR: 'Unstar',
+		STAR: 'Star',
+		MATCH: 'This field must match the field above',
+		AVATAR_FORMAT: 'Unfortunately, we only support PNG, GIF, or JPG pictures',
+		AVATAR_SIZE: 'Unfortunately, we only support pictures with up to 1 MB size',
+		ADD_AVATAR: 'Upload new picture',
+		TOO_WEAK: 'Too Weak',
+		WEAK: 'Weak',
+		GOOD: 'Good',
+		STRONG: 'Strong',
+		DELETE_MODAL_MESSAGE: 'Are you ABSOLUTELY sure?\nIf so, please type in the title of the tale to confirm.',
+		DELETE_MODAL_WRONG_TITLE: 'Wrong tale title'
+	},
+	pt: {
+		NAME_MIN: 'Deve conter ao menos 3 caracteres',
+		NAME_MAX: 'Pode conter no máximo 50 caracters',
+		USERNAME_MIN: 'Deve conter ao menos 3 caracteres',
+		USERNAME_MAX: 'Pode conter no máximo 50 caracters',
+		EMAIL: 'Este não é um email válido',
+		EMAIL_MAX: 'Pode conter no máximo 50 caracters',
+		PASSWORD_MIN: 'Deve conter ao menos 6 caracteres',
+		BIOGRAPHY_MAX: 'Pode conter no máximo 500 caracteres',
+		TITLE_MAX: 'Pode conter no máximo 500 caracteres',
+		DESCRIPTION_MAX: 'Pode conter no máximo 500 caracteres',
+		EMPTY: 'Este campo é obrigatório',
+		CHECKED: 'Este campo é obrigatório',
+		UNWATCH: 'Parar de Seguir',
+		WATCH: 'Seguir',
+		UNSTAR: 'Tirar Recomendação',
+		STAR: 'Recomendar',
+		MATCH: 'Este campo deve ser igual ao de cima',
+		AVATAR_FORMAT: 'Infelizmente, suportamos apenas imagens em PGN, GIF ou JPG',
+		AVATAR_SIZE: 'Infelizmente, suportamos apenas imagens com tamanho de até 1 MB',
+		ADD_AVATAR: 'Enviar nova imagem',
+		TOO_WEAK: 'Muito fraca',
+		WEAK: 'Fraca',
+		GOOD: 'Boa',
+		STRONG: 'Forte',
+		DELETE_MODAL_MESSAGE: 'Você tem certeza ABSOLUTA?\nSe sim, por favor digite o título do conto para confirmar.',
+		DELETE_MODAL_WRONG_TITLE: 'Título do conto errado'
+	}
+};
+var my_rules = {
+	name: [
+		{
+			type: 'length[3]',
+			prompt: my_messages[language]['NAME_MIN']
 		},
-		pt: {
-			NAME_MIN: 'Deve conter ao menos 3 caracteres',
-			NAME_MAX: 'Pode conter no máximo 50 caracters',
-			USERNAME_MIN: 'Deve conter ao menos 3 caracteres',
-			USERNAME_MAX: 'Pode conter no máximo 50 caracters',
-			EMAIL: 'Este não é um email válido',
-			EMAIL_MAX: 'Pode conter no máximo 50 caracters',
-			PASSWORD_MIN: 'Deve conter ao menos 6 caracteres',
-			BIOGRAPHY_MAX: 'Pode conter no máximo 500 caracteres',
-			TITLE_MAX: 'Pode conter no máximo 500 caracteres',
-			DESCRIPTION_MAX: 'Pode conter no máximo 500 caracteres',
-			EMPTY: 'Este campo é obrigatório',
-			CHECKED: 'Este campo é obrigatório',
-			UNWATCH: 'Parar de Seguir',
-			WATCH: 'Seguir',
-			UNSTAR: 'Tirar Recomendação',
-			STAR: 'Recomendar',
-			MATCH: 'Este campo deve ser igual ao de cima',
-			AVATAR_FORMAT: 'Infelizmente, suportamos apenas imagens em PGN, GIF ou JPG',
-			AVATAR_SIZE: 'Infelizmente, suportamos apenas imagens com tamanho de até 1 MB',
-			ADD_AVATAR: 'Enviar nova imagem',
-			TOO_WEAK: 'Muito fraca',
-			WEAK: 'Fraca',
-			GOOD: 'Boa',
-			STRONG: 'Forte',
-			DELETE_MODAL_MESSAGE: 'Você tem certeza ABSOLUTA?\nSe sim, por favor digite o título do conto para confirmar.',
-			DELETE_MODAL_WRONG_TITLE: 'Título do conto errado'
+		{
+			type: 'maxLength[50]',
+			prompt: my_messages[language]['NAME_MAX']
 		}
-	};
-
-	var my_rules = {
-		name: [
-			{
-				type: 'length[3]',
-				prompt: my_messages[language]['NAME_MIN']
-			},
-			{
-				type: 'maxLength[50]',
-				prompt: my_messages[language]['NAME_MAX']
-			}
-		],
-		username: [
-			{
-				type: 'length[3]',
-				prompt: my_messages[language]['USERNAME_MIN']
-			},
-			{
-				type: 'maxLength[50]',
-				prompt: my_messages[language]['USERNAME_MAX']
-			}
-		],
-		email: [
-			{
-				type: 'email',
-				prompt: my_messages[language]['EMAIL']
-			},
-			{
-				type: 'maxLength[50]',
-				prompt: my_messages[language]['EMAIL_MAX']
-			}
-		],
-		password: [{
-			type: 'length[6]',
-			prompt: my_messages[language]['PASSWORD_MIN']
-		}],
-		biography: [{
-			type: 'maxLength[500]',
-			prompt: my_messages[language]['BIOGRAPHY_MAX']
-		}],
-		title: [
-			{
-				type: 'empty',
-				prompt: my_messages[language]['EMPTY']
-			},
-			{
-				type: 'maxLength[500]',
-				prompt: my_messages[language]['TITLE_MAX']
-			}
-		],
-		description: [{
-			type: 'maxLength[500]',
-			prompt: my_messages[language]['DESCRIPTION_MAX']
-		}],
-		empty: [{
+	],
+	username: [
+		{
+			type: 'length[3]',
+			prompt: my_messages[language]['USERNAME_MIN']
+		},
+		{
+			type: 'maxLength[50]',
+			prompt: my_messages[language]['USERNAME_MAX']
+		}
+	],
+	email: [
+		{
+			type: 'email',
+			prompt: my_messages[language]['EMAIL']
+		},
+		{
+			type: 'maxLength[50]',
+			prompt: my_messages[language]['EMAIL_MAX']
+		}
+	],
+	password: [{
+		type: 'length[6]',
+		prompt: my_messages[language]['PASSWORD_MIN']
+	}],
+	biography: [{
+		type: 'maxLength[500]',
+		prompt: my_messages[language]['BIOGRAPHY_MAX']
+	}],
+	title: [
+		{
 			type: 'empty',
 			prompt: my_messages[language]['EMPTY']
-		}],
-		checked: [{
-			type: 'checked',
-			prompt: my_messages[language]['CHECKED']
-		}],
-		match: function(otherFieldIdentifier) {
-			return [{
-				type: 'match[' + otherFieldIdentifier + ']',
-				prompt: my_messages[language]['MATCH']
-			}];
+		},
+		{
+			type: 'maxLength[500]',
+			prompt: my_messages[language]['TITLE_MAX']
 		}
-	};
+	],
+	description: [{
+		type: 'maxLength[500]',
+		prompt: my_messages[language]['DESCRIPTION_MAX']
+	}],
+	empty: [{
+		type: 'empty',
+		prompt: my_messages[language]['EMPTY']
+	}],
+	checked: [{
+		type: 'checked',
+		prompt: my_messages[language]['CHECKED']
+	}],
+	match: function(otherFieldIdentifier) {
+		return [{
+			type: 'match[' + otherFieldIdentifier + ']',
+			prompt: my_messages[language]['MATCH']
+		}];
+	}
+};
+var calculate_password_strength = function(password) {
+	if (password.length < 6) {
+		return 0;
+	}
+	else if (password.length < 8) {
+		return 1;
+	}
+	else {
+		var amount_of_groups = 0;
 
-	var calculate_password_strength = function(password) {
-		if (password.length < 6) {
-			return 0;
+		if (/[a-z]/.test(password)) {
+			++amount_of_groups;
 		}
-		else if (password.length < 8) {
+		if (/[A-Z]/.test(password)) {
+			++amount_of_groups;
+		}
+		if (/[0-9]/.test(password)) {
+			++amount_of_groups;
+		}
+		if (/[@#$%&\*\(\)!\-\+]/.test(password)) {
+			++amount_of_groups;
+		}
+
+		if (amount_of_groups == 1) {
 			return 1;
 		}
+		else if (amount_of_groups == 2) {
+			return 2;
+		}
 		else {
-			var amount_of_groups = 0;
-
-			if (/[a-z]/.test(password)) {
-				++amount_of_groups;
-			}
-			if (/[A-Z]/.test(password)) {
-				++amount_of_groups;
-			}
-			if (/[0-9]/.test(password)) {
-				++amount_of_groups;
-			}
-			if (/[@#$%&\*\(\)!\-\+]/.test(password)) {
-				++amount_of_groups;
-			}
-
-			if (amount_of_groups == 1) {
-				return 1;
-			}
-			else if (amount_of_groups == 2) {
-				return 2;
-			}
-			else {
-				return 3;
-			}
+			return 3;
 		}
-	};
-
-	var append_messages_list = function(messages_list, element, positive) {
-		var final_string = '<ul class="ui negative message" id="messages-list">';
-
-		if (positive) {
-			final_string = '<ul class="ui positive message" id="messages-list">';
-		}
-
-		for (var i = messages_list.length - 1; i >= 0; i--) {
-			final_string += '<li>' + messages_list[i] + '</li>';
-		}
-		final_string += '</ul>';
-		$('#messages-list').remove();
-		element.after(final_string);
-	};
-
-	// BEGIN index.html js;
-	if (path === '/') {
-		var $top_all = $('#top-all');
-		var $top_today = $('#top-today');
-		var $top_tales = $('.top-tales');
-
-		$top_all.on('click', function(event) {
-			$top_today.removeClass('active');
-			$top_all.addClass('active');
-
-			$.ajax({
-				type: 'get',
-				url: '/get_ten_best_tales',
-				data: {
-					timezone_offset: (new Date()).getTimezoneOffset()
-				},
-				datatype: 'json',
-				success: function(data) {
-					$top_tales.find('div').remove();
-					$top_tales.append(data);
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		});
-
-		$top_today.on('click', function(event) {
-			$top_all.removeClass('active');
-			$top_today.addClass('active');
-
-			$.ajax({
-				type: 'get',
-				url: '/get_ten_best_daily_tales',
-				data: {
-					timezone_offset: (new Date()).getTimezoneOffset()
-				},
-				datatype: 'json',
-				success: function(data) {
-					$top_tales.find('div').remove();
-					$top_tales.append(data);
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		});
-
-		$top_today.trigger('click');
 	}
-	// END index.html js
+};
+var append_messages_list = function(messages_list, element, positive) {
+	var final_string = '<ul class="ui negative message" id="messages-list">';
 
-	// BEGIN join.html js
-	if (path.indexOf('join') !== -1) {
-		var $login = $('.login');
-		var $signup = $('.signup');
-		var $password_strength = $signup.find('.password-strength');
-
-		$signup.find('input[name="signup-password"]').on('keyup', function(event) {
-			var password = this.value;
-			var strength = calculate_password_strength(password);
-
-			$password_strength.removeClass();
-
-			switch (strength) {
-				case 0:
-					$password_strength.addClass('ui yellow label').html(my_messages[language]['TOO_WEAK']);
-					break;
-				case 1:
-					$password_strength.addClass('ui green label').html(my_messages[language]['WEAK']);
-					break;
-				case 2:
-					$password_strength.addClass('ui blue label').html(my_messages[language]['GOOD']);
-					break;
-				default:
-					$password_strength.addClass('ui red label').html(my_messages[language]['STRONG']);
-			}
-		});
-
-		$login.find('form').form({
-			username: {
-				identifier: 'login-username',
-				rules: my_rules.username
-			},
-			password: {
-				identifier: 'login-password',
-				rules: my_rules.password
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				var input_password = $(this).find('input[type="password"]')[0];
-				var password = input_password.value;
-				var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-				input_password.value = hash;
-
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						append_messages_list(xhr.responseJSON.error_list, $login.find('h2'));
-					}
-				});
-
-				return false;
-			}
-		});
-
-		$signup.find('form').form({
-			username: {
-				identifier: 'signup-username',
-				rules: my_rules.username
-			},
-			email: {
-				identifier: 'signup-email',
-				rules: my_rules.email
-			},
-			password: {
-				identifier: 'signup-password',
-				rules: my_rules.password
-			},
-			repeat_password: {
-				identifier: 'signup-repeat-password',
-				rules: my_rules.match('signup-password')
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				var input_password = $(this).find('input[name="signup-password"]')[0];
-				var password = input_password.value;
-				var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-				input_password.value = hash;
-
-				var input_password_repeat_password = $(this).find('input[name="signup-repeat-password"]')[0];
-				password = input_password_repeat_password.value;
-				hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-				input_password_repeat_password.value = hash;
-
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						append_messages_list([data.message], $signup.find('h2'), true);
-					},
-					error: function(xhr, status, error) {
-						append_messages_list(xhr.responseJSON.error_list, $signup.find('h2'));
-					}
-				});
-
-				return false;
-			}
-		});
+	if (positive) {
+		final_string = '<ul class="ui positive message" id="messages-list">';
 	}
-	// END join.html js
 
-	// BEGIN password_reset.html js
-	if (path.indexOf('password_reset') !== -1) {
-		var $password_reset_form = $('.password-reset form');
-
-		$password_reset_form.form({
-			email: {
-				identifier: 'password-reset-email',
-				rules: my_rules.email
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						append_messages_list([data.message], $password_reset_form.find('h1'), true);
-					},
-					error: function(xhr, status, error) {
-						append_messages_list(xhr.responseJSON.error_list, $password_reset_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
+	for (var i = messages_list.length - 1; i >= 0; i--) {
+		final_string += '<li>' + messages_list[i] + '</li>';
 	}
-	// END password_reset.html js
+	final_string += '</ul>';
+	$('#messages-list').remove();
+	element.after(final_string);
+};
 
-	// BEGIN change_password.html js
-	if (path.indexOf('change_password') !== -1) {
-		var $change_password_form = $('.change-password form');
-
-		$change_password_form.form({
-			password: {
-				identifier: 'change-password-new-password',
-				rules: my_rules.password
-			},
-			repeat_password: {
-				identifier: 'change-password-confirm-new-password',
-				rules: my_rules.password
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				var input_password = $(this).find('input[name="change-password-new-password"]')[0];
-				var password = input_password.value;
-				var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-				input_password.value = hash;
-
-				var input_password_confirm_password = $(this).find('input[name="change-password-confirm-new-password"]')[0];
-				password = input_password_confirm_password.value;
-				hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-				input_password_confirm_password.value = hash;
-
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						append_messages_list(xhr.responseJSON.error_list, $change_password_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
-	}
-	// END change_password.html js
-
-	// BEGIN profile.html js
-	if (path.indexOf('profile') !== -1) {
-		var username = /profile\/([^\/]+)/.exec(path)[1];
-		var $own = $('.own');
-		var $participated = $('.participated');
-
-		var render_own_tales = function(offset, search_string) {
-			offset = parseInt(offset, 10);
-			$.ajax({
-				type: 'get',
-				url: '/get_rendered_own_tales',
-				datatype: 'json',
-				data: {
-					username: username,
-					offset: offset,
-					search_string: search_string
-				},
-				success: function(data) {
-					var $own_table = $own.find('table');
-					$own_table.removeClass('loading form');
-					$own_table.find('tbody').empty().append(data.template);
-
-					var $previous_button = $own.find('#previous-button');
-					var $next_button = $own.find('#next-button');
-
-					$previous_button.val(data.previous_offset);
-					$next_button.val(data.next_offset);
-
-					if (parseInt(data.previous_offset, 10) === offset) {
-						$previous_button.addClass('disabled');
-					}
-					else {
-						$previous_button.removeClass('disabled');
-					}
-
-					if (parseInt(data.next_offset, 10) === offset) {
-						$next_button.addClass('disabled');
-					}
-					else {
-						$next_button.removeClass('disabled');
-					}
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		};
-
-		var render_participated_tales = function(offset, search_string) {
-			offset = parseInt(offset, 10);
-			$.ajax({
-				type: 'get',
-				url: '/get_rendered_participated_tales',
-				datatype: 'json',
-				data: {
-					username: username,
-					offset: offset,
-					search_string: search_string
-				},
-				success: function(data) {
-					var $participated_table = $participated.find('table');
-					$participated_table.removeClass('loading form');
-					$participated_table.find('tbody').empty().append(data.template);
-
-					var $previous_button = $participated.find('#previous-button');
-					var $next_button = $participated.find('#next-button');
-
-					$previous_button.val(data.previous_offset);
-					$next_button.val(data.next_offset);
-
-					if (parseInt(data.previous_offset, 10) === offset) {
-						$previous_button.addClass('disabled');
-					}
-					else {
-						$previous_button.removeClass('disabled');
-					}
-
-					if (parseInt(data.next_offset, 10) === offset) {
-						$next_button.addClass('disabled');
-					}
-					else {
-						$next_button.removeClass('disabled');
-					}
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		};
-
-		$own.on('click', '.own-pagination', function(event) {
-			event.preventDefault();
-
-			render_own_tales(this.value, $own.find('input').val());
-
-			return false;
-		});
-
-		$participated.on('click', '.participated-pagination', function(event) {
-			event.preventDefault();
-
-			render_participated_tales(this.value, $participated.find('input').val());
-
-			return false;
-		});
-
-		render_own_tales(0);
-		render_participated_tales(0);
-
-		$own.on('submit', 'form', function(event) {
-			event.preventDefault();
-
-			render_own_tales(0, $(this).find('input').val());
-
-			return false;
-		});
-
-		$participated.on('submit', 'form', function(event) {
-			event.preventDefault();
-
-			render_participated_tales(0, $(this).find('input').val());
-
-			return false;
-		});
-	}
-	// END profile.html js
-
-	// BEGIN update.html js
-	if (path.indexOf('update/') !== -1) {
-		var $profile = $('.profile');
-		var $button_update_profile = $('.button-update-profile');
-
-		$profile.on('change', 'input[name="update-avatar"]', function(event) {
-			var file = this.files[0];
-
-			if (file) {
-				var $button_choose_file = $profile.find('.button-choose-file');
-				var $label_choose_file = $profile.find('.label-choose-file');
-
-				if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-					if (file.size < (1024 * 1024)) {
-						$button_choose_file.addClass('green').html(file.name);
-						$label_choose_file.removeClass('ui red label').html('');
-					}
-					else {
-						this.value = '';
-						this.files = [];
-						$button_choose_file.removeClass('green').html(my_messages[language]['ADD_AVATAR']);
-						$label_choose_file.addClass('ui red label').html(my_messages[language]['AVATAR_SIZE']);
-					}
-				}
-				else {
-					this.value = '';
-					this.files = [];
-					$button_choose_file.removeClass('green').html(my_messages[language]['ADD_AVATAR']);
-					$label_choose_file.addClass('ui red label').html(my_messages[language]['AVATAR_FORMAT']);
-				}
-			}
-		});
-
-		$profile.on('click', '.button-choose-file', function(event) {
-			event.preventDefault();
-
-			$profile.find('input[name="update-avatar"]').trigger('click');
-
-			return false;
-		});
-
-		$button_update_profile.on('click', function(event) {
-			$.ajax({
-				type: 'get',
-				url: '/get_user_info',
-				datatype: 'json',
-				data: {
-					user_id: this.value
-				},
-				success: function(data) {
-					$profile.find('form').remove();
-					$profile.append(data);
-
-					$profile.find('form').form({
-						name: {
-							identifier: 'update-name',
-							rules: my_rules.name
-						},
-						email: {
-							identifier: 'update-email',
-							rules: my_rules.email
-						},
-						email_visibility: {
-							identifier: 'update-email-visibility',
-							rules: my_rules.empty
-						},
-						biography: {
-							identifier: 'update-biography',
-							rules: my_rules.biography
-						}
-					},
-					{
-						inline: true,
-						onSuccess: function() {
-							var $update_profile_submit = $profile.find('button[name="update-profile-submit"]');
-							$update_profile_submit.addClass('disabled loading');
-							$.ajax({
-								type: this.method,
-								url: this.action,
-								data: new FormData(this),
-								processData: false,
-								contentType: false,
-								success: function(data) {
-									window.location = data.url;
-								},
-								error: function(xhr, status, error) {
-									$update_profile_submit.removeClass('disabled loading');
-									append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
-								}
-							});
-
-							return false;
-						},
-						onFailure: function() {
-							return false;
-						}
-					});
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		});
-
-		$button_update_profile.trigger('click');
-
-		$('.button-update-password').on('click', function(event) {
-			$.ajax({
-				type: 'get',
-				url: '/get_update_password_form',
-				datatype: 'json',
-				data: {
-					user_id: this.value
-				},
-				success: function(data) {
-					$profile.find('form').remove();
-					$profile.append(data);
-
-					var $update_password_strength = $('.password-strength');
-
-					$('input[name="update-new-password"]').on('keyup', function(event) {
-						var password = this.value;
-						var strength = calculate_password_strength(password);
-
-						$update_password_strength.removeClass();
-
-						switch (strength) {
-							case 0:
-								$update_password_strength.addClass('ui yellow label').html(my_messages[language]['TOO_WEAK']);
-								break;
-							case 1:
-								$update_password_strength.addClass('ui green label').html(my_messages[language]['WEAK']);
-								break;
-							case 2:
-								$update_password_strength.addClass('ui blue label').html(my_messages[language]['GOOD']);
-								break;
-							default:
-								$update_password_strength.addClass('ui red label').html(my_messages[language]['STRONG']);
-						}
-					});
-
-					$profile.find('form').form({
-						old_password: {
-							identifier: 'update-old-password',
-							rules: my_rules.password
-						},
-						new_password: {
-							identifier: 'update-new-password',
-							rules: my_rules.password
-						},
-						confirm_new_password: {
-							identifier: 'update-confirm-new-password',
-							rules: my_rules.match('update-new-password')
-						}
-					},
-					{
-						inline: true,
-						onSuccess: function() {
-							var input_old_password = $(this).find('input[name="update-old-password"]')[0];
-							var password = input_old_password.value;
-							var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-							input_old_password.value = hash;
-
-							var input_new_password = $(this).find('input[name="update-new-password"]')[0];
-							password = input_new_password.value;
-							hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-							input_new_password.value = hash;
-
-							var input_confirm_password = $(this).find('input[name="update-confirm-new-password"]')[0];
-							password = input_confirm_password.value;
-							hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-							input_confirm_password.value = hash;
-
-							$.ajax({
-								type: this.method,
-								url: this.action,
-								data: new FormData(this),
-								processData: false,
-								contentType: false,
-								success: function(data) {
-									window.location = data.url;
-								},
-								error: function(xhr, status, error) {
-									append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
-								}
-							});
-
-							return false;
-						},
-						onFailure: function() {
-							return false;
-						}
-					});
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		});
-	}
-	// END update.html js
-
-	// BEGIN tale.html js
-	var $upper_bar = $('.upper-bar');
-
-	if ($upper_bar.length > 0) {
-		var $to_fullscreen = $('#to-fullscreen');
-		var $fullscreen = $('#fullscreen');
-
-		$upper_bar.on('submit', '.form-unfollow', function(event) {
-			event.preventDefault();
-
-			var $form_unfollow = $('.form-unfollow');
-			var action = $form_unfollow[0].action;
-
-			$.ajax({
-				type: 'post',
-				url: action,
-				datatype: 'json',
-				data: new FormData(this),
-				processData: false,
-				contentType: false,
-				success: function(data) {
-					var $form_unfollow_button = $form_unfollow.find('button')[0];
-
-					$form_unfollow_button.innerHTML = data.followers + ' ' +
-						'<i class="unhide icon"></i>' + my_messages[language]['WATCH'];
-
-					$form_unfollow.attr(
-						'action',
-						action.replace('unfollow', 'follow')
-					);
-
-					$form_unfollow.attr(
-						'class',
-						'form-follow'
-					);
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-
-			return false;
-		});
-
-		$upper_bar.on('submit', '.form-follow', function(event) {
-			event.preventDefault();
-
-			var $form_follow = $('.form-follow');
-			var action = $form_follow[0].action;
-
-			$.ajax({
-				type: 'post',
-				url: action,
-				datatype: 'json',
-				data: new FormData(this),
-				processData: false,
-				contentType: false,
-				success: function(data) {
-					if (!data.error) {
-						var $form_follow_button = $form_follow.find('button')[0];
-
-						$form_follow_button.innerHTML = data.followers + ' ' +
-							'<i class="unhide icon"></i>' + my_messages[language]['UNWATCH'];
-
-						$form_follow.attr(
-							'action',
-							action.replace('follow', 'unfollow')
-						);
-
-						$form_follow.attr(
-							'class',
-							'form-unfollow'
-						);
-					}
-					else {
-						window.location = data.error;
-					}
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-
-			return false;
-		});
-
-		$upper_bar.on('submit', '.form-unstar', function(event) {
-			event.preventDefault();
-
-			var $form_unstar = $('.form-unstar');
-			var action = $form_unstar[0].action;
-
-			$.ajax({
-				type: 'post',
-				url: action,
-				datatype: 'json',
-				data: new FormData(this),
-				processData: false,
-				contentType: false,
-				success: function(data) {
-					var $form_unstar_button = $form_unstar.find('button')[0];
-
-					$form_unstar_button.innerHTML = data.stars + ' ' +
-						'<i class="star icon"></i>' + my_messages[language]['STAR'];
-
-					$form_unstar.attr(
-						'action',
-						action.replace('unstar', 'star')
-					);
-
-					$form_unstar.attr(
-						'class',
-						'form-star'
-					);
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-
-			return false;
-		});
-
-		$upper_bar.on('submit', '.form-star', function(event) {
-			event.preventDefault();
-
-			var $form_star = $('.form-star');
-			var action = $form_star[0].action;
-
-			$.ajax({
-				type: 'post',
-				url: action,
-				datatype: 'json',
-				data: new FormData(this),
-				processData: false,
-				contentType: false,
-				success: function(data) {
-					if (!data.error) {
-						var $form_star_button = $form_star.find('button')[0];
-
-						$form_star_button.innerHTML = data.stars + ' ' +
-							'<i class="star icon"></i>' + my_messages[language]['UNSTAR'];
-
-						$form_star.attr(
-							'action',
-							action.replace('star', 'unstar')
-						);
-
-						$form_star.attr(
-							'class',
-							'form-unstar'
-						);
-					}
-					else {
-						window.location = data.error;
-					}
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-
-			return false;
-		});
-
-		if (path.indexOf('/fullscreen') !== -1) {
-			$fullscreen.modal('show');
-		}
-
-		$to_fullscreen.on('click', function(event) {
-			$fullscreen.modal('show');
-		});
-	}
-	// END tale.html js
-
-	// BEGIN update_tale.html js
-	if (path.indexOf('update_tale') !== -1) {
-		var $main_form = $('.main form');
-		$main_form.form({
-			title: {
-				identifier: 'update-tale-title',
-				rules: my_rules.title
-			},
-			description: {
-				identifier: 'update-tale-description',
-				rules: my_rules.description
-			},
-			genres: {
-				identifier: 'update-tale-genres',
-				rules: [{
-					type: 'empty_genres',
-					prompt: my_messages[language]['EMPTY']
-				}]
-			},
-			license: {
-				identifier: 'update-tale-license',
-				rules: my_rules.checked
-			},
-			type: {
-				identifier: 'update-tale-type',
-				rules: my_rules.checked
-			}
-		},
-		{
-			rules: {
-				empty_genres: function() {
-					return ($('[name="update-tale-genres"]')[0].children.length > 0);
-				}
-			},
-			inline: true,
-			onSuccess: function() {
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						append_messages_list(xhr.responseJSON.error_list, $main_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
-
-		var $genres = $('#genres');
-		var $update_tale_genres = $('select[name="update-tale-genres"]');
-		var $available_genres = $('select[name="available-genres"]');
-
-		$('#available-genres').on('keyup', function(event) {
-			var string = this.value;
-			var select = $available_genres[0];
-
-			for (var i = 0; i < select.length; i++) {
-				if (select[i].innerHTML.indexOf(string) < 0) {
-					$(select[i]).attr('hidden', 'true');
-				}
-				else {
-					$(select[i]).removeAttr('hidden');
-				}
-			}
-		});
-
-		$('#taken-genres').on('keyup', function(event) {
-			var string = this.value;
-			var select = $update_tale_genres[0];
-
-			for (var i = 0; i < select.length; i++) {
-				if (select[i].innerHTML.indexOf(string) < 0) {
-					$(select[i]).attr('hidden', 'true');
-				}
-				else {
-					$(select[i]).removeAttr('hidden');
-				}
-			}
-		});
-
-		$('#add').on('click', function(event) {
-			var something = $available_genres.find('option:selected');
-
-			for (var i = 0; i < something.length; i++) {
-				$update_tale_genres.append(something[i]);
-			}
-		});
-
-		$('#remove').on('click', function(event) {
-			var something = $update_tale_genres.find('option:selected');
-
-			for (var i = 0; i < something.length; i++) {
-				$available_genres.append(something[i]);
-			}
-		});
-
-		$genres.on('dblclick', 'select[name="update-tale-genres"] option', function(event) {
-			$available_genres.append(this);
-
-			$update_tale_genres.find('option').each(function() {
-				$(this).attr('selected', 'selected');
-			});
-		});
-		$genres.on('dblclick', 'select[name="available-genres"] option', function(event) {
-			$update_tale_genres.append(this);
-		});
-	}
-	// END update_tale.html js
-
-	// BEGIN search.html js
-	if (path.indexOf('/search') !== -1) {
-		$('#layout-search-bar').empty();
-		$('input[name="c"]').focus();
-		$('#sort-bar').on('change', function(event) {
-			window.location = window.location.href.replace(/\&?s=\d+\&?/, '') + '&s=' + $(this).find('option:selected').val();
-		});
-	}
-	// END search.html js
-
-	// BEGIN contribution_requests.html
-	if (path.indexOf('contribution_requests') !== -1) {
-		var $contribution_requests = $('.contribution-requests');
-		var tale_id = /contribution_requests\/([0-9]+)/.exec(window.location)[1];
-
-		var $o_c_r = $('.o-c-r');
-		var $c_c_r = $('.c-c-r');
-
-		$o_c_r.on('click', function(event) {
-			if ($contribution_requests.find('.open-contribution-requests').length === 1) {
-				return;
-			}
-			$o_c_r.addClass('active');
-			$c_c_r.removeClass('active');
-
-			$.ajax({
-				type: 'get',
-				url: '/get_open_contribution_requests',
-				datatype: 'json',
-				data: {
-					tale_id: tale_id
-				},
-				success: function(data) {
-					$contribution_requests.find('.closed-contribution-requests').remove();
-					$contribution_requests.append(data);
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		});
-
-		$o_c_r.trigger('click');
-
-		$c_c_r.on('click', function(event) {
-			if ($contribution_requests.find('.closed-contribution-requests').length === 1) {
-				return;
-			}
-			$c_c_r.addClass('active');
-			$o_c_r.removeClass('active');
-
-			$.ajax({
-				type: 'get',
-				url: '/get_closed_contribution_requests',
-				datatype: 'json',
-				data: {
-					tale_id: tale_id
-				},
-				success: function(data) {
-					$contribution_requests.find('.open-contribution-requests').remove();
-					$contribution_requests.append(data);
-				},
-				error: function(xhr, status, error) {
-					console.log(xhr);
-				}
-			});
-		});
-	}
-	// END contribution_requests.html
-
-	// BEGIN create.html js
-	if (path.indexOf('create') !== -1) {
-		var $create_form = $('.create form');
-		$create_form.form({
-			title: {
-				identifier: 'create-title',
-				rules: my_rules.title
-			},
-			description: {
-				identifier: 'create-description',
-				rules: my_rules.description
-			},
-			genres: {
-				identifier: 'create-genres',
-				rules: [{
-					type: 'empty_genres',
-					prompt: my_messages[language]['EMPTY']
-				}]
-			},
-			license: {
-				identifier: 'create-license',
-				rules: my_rules.checked
-			},
-			type: {
-				identifier: 'create-type',
-				rules: my_rules.checked
-			}
-		},
-		{
-			rules: {
-				empty_genres: function() {
-					return ($('[name="create-genres"]')[0].children.length > 0);
-				}
-			},
-			inline: true,
-			onSuccess: function() {
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						append_messages_list(xhr.responseJSON.error_list, $create_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
-
-		var $genres = $('#genres');
-		var $create_genres = $('select[name="create-genres"]');
-		var $available_genres = $('select[name="available-genres"]');
-
-		$('#available-genres').on('keyup', function(event) {
-			var string = this.value;
-			var select = $available_genres[0];
-
-			for (var i = 0; i < select.length; i++) {
-				if (select[i].innerHTML.indexOf(string) < 0) {
-					$(select[i]).attr('hidden', 'true');
-				}
-				else {
-					$(select[i]).removeAttr('hidden');
-				}
-			}
-		});
-
-		$('#taken-genres').on('keyup', function(event) {
-			var string = this.value;
-			var select = $create_genres[0];
-
-			for (var i = 0; i < select.length; i++) {
-				if (select[i].innerHTML.indexOf(string) < 0) {
-					$(select[i]).attr('hidden', 'true');
-				}
-				else {
-					$(select[i]).removeAttr('hidden');
-				}
-			}
-		});
-
-		$('#add').on('click', function(event) {
-			var something = $available_genres.find('option:selected');
-
-			for (var i = 0; i < something.length; i++) {
-				$create_genres.append(something[i]);
-			}
-		});
-
-		$('#remove').on('click', function(event) {
-			var something = $create_genres.find('option:selected');
-
-			for (var i = 0; i < something.length; i++) {
-				$available_genres.append(something[i]);
-			}
-		});
-
-		$genres.on('dblclick', 'select[name="create-genres"] option', function(event) {
-			$available_genres.append(this);
-
-			$create_genres.find('option').each(function() {
-				$(this).attr('selected', 'selected');
-			});
-		});
-		$genres.on('dblclick', 'select[name="available-genres"] option', function(event) {
-			$create_genres.append(this);
-		});
-	}
-	// END create.html js
-
-	// BEGIN contribute.html js
-	if (path.indexOf('/contribute') !== -1) {
-		var $contribute_form = $('.contribute-form');
-
-		tinymce.init({
-			selector: 'textarea[name="contribute-content"]'
-		});
-
-		$contribute_form.form({
-			title: {
-				identifier: 'contribute-title',
-				rules: my_rules.title
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				var $contribute_submit = $('button[name="contribute-submit"]');
-				$contribute_submit.addClass('disabled loading');
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: {
-						'contribute-title': $contribute_form.find('[name="contribute-title"]').val(),
-						'contribute-content': tinymce.get('contribute-content').getContent(),
-						'_csrf_token': $contribute_form.find('[name="_csrf_token"]').val()
-					},
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						$contribute_submit.removeClass('disabled loading');
-						append_messages_list(xhr.responseJSON.error_list, $contribute_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
-	}
-	// END contribute.html js
-
-	// BEGIN settings.html js;
-	if (path.indexOf('settings') !== -1) {
-		var $form_delete = $('#form-delete');
-
-		$form_delete.on('submit', function(event) {
-			event.preventDefault();
-
-			var original_tale_title = $(this).find('button').val();
-			var delete_modal = prompt(my_messages[language]['DELETE_MODAL_MESSAGE']);
-
-			if (delete_modal) {
-				if (delete_modal === original_tale_title) {
-					$.ajax({
-						type: this.method,
-						url: this.action,
-						datatype: 'json',
-						data: new FormData(this),
-						processData: false,
-						contentType: false,
-						success: function(data) {
-							window.location = data.url;
-						},
-						error: function(xhr, status, error) {
-							console.log(xhr);
-						}
-					});
-				}
-				else {
-					$(this).find('div').remove();
-					$(this).append('<div class="ui red message">' + my_messages[language]['DELETE_MODAL_WRONG_TITLE'] + '</div>');
-				}
-			}
-
-			return false;
-		});
-	}
-	// END settings.html js
-
-	// BEGIN contact.html js
-	if (path.indexOf('contact') !== -1) {
-		var $contact_form = $('.contact-form');
-
-		$contact_form.form({
-			name: {
-				identifier: 'contact-name',
-				rules: my_rules.name
-			},
-			email: {
-				identifier: 'contact-email',
-				rules: my_rules.email
-			},
-			message: {
-				identifier: 'contact-message',
-				rules: my_rules.empty
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						var $received_message = $('#received-message');
-						$received_message.html(data);
-						$received_message.addClass('ui positive message');
-					},
-					error: function(xhr, status, error) {
-						// TODO: see what exaclty this "append_messages_list" does.
-						append_messages_list(xhr.responseJSON.error_list, $contact_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
-	}
-	// END contact.html js
-
-	// BEGIN update_chapter.html js
-	if (path.indexOf('/update_chapter') !== -1) {
-		var $update_chapter_form = $('.update-chapter-form');
-
-		tinymce.init({
-			selector: 'textarea[name="update-chapter-content"]'
-		});
-
-		$update_chapter_form.form({
-			title: {
-				identifier: 'update-chapter-title',
-				rules: my_rules.title
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				var $update_chapter_submit = $('button[name="update-chapter-submit"]');
-				$update_chapter_submit.addClass('disabled loading');
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: {
-						'update-chapter-title': $update_chapter_form.find('[name="update-chapter-title"]').val(),
-						'update-chapter-content': tinymce.get('update-chapter-content').getContent(),
-						'_csrf_token': $update_chapter_form.find('[name="_csrf_token"]').val()
-					},
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						$update_chapter_submit.removeClass('disabled loading');
-						append_messages_list(xhr.responseJSON.error_list, $update_chapter_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
-	}
-	// END update_chapter.html js
-
-	// BEGIN update_contribution_request.html js
-	if (path.indexOf('/update_contribution_request') !== -1) {
-		var $update_contribution_request_form = $('.update-contribution-request-form');
-
-		tinymce.init({
-			selector: 'textarea[name="update-contribution-request-content"]'
-		});
-
-		$update_contribution_request_form.form({
-			title: {
-				identifier: 'update-contribution-request-title',
-				rules: my_rules.title
-			}
-		},
-		{
-			inline: true,
-			onSuccess: function() {
-				var $update_contribution_request_submit = $('button[name="update-contribution-request-submit"]');
-				$update_contribution_request_submit.addClass('disabled loading');
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: {
-						'update-contribution-request-title': $update_contribution_request_form.find('[name="update-contribution-request-title"]').val(),
-						'update-contribution-request-content': tinymce.get('update-contribution-request-content').getContent(),
-						'_csrf_token': $update_contribution_request_form.find('[name="_csrf_token"]').val()
-					},
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						$update_contribution_request_submit.removeClass('disabled loading');
-						append_messages_list(xhr.responseJSON.error_list, $update_contribution_request_form.find('h1'));
-					}
-				});
-
-				return false;
-			}
-		});
-	}
-	// END update_contribution_request.html js
-});
-
-/*
- A JavaScript implementation of the SHA family of hashes, as
- defined in FIPS PUB 180-2 as well as the corresponding HMAC implementation
- as defined in FIPS PUB 198a
-
- Copyright Brian Turek 2008-2015
- Distributed under the BSD License
- See http://caligatio.github.com/jsSHA/ for more information
-
- Several functions taken from Paul Johnston
-*/
 'use strict';(function(F){function u(a,b,d){var c=0,f=[0],h="",g=null,h=d||"UTF8";if("UTF8"!==h&&"UTF16BE"!==h&&"UTF16LE"!==h)throw"encoding must be UTF8, UTF16BE, or UTF16LE";if("HEX"===b){if(0!==a.length%2)throw"srcString of HEX type must be in byte increments";g=w(a);c=g.binLen;f=g.value}else if("TEXT"===b)g=x(a,h),c=g.binLen,f=g.value;else if("B64"===b)g=y(a),c=g.binLen,f=g.value;else if("BYTES"===b)g=z(a),c=g.binLen,f=g.value;else throw"inputFormat must be HEX, TEXT, B64, or BYTES";this.getHash=
 function(a,b,d,h){var g=null,e=f.slice(),k=c,l;3===arguments.length?"number"!==typeof d&&(h=d,d=1):2===arguments.length&&(d=1);if(d!==parseInt(d,10)||1>d)throw"numRounds must a integer >= 1";switch(b){case "HEX":g=A;break;case "B64":g=B;break;case "BYTES":g=C;break;default:throw"format must be HEX, B64, or BYTES";}if("SHA-224"===a)for(l=0;l<d;l+=1)e=t(e,k,a),k=224;else if("SHA-256"===a)for(l=0;l<d;l+=1)e=t(e,k,a),k=256;else throw"Chosen SHA variant is not supported";return g(e,D(h))};this.getHMAC=
 function(a,b,d,g,s){var e,k,l,n,p=[],E=[];e=null;switch(g){case "HEX":g=A;break;case "B64":g=B;break;case "BYTES":g=C;break;default:throw"outputFormat must be HEX, B64, or BYTES";}if("SHA-224"===d)k=64,n=224;else if("SHA-256"===d)k=64,n=256;else throw"Chosen SHA variant is not supported";if("HEX"===b)e=w(a),l=e.binLen,e=e.value;else if("TEXT"===b)e=x(a,h),l=e.binLen,e=e.value;else if("B64"===b)e=y(a),l=e.binLen,e=e.value;else if("BYTES"===b)e=z(a),l=e.binLen,e=e.value;else throw"inputFormat must be HEX, TEXT, B64, or BYTES";

@@ -23,4 +23,64 @@
 	</div>
 </div>
 
+<script>
+$(document).ready(function() {
+	var $contribution_requests = $('.contribution-requests');
+	var tale_id = '{{tale.id}}';
+
+	var $o_c_r = $('.o-c-r');
+	var $c_c_r = $('.c-c-r');
+
+	$o_c_r.on('click', function(event) {
+		if ($contribution_requests.find('.open-contribution-requests').length === 1) {
+			return;
+		}
+		$o_c_r.addClass('active');
+		$c_c_r.removeClass('active');
+
+		$.ajax({
+			type: 'get',
+			url: '/get_open_contribution_requests',
+			datatype: 'json',
+			data: {
+				tale_id: tale_id
+			},
+			success: function(data) {
+				$contribution_requests.find('.closed-contribution-requests').remove();
+				$contribution_requests.append(data);
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	});
+
+	$o_c_r.trigger('click');
+
+	$c_c_r.on('click', function(event) {
+		if ($contribution_requests.find('.closed-contribution-requests').length === 1) {
+			return;
+		}
+		$c_c_r.addClass('active');
+		$o_c_r.removeClass('active');
+
+		$.ajax({
+			type: 'get',
+			url: '/get_closed_contribution_requests',
+			datatype: 'json',
+			data: {
+				tale_id: tale_id
+			},
+			success: function(data) {
+				$contribution_requests.find('.open-contribution-requests').remove();
+				$contribution_requests.append(data);
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	});
+});
+</script>
+
 {% endblock %}

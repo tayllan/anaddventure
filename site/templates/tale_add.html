@@ -1,0 +1,217 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('NEW_TALE')}}
+{% endblock %}
+
+{% block content %}
+<div class="tale-add ui centered grid form">
+	<div class="doubling one column row">
+		<form action="/tale/add/" method="post" class="column">
+			<h1 class="ui dividing header">
+				<i class="write icon"></i>
+				{{_('NEW_TALE')}}
+			</h1>
+
+			<div class="required field">
+				<label>{{_('TITLE')}}</label>
+				<input type="text" name="tale-add-title" tabindex="1">
+			</div>
+
+			<div class="field">
+				<label>{{_('DESCRIPTION')}}</label>
+				<textarea cols="80" rows="10" name="tale-add-description" tabindex="2"></textarea>
+			</div>
+
+			<div class="grouped fields column" id="genres">
+				<label>{{_('GENRES')}} <span style="color: #d95c5c;">*</span></label>
+
+				<div class="ui stackable three column grid">
+					<div class="column">
+						<div class="ui fluid icon input">
+							<input type="text" id="available-genres" tabindex="3">
+							<i class="search icon"></i>
+						</div>
+						<select size="5" name="available-genres" multiple>
+							{% for genre in genres|reverse %}
+								<option value="{{genre.id}}">{{_(genre.type)}}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+					<div class="column center aligned">
+						<div class="ui green button" id="add"><i class="arrow right icon"></i>{{_('ADD')}}</div>
+						<br>
+						<br>
+						<div class="ui red button" id="remove"><i class="arrow left icon"></i>{{_('REMOVE')}}</div>
+					</div>
+
+					<div class="column">
+						<div class="ui fluid icon input">
+							<input type="text" id="taken-genres">
+							<i class="search icon"></i>
+						</div>
+						<div class="field">
+							<select size="5" name="tale-add-genres" multiple>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="ui stackable two column grid">
+				<div class="grouped fields column">
+					<label>{{_('TALE_TYPE')}}</label>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input id="public" type="radio"  name="tale-add-type" value="1" checked tabindex="4">
+							<label for="public">
+								<i class="book icon"></i>
+								{{_('PUBLIC')}}
+							</label>
+						</div>
+					</div>
+					<div class="field">
+						<div class="ui radio checkbox">
+							<input id="private" type="radio"  name="tale-add-type" value="2">
+							<label for="private">
+								<i class="lock icon"></i>
+								{{_('PRIVATE')}}
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="grouped fields column">
+					<label>{{_('TALE_LICENSE')}}</label>
+					{% for license in licenses %}
+						<div class="field">
+							<div class="ui radio checkbox">
+								<input id="{{license.id}}" type="radio"  name="tale-add-license" value="{{license.id}}" checked>
+								<label for="{{license.id}}">{{license.name}}  <a href="{{license.url}}" target="_blank">({{_('SPECIFICATION')}})</a></label>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+			<button type="submit" name="tale-add-submit" class="ui green button" tabindex="5">{{_('CREATE_TALE')}}</button>
+		</form>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+	var $tale_add_form = $('.tale-add form');
+	$tale_add_form.form({
+		title: {
+			identifier: 'tale-add-title',
+			rules: my_rules.title
+		},
+		description: {
+			identifier: 'tale-add-description',
+			rules: my_rules.description
+		},
+		genres: {
+			identifier: 'tale-add-genres',
+			rules: [{
+				type: 'empty_genres',
+				prompt: my_messages[language]['EMPTY']
+			}]
+		},
+		license: {
+			identifier: 'tale-add-license',
+			rules: my_rules.checked
+		},
+		type: {
+			identifier: 'tale-add-type',
+			rules: my_rules.checked
+		}
+	},
+	{
+		rules: {
+			empty_genres: function() {
+				return ($('[name="tale-add-genres"]')[0].children.length > 0);
+			}
+		},
+		inline: true,
+		onSuccess: function() {
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: new FormData(this),
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					window.location = data.url;
+				},
+				error: function(xhr, status, error) {
+					append_messages_list(xhr.responseJSON.error_list, $tale_add_form.find('h1'));
+				}
+			});
+
+			return false;
+		}
+	});
+
+	var $genres = $('#genres');
+	var $tale_add_genres = $('select[name="tale-add-genres"]');
+	var $available_genres = $('select[name="available-genres"]');
+
+	$('#available-genres').on('keyup', function(event) {
+		var string = this.value;
+		var select = $available_genres[0];
+
+		for (var i = 0; i < select.length; i++) {
+			if (select[i].innerHTML.indexOf(string) < 0) {
+				$(select[i]).attr('hidden', 'true');
+			}
+			else {
+				$(select[i]).removeAttr('hidden');
+			}
+		}
+	});
+
+	$('#taken-genres').on('keyup', function(event) {
+		var string = this.value;
+		var select = $tale_add_genres[0];
+
+		for (var i = 0; i < select.length; i++) {
+			if (select[i].innerHTML.indexOf(string) < 0) {
+				$(select[i]).attr('hidden', 'true');
+			}
+			else {
+				$(select[i]).removeAttr('hidden');
+			}
+		}
+	});
+
+	$('#add').on('click', function(event) {
+		var something = $available_genres.find('option:selected');
+
+		for (var i = 0; i < something.length; i++) {
+			$tale_add_genres.append(something[i]);
+		}
+	});
+
+	$('#remove').on('click', function(event) {
+		var something = $tale_add_genres.find('option:selected');
+
+		for (var i = 0; i < something.length; i++) {
+			$available_genres.append(something[i]);
+		}
+	});
+
+	$genres.on('dblclick', 'select[name="tale-add-genres"] option', function(event) {
+		$available_genres.append(this);
+
+		$tale_add_genres.find('option').each(function() {
+			$(this).attr('selected', 'selected');
+		});
+	});
+	$genres.on('dblclick', 'select[name="available-genres"] option', function(event) {
+		$tale_add_genres.append(this);
+	});
+});
+</script>
+{% endblock %}

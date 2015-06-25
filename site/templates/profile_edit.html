@@ -1,0 +1,253 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('ACCOUNT_SETTINGS')}}
+{% endblock %}
+
+{% block content %}
+<div class="ui grid">
+	<div class="doubling one column row">
+		<div class="column">
+			<div class="ui grid">
+				<div class="doubling two column row">
+					<div class="column">
+						{% include "fragment/profile_side_bar.html" %}
+					</div>
+
+					<div class="column"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="profile column">
+			<div class="ui grid">
+				<div class="doubling two column row">
+					<div class="column">
+						<h2 class="ui header">
+							<i class="settings icon"></i>
+							<div class="content">
+								{{_('ACCOUNT_SETTINGS')}}
+							</div>
+						</h2>
+					</div>
+
+					<div class="column">
+						<button class="button-profile-edit ui button" value="{{user.id}}">
+							{{_('UPDATE_PROFILE')}}
+						</button>
+						<button class="button-profile-edit-password ui button" value="{{user.id}}">
+							{{_('UPDATE_PASSWORD')}}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function() {
+	var $profile = $('.profile');
+	var $button_profile_edit = $('.button-profile-edit');
+
+	$profile.on('change', 'input[name="profile-edit-avatar"]', function(event) {
+		var file = this.files[0];
+
+		if (file) {
+			var $button_choose_file = $profile.find('.button-choose-file');
+			var $label_choose_file = $profile.find('.label-choose-file');
+
+			if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+				if (file.size < (1024 * 1024)) {
+					$button_choose_file.addClass('green').html(file.name);
+					$label_choose_file.removeClass('ui red label').html('');
+				}
+				else {
+					this.value = '';
+					this.files = [];
+					$button_choose_file.removeClass('green').html(my_messages[language]['ADD_AVATAR']);
+					$label_choose_file.addClass('ui red label').html(my_messages[language]['AVATAR_SIZE']);
+				}
+			}
+			else {
+				this.value = '';
+				this.files = [];
+				$button_choose_file.removeClass('green').html(my_messages[language]['ADD_AVATAR']);
+				$label_choose_file.addClass('ui red label').html(my_messages[language]['AVATAR_FORMAT']);
+			}
+		}
+	});
+
+	$profile.on('click', '.button-choose-file', function(event) {
+		event.preventDefault();
+
+		$profile.find('input[name="profile-edit-avatar"]').trigger('click');
+
+		return false;
+	});
+
+	$button_profile_edit.on('click', function(event) {
+		$.ajax({
+			type: 'get',
+			url: '/get_user_info',
+			datatype: 'json',
+			data: {
+				user_id: this.value
+			},
+			success: function(data) {
+				$profile.find('form').remove();
+				$profile.append(data);
+
+				$profile.find('form').form({
+					name: {
+						identifier: 'profile-edit-name',
+						rules: my_rules.name
+					},
+					email: {
+						identifier: 'profile-edit-email',
+						rules: my_rules.email
+					},
+					email_visibility: {
+						identifier: 'profile-edit-email-visibility',
+						rules: my_rules.empty
+					},
+					biography: {
+						identifier: 'profile-edit-biography',
+						rules: my_rules.biography
+					}
+				},
+				{
+					inline: true,
+					onSuccess: function() {
+						var $profile_edit_submit = $profile.find('button[name="profile-edit-submit"]');
+						$profile_edit_submit.addClass('disabled loading');
+						$.ajax({
+							type: this.method,
+							url: this.action,
+							data: new FormData(this),
+							processData: false,
+							contentType: false,
+							success: function(data) {
+								window.location = data.url;
+							},
+							error: function(xhr, status, error) {
+								$profile_edit_submit.removeClass('disabled loading');
+								append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
+							}
+						});
+
+						return false;
+					},
+					onFailure: function() {
+						return false;
+					}
+				});
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	});
+
+	$button_profile_edit.trigger('click');
+
+	$('.button-profile-edit-password').on('click', function(event) {
+		$.ajax({
+			type: 'get',
+			url: '/get_update_password_form',
+			datatype: 'json',
+			data: {
+				user_id: this.value
+			},
+			success: function(data) {
+				$profile.find('form').remove();
+				$profile.append(data);
+
+				var $profile_edit_password_strength = $('.password-strength');
+
+				$('input[name="profile-edit-password-new-password"]').on('keyup', function(event) {
+					var password = this.value;
+					var strength = calculate_password_strength(password);
+
+					$profile_edit_password_strength.removeClass();
+
+					switch (strength) {
+						case 0:
+							$profile_edit_password_strength.addClass('ui yellow label').html(my_messages[language]['TOO_WEAK']);
+							break;
+						case 1:
+							$profile_edit_password_strength.addClass('ui green label').html(my_messages[language]['WEAK']);
+							break;
+						case 2:
+							$profile_edit_password_strength.addClass('ui blue label').html(my_messages[language]['GOOD']);
+							break;
+						default:
+							$profile_edit_password_strength.addClass('ui red label').html(my_messages[language]['STRONG']);
+					}
+				});
+
+				$profile.find('form').form({
+					old_password: {
+						identifier: 'profile-edit-password-old-password',
+						rules: my_rules.password
+					},
+					new_password: {
+						identifier: 'profile-edit-password-new-password',
+						rules: my_rules.password
+					},
+					confirm_new_password: {
+						identifier: 'profile-edit-password-confirm-new-password',
+						rules: my_rules.match('profile-edit-password-new-password')
+					}
+				},
+				{
+					inline: true,
+					onSuccess: function() {
+						var input_old_password = $(this).find('input[name="profile-edit-password-old-password"]')[0];
+						var password = input_old_password.value;
+						var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
+
+						input_old_password.value = hash;
+
+						var input_new_password = $(this).find('input[name="profile-edit-password-new-password"]')[0];
+						password = input_new_password.value;
+						hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
+
+						input_new_password.value = hash;
+
+						var input_confirm_password = $(this).find('input[name="profile-edit-password-confirm-new-password"]')[0];
+						password = input_confirm_password.value;
+						hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
+
+						input_confirm_password.value = hash;
+
+						$.ajax({
+							type: this.method,
+							url: this.action,
+							data: new FormData(this),
+							processData: false,
+							contentType: false,
+							success: function(data) {
+								window.location = data.url;
+							},
+							error: function(xhr, status, error) {
+								append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
+							}
+						});
+
+						return false;
+					},
+					onFailure: function() {
+						return false;
+					}
+				});
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+	});
+});
+</script>
+
+{% endblock %}

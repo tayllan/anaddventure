@@ -18,21 +18,21 @@
 			<div class="options-bar ui stackable three column grid" id="disappear">
 				<p class="column">
 					<i class="wait icon"></i>
-					<a href="/contributions/{{tale.id}}">
+					<a href="/tale/collaborations/{{tale.id}}">
 						{{_('CONTRIBUTIONS')|capitalize}}
 					</a>
 				</p>
 
 				<p class="column">
 					<i class="fork icon"></i>
-					<a href="/branches/{{tale.id}}">
+					<a href="/tale/branches/{{tale.id}}">
 						{{_('CHAPTERS')}}
 					</a>
 				</p>
 
 				<p class="column">
 					<i class="users icon"></i>
-					<a href="/contributors/{{tale.id}}">
+					<a href="/tale/contributors/{{tale.id}}">
 						{{_('WRITERS')}}
 					</a>
 				</p>
@@ -55,7 +55,7 @@
 						<div class="ten wide column">
 							<div class="ui stackable two column grid">
 								<div class="column">
-									<form action="/download_chapter/{{tale.chapter.id}}/" method="post">
+									<form action="/chapter/download/{{tale.chapter.id}}/" method="post">
 										<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
 										<button type="submit" class="ui small button">
 											{{tale.chapter.downloads}}
@@ -66,7 +66,7 @@
 								</div>
 
 								<div class="column">
-									<form action="/download_all/{{tale.chapter.id}}/" method="post">
+									<form action="/chapter/download_all/{{tale.chapter.id}}/" method="post">
 										<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
 										<button type="submit" class="ui small button">
 											<i class="download icon"></i>
@@ -104,7 +104,7 @@
 							{% endfor %}
 
 							<p class="ui green label">
-								<a href="/contribute/{{tale.id}}/{{tale.chapter.id}}">
+								<a href="/collaboration/add/{{tale.id}}/{{tale.chapter.id}}">
 									{{_('CONTINUE_CHAPTER')}}
 								</a>
 							</p>
@@ -136,14 +136,14 @@
 							{% endfor %}
 
 							<p class="ui green label">
-								<a href="/contribute/{{tale.id}}/{{tale.chapter.id}}">
+								<a href="/collaboration/add/{{tale.id}}/{{tale.chapter.id}}">
 									{{_('CONTINUE_CHAPTER')}}
 								</a>
 							</p>
 
 							{% if user_logged_id == creator.id and tale.chapter.is_editable %}
 								<p class="ui yellow label">
-									<a href="/update_chapter/{{tale.chapter.id}}">
+									<a href="/chapter/edit/{{tale.chapter.id}}">
 										{{_('UPDATE_CHAPTER')}}
 									</a>
 								</p>
@@ -154,7 +154,7 @@
 					{% if user_logged_id == creator.id %}
 						<h2>
 							{{creator.username}}, {{_('ADD_FIRST_CHAPTER')}}
-							<a href="/contribute/{{tale.id}}/0">
+							<a href="/collaboration/add/{{tale.id}}/0">
 								{{_('HERE')}}.
 							</a>
 						</h2>
@@ -180,5 +180,179 @@
 	}
 }
 </style>
+
+<script>
+$(document).ready(function() {
+	var $upper_bar = $('.upper-bar');
+	var $to_fullscreen = $('#to-fullscreen');
+	var $fullscreen = $('#fullscreen');
+
+	$upper_bar.on('submit', '.form-unfollow', function(event) {
+		event.preventDefault();
+
+		var $form_unfollow = $('.form-unfollow');
+		var action = $form_unfollow[0].action;
+
+		$.ajax({
+			type: 'post',
+			url: action,
+			datatype: 'json',
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+			success: function(data) {
+				var $form_unfollow_button = $form_unfollow.find('button')[0];
+
+				$form_unfollow_button.innerHTML = data.followers + ' ' +
+					'<i class="unhide icon"></i>' + my_messages[language]['WATCH'];
+
+				$form_unfollow.attr(
+					'action',
+					action.replace('unfollow', 'follow')
+				);
+
+				$form_unfollow.attr(
+					'class',
+					'form-follow'
+				);
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+
+		return false;
+	});
+
+	$upper_bar.on('submit', '.form-follow', function(event) {
+		event.preventDefault();
+
+		var $form_follow = $('.form-follow');
+		var action = $form_follow[0].action;
+
+		$.ajax({
+			type: 'post',
+			url: action,
+			datatype: 'json',
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+			success: function(data) {
+				if (!data.error) {
+					var $form_follow_button = $form_follow.find('button')[0];
+
+					$form_follow_button.innerHTML = data.followers + ' ' +
+						'<i class="unhide icon"></i>' + my_messages[language]['UNWATCH'];
+
+					$form_follow.attr(
+						'action',
+						action.replace('follow', 'unfollow')
+					);
+
+					$form_follow.attr(
+						'class',
+						'form-unfollow'
+					);
+				}
+				else {
+					window.location = data.error;
+				}
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+
+		return false;
+	});
+
+	$upper_bar.on('submit', '.form-unstar', function(event) {
+		event.preventDefault();
+
+		var $form_unstar = $('.form-unstar');
+		var action = $form_unstar[0].action;
+
+		$.ajax({
+			type: 'post',
+			url: action,
+			datatype: 'json',
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+			success: function(data) {
+				var $form_unstar_button = $form_unstar.find('button')[0];
+
+				$form_unstar_button.innerHTML = data.stars + ' ' +
+					'<i class="star icon"></i>' + my_messages[language]['STAR'];
+
+				$form_unstar.attr(
+					'action',
+					action.replace('unstar', 'star')
+				);
+
+				$form_unstar.attr(
+					'class',
+					'form-star'
+				);
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+
+		return false;
+	});
+
+	$upper_bar.on('submit', '.form-star', function(event) {
+		event.preventDefault();
+
+		var $form_star = $('.form-star');
+		var action = $form_star[0].action;
+
+		$.ajax({
+			type: 'post',
+			url: action,
+			datatype: 'json',
+			data: new FormData(this),
+			processData: false,
+			contentType: false,
+			success: function(data) {
+				if (!data.error) {
+					var $form_star_button = $form_star.find('button')[0];
+
+					$form_star_button.innerHTML = data.stars + ' ' +
+						'<i class="star icon"></i>' + my_messages[language]['UNSTAR'];
+
+					$form_star.attr(
+						'action',
+						action.replace('star', 'unstar')
+					);
+
+					$form_star.attr(
+						'class',
+						'form-unstar'
+					);
+				}
+				else {
+					window.location = data.error;
+				}
+			},
+			error: function(xhr, status, error) {
+				console.log(xhr);
+			}
+		});
+
+		return false;
+	});
+
+	if (path.indexOf('/fullscreen') !== -1) {
+		$fullscreen.modal('show');
+	}
+
+	$to_fullscreen.on('click', function(event) {
+		$fullscreen.modal('show');
+	});
+});
+</script>
 
 {% endblock %}

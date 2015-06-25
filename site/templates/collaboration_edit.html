@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	{{_('UPDATE_CONTRIBUTION_REQUEST')}}
+{% endblock %}
+
+{% block content %}
+
+<form action="/collaboration/edit/{{contribution_request.id}}/" method="post" class="collaboration-edit-form ui form">
+	<h1 class="ui dividing header">
+		<i class="write icon"></i>
+		{{_('UPDATE_CONTRIBUTION_REQUEST')}}
+	</h1>
+
+	<div class="required field">
+		<label>{{_('TITLE')}}</label>
+		<input type="text" name="collaboration-edit-title" value="{{contribution_request.title}}">
+	</div>
+
+	<div class="field">
+		<textarea name="collaboration-edit-content">{{contribution_request.content}}</textarea>
+	</div>
+
+	<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}">
+	<button type="submit" name="collaboration-edit-submit" class="ui green button">
+		{{_('UPDATE')}}
+	</button>
+</form>
+
+<script src="{{url_for('.static', filename = 'js/tinymce/tinymce.min.js')}}"></script>
+
+<script>
+$(document).ready(function() {
+	var $collaboration_edit_form = $('.collaboration-edit-form');
+
+	tinymce.init({
+		selector: 'textarea[name="collaboration-edit-content"]'
+	});
+
+	$collaboration_edit_form.form({
+		title: {
+			identifier: 'collaboration-edit-title',
+			rules: my_rules.title
+		}
+	},
+	{
+		inline: true,
+		onSuccess: function() {
+			var $collaboration_edit_submit = $('button[name="collaboration-edit-submit"]');
+			$collaboration_edit_submit.addClass('disabled loading');
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: {
+					'collaboration-edit-title': $collaboration_edit_form.find('[name="collaboration-edit-title"]').val(),
+					'collaboration-edit-content': tinymce.get('collaboration-edit-content').getContent(),
+					'_csrf_token': $collaboration_edit_form.find('[name="_csrf_token"]').val()
+				},
+				success: function(data) {
+					window.location = data.url;
+				},
+				error: function(xhr, status, error) {
+					$collaboration_edit_submit.removeClass('disabled loading');
+					append_messages_list(xhr.responseJSON.error_list, $collaboration_edit_form.find('h1'));
+				}
+			});
+
+			return false;
+		}
+	});
+});
+</script>
+
+{% endblock %}

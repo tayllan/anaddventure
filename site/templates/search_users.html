@@ -93,4 +93,14 @@
 	</div>
 </div>
 
+<script>
+$(document).ready(function() {
+	$('#layout-search-bar').empty();
+	$('input[name="c"]').focus();
+	$('#sort-bar').on('change', function(event) {
+		window.location = window.location.href.replace(/\&?s=\d+\&?/, '') + '&s=' + $(this).find('option:selected').val();
+	});
+});
+</script>
+
 {% endblock %}
