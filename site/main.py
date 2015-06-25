@@ -166,6 +166,25 @@ def send_email(message_title, recipient, message_body):
 	thread = Thread(target = send_async_email, args = [message])
 	thread.start()
 
+def is_visible_tale(tale_id, user_logged_id):
+	tale = Tale.select_by_id(tale_id, 1)
+
+	if len(tale) is not 0:
+		tale = tale[0]
+		# private tale
+		if tale['category'] is 2:
+			invitations = Invitation.select_by_tale_id(tale['id'])
+			allowed_users_id = set([tale['creator_id']])
+
+			for invitation in invitations:
+				allowed_users_id.add(invitation[2])
+
+			if user_logged_id not in allowed_users_id:
+				return False
+		return tale
+	else:
+		return False
+
 @www.context_processor
 @pt.context_processor
 def inject_data():
@@ -267,16 +286,17 @@ def invite_get(tale_id):
 def invite_post(tale_id):
 	username = request.form.get('invite-username', '')
 	user = User.select_by_email(username, 1)
+	tale = Tale.select_by_id(tale_id, 1)
 
 	if len(user) is 0:
 		user = User.select_by_full_username(username, 1)
 
-	if len(user) is not 0 and 'user_logged_id' in session:
+	if len(user) is not 0 and len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
 		user = user[0]
+		tale = tale[0]
 		new_invitation = Invitation(session['user_logged_id'], user['id'], tale_id)
 		new_invitation.insert()
 
-		tale = Tale.select_by_id(tale_id, 1)[0]
 		creator = User.select_by_id(tale['creator_id'], 1)[0]
 
 		email_object = strings.construct_tale_invitation_email_object(
@@ -298,22 +318,9 @@ def invite_post(tale_id):
 @www.route('/tale/<int:tale_id>/<int:chapter_id>/fullscreen')
 @pt.route('/tale/<int:tale_id>/<int:chapter_id>/fullscreen')
 def tale(tale_id, chapter_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0:
-		tale = tale[0]
-
-		# Private tale
-		if tale['category'] is 2:
-			invitations = Invitation.select_by_tale_id(tale['id'])
-			allowed_users_id = set([tale['creator_id']])
-
-			for invitation in invitations:
-				allowed_users_id.add(invitation[2])
-
-			if session.get('user_logged_id', None) not in allowed_users_id:
-				return redirect('/404')
-
+	if tale:
 		if chapter_id is 0:
 			chapter = Chapter.select_by_tale_id_and_previous_chapter_id(tale['id'], -1, 1)
 		else:
@@ -515,10 +522,9 @@ def tale_edit_post(tale_id):
 @www.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
 @pt.route('/tale/delete/<int:tale_id>/', methods = ['POST'])
 def tale_delete(tale_id):
-	user_logged_id = session.get('user_logged_id', None)
 	tale = Tale.select_by_id(tale_id, 1)
 
-	if request.is_xhr and len(tale) is not 0 and tale[0]['creator_id'] is user_logged_id:
+	if request.is_xhr and len(tale) is not 0 and session.get('user_logged_id', None) is tale[0]['creator_id']:
 		tale = tale[0]
 		creator = User.select_by_id(tale['creator_id'], 1)[0]
 
@@ -539,20 +545,16 @@ def tale_delete(tale_id):
 		Tale_Genre.delete_by_tale_id(tale['id'])
 		Tale.delete(tale['id'])
 
-		username = User.select_by_id(user_logged_id, 1)[0]['username']
-
-		return jsonify(url = '/profile/' + username)
+		return jsonify(url = '/profile/' + creator['username'])
 	else:
 		redirect('/404')
 
 @www.route('/tale/collaborations/<int:tale_id>/')
 @pt.route('/tale/collaborations/<int:tale_id>/')
 def collaborations(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0:
-		tale = tale[0]
-
+	if tale:
 		chapters = Chapter.select_by_tale_id_order_by_date(tale_id)
 		chapters_dict = dict()
 
@@ -582,11 +584,9 @@ def collaborations(tale_id):
 @www.route('/tale/branches/<int:tale_id>/')
 @pt.route('/tale/branches/<int:tale_id>/')
 def branches(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0:
-		tale = tale[0]
-
+	if tale:
 		chapters = Chapter.select_by_tale_id(tale_id)
 		number_bundle = dict()
 
@@ -607,11 +607,9 @@ def branches(tale_id):
 @www.route('/tale/contributors/<int:tale_id>/')
 @pt.route('/tale/contributors/<int:tale_id>/')
 def contributors(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0:
-		tale = tale[0]
-
+	if tale:
 		contributors = Chapter.select_by_tale_id(tale_id)
 		contributors_dict = dict()
 
@@ -743,38 +741,41 @@ def collaboration(contribution_request_id):
 
 	if len(contribution_request) is not 0:
 		contribution_request = contribution_request[0]
-		tale = Tale.select_by_id(contribution_request['tale_id'], 1)[0]
+		tale = is_visible_tale(contribution_request['tale_id'], session.get('user_logged_id', None))
 
-		contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
-		contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
+		if tale:
+			contribution_request['user_username'] = User.select_by_id(
+				contribution_request['user_id'],
+				1
+			)[0]['username']
+			contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
 
-		return return_rendered_tale_template(tale, 'collaboration.html', contribution = contribution_request)
+			return return_rendered_tale_template(tale, 'collaboration.html', contribution = contribution_request)
+		else:
+			return redirect('/404')
 	else:
 		return redirect('/404')
 
 @www.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/')
 @pt.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/')
 def collaboration_add_get(tale_id, chapter_id):
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 	chapter = Chapter.select_by_id(chapter_id, 1)
 
-	if chapter_id is not 0 and (len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id):
-		return redirect('/404')
-	elif 'user_logged_id' in session:
+	if tale and (chapter_id is 0 or (len(chapter) is not 0 and int(chapter[0]['tale_id']) is tale_id)):
 		return render_template('collaboration_add.html', tale_id = tale_id, chapter_id = chapter_id)
-	else:
+	elif 'user_logged_id' not in session:
 		return redirect('/join?redirect=/collaboration/add/' + str(tale_id) + '/' + str(chapter_id))
+	else:
+		return redirect('/404')
 
 @www.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
 @pt.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
 def collaboration_add_post(tale_id, chapter_id):
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 	chapter = Chapter.select_by_id(chapter_id, 1)
-	tale = Tale.select_by_id(tale_id, 1)
 
-	if chapter_id is not 0 and (len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id):
-		return redirect('/404')
-
-	if request.is_xhr and len(tale) is not 0:
-		tale = tale[0]
+	if request.is_xhr and tale and (chapter_id is 0 or (len(chapter) is not 0 and int(chapter[0]['tale_id']) is tale_id)):
 		creator = tale['creator_id']
 		user_id = session['user_logged_id']
 		title = request.form.get('collaboration-add-title', '')
@@ -874,7 +875,9 @@ def collaboration_add_post(tale_id, chapter_id):
 def collaboration_edit_get(contribution_request_id):
 	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
 
-	if len(contribution_request) is not 0 and session.get('user_logged_id', None) is contribution_request[0]['user_id']:
+	if (len(contribution_request) is not 0 and
+			session.get('user_logged_id', None) is contribution_request[0]['user_id'] and
+			not contribution_request[0]['was_closed']):
 		return render_template('collaboration_edit.html', contribution_request = contribution_request[0])
 	else:
 		return redirect('/404')
@@ -883,9 +886,10 @@ def collaboration_edit_get(contribution_request_id):
 @pt.route('/collaboration/edit/<int:contribution_request_id>/', methods = ['POST'])
 def collaboration_edit_post(contribution_request_id):
 	contribution_request = Contribution_Request.select_by_id(contribution_request_id, 1)
-	creator_id = session.get('user_logged_id', None)
 
-	if request.is_xhr and len(contribution_request) is not 0 and creator_id is contribution_request[0]['user_id']:
+	if (request.is_xhr and len(contribution_request) is not 0 and
+			session.get('user_logged_id', None) is contribution_request[0]['user_id'] and
+			not contribution_request[0]['was_closed']):
 		contribution_request = contribution_request[0]
 		title = request.form.get('collaboration-edit-title', '')
 		content = request.form.get('collaboration-edit-content', '')
@@ -912,9 +916,12 @@ def collaboration_edit_post(contribution_request_id):
 @www.route('/contribution_requests/<int:tale_id>/')
 @pt.route('/contribution_requests/<int:tale_id>/')
 def contribution_requests(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)[0]
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	return return_rendered_tale_template(tale, 'contribution_requests.html')
+	if tale:
+		return return_rendered_tale_template(tale, 'contribution_requests.html')
+	else:
+		return redirect('/404')
 
 @www.route('/contribution_requests/accept/', methods = ['POST'])
 @pt.route('/contribution_requests/accept/', methods = ['POST'])
@@ -924,38 +931,41 @@ def contribution_requests_accept():
 
 	if len(contribution_request) is not 0:
 		contribution_request = contribution_request[0]
-
-		Contribution_Request.update_was_accepted(contribution_request['id'], True)
-		Tale.update_contribution_request_count(contribution_request['tale_id'], -1)
-
-		new_chapter = Chapter(
-			contribution_request['user_id'],
-			contribution_request['tale_id'],
-			contribution_request['number'],
-			contribution_request['title'],
-			contribution_request['content'],
-			contribution_request['datetime'],
-			contribution_request['previous_chapter_id'],
-		)
-		new_chapter.insert()
-
 		tale = Tale.select_by_id(contribution_request['tale_id'], 1)[0]
-		creator = User.select_by_id(tale['creator_id'], 1)[0]
-		contributor = User.select_by_id(contribution_request['user_id'], 1)[0]
 
-		email_object = strings.construct_contribution_request_accepted_email_object(
-			session.get('language', 'en'),
-			tale,
-			creator,
-			contributor,
-			contribution_request['id'],
-			app.config['SITE_NAME'],
-			app.config['SITE_URL']
-		)
+		if tale['creator_id'] is session.get('user_logged_id', None):
+			Contribution_Request.update_was_accepted(contribution_request['id'], True)
+			Tale.update_contribution_request_count(contribution_request['tale_id'], -1)
 
-		send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
+			new_chapter = Chapter(
+				contribution_request['user_id'],
+				contribution_request['tale_id'],
+				contribution_request['number'],
+				contribution_request['title'],
+				contribution_request['content'],
+				contribution_request['datetime'],
+				contribution_request['previous_chapter_id'],
+			)
+			new_chapter.insert()
 
-		return redirect('/tale/' + str(tale['id']) + '/0')
+			creator = User.select_by_id(tale['creator_id'], 1)[0]
+			contributor = User.select_by_id(contribution_request['user_id'], 1)[0]
+
+			email_object = strings.construct_contribution_request_accepted_email_object(
+				session.get('language', 'en'),
+				tale,
+				creator,
+				contributor,
+				contribution_request['id'],
+				app.config['SITE_NAME'],
+				app.config['SITE_URL']
+			)
+
+			send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
+
+			return redirect('/tale/' + str(tale['id']) + '/0')
+		else:
+			return redirect('/404')
 	else:
 		return redirect('/404')
 
@@ -967,27 +977,30 @@ def contribution_requests_refuse():
 
 	if len(contribution_request) is not 0:
 		contribution_request = contribution_request[0]
-
-		Contribution_Request.update_was_accepted(contribution_request['id'], False)
-		Tale.update_contribution_request_count(contribution_request['tale_id'], -1)
-
 		tale = Tale.select_by_id(contribution_request['tale_id'], 1)[0]
-		creator = User.select_by_id(tale['creator_id'], 1)[0]
-		contributor = User.select_by_id(contribution_request['user_id'], 1)[0]
 
-		email_object = strings.construct_contribution_request_refused_email_object(
-			session.get('language', 'en'),
-			tale,
-			creator,
-			contributor,
-			contribution_request['id'],
-			app.config['SITE_NAME'],
-			app.config['SITE_URL']
-		)
+		if tale['creator_id'] is session.get('user_logged_id', None):
+			Contribution_Request.update_was_accepted(contribution_request['id'], False)
+			Tale.update_contribution_request_count(contribution_request['tale_id'], -1)
 
-		send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
+			creator = User.select_by_id(tale['creator_id'], 1)[0]
+			contributor = User.select_by_id(contribution_request['user_id'], 1)[0]
 
-		return redirect('/tale/' + str(contribution_request['tale_id']) + '/0')
+			email_object = strings.construct_contribution_request_refused_email_object(
+				session.get('language', 'en'),
+				tale,
+				creator,
+				contributor,
+				contribution_request['id'],
+				app.config['SITE_NAME'],
+				app.config['SITE_URL']
+			)
+
+			send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
+
+			return redirect('/tale/' + str(contribution_request['tale_id']) + '/0')
+		else:
+			return redirect('/404')
 	else:
 		return redirect('/404')
 
@@ -1012,7 +1025,7 @@ def profile(username):
 @www.route('/profile/add/', methods = ['POST'])
 @pt.route('/profile/add/', methods = ['POST'])
 def profile_add():
-	if request.is_xhr:
+	if request.is_xhr and 'user_logged_id' not in session:
 		username = request.form.get('profile-add-username', '')
 		email = request.form.get('profile-add-email', '')
 		password = request.form.get('profile-add-password', '')
@@ -1180,15 +1193,9 @@ def profile_edit_password(user_id):
 def avatars(user_id):
 	for extension in ALLOWED_EXTENSIONS:
 		if os.path.exists('anaddventure/site/static/avatars/' + str(user_id) + '.' + extension):
-			return send_file(
-				'static/avatars/' + str(user_id) + '.' + extension,
-				mimetype = 'image/' + extension
-			)
+			return send_file('static/avatars/' + str(user_id) + '.' + extension, mimetype = 'image/' + extension)
 
-	return send_file(
-		'static/avatars/identicons/' + str(user_id % 60) + '.png',
-		mimetype = 'image/png'
-	)
+	return send_file('static/avatars/identicons/' + str(user_id % 60) + '.png', mimetype = 'image/png')
 
 @www.route('/join/')
 @pt.route('/join/')
@@ -1198,15 +1205,12 @@ def join():
 
 		return redirect('/profile/' + user['username'])
 	else:
-		return render_template(
-			'join.html',
-			redirect_url = request.args.get('redirect', '')
-		)
+		return render_template('join.html', redirect_url = request.args.get('redirect', ''))
 
 @www.route('/login/', methods = ['POST'])
 @pt.route('/login/', methods = ['POST'])
 def login():
-	if request.is_xhr:
+	if request.is_xhr and 'user_logged_id' not in session:
 		username = request.form.get('login-username', '')
 		password = request.form.get('login-password', '')
 		user_id = User.is_valid_user(username, password)
@@ -1219,9 +1223,7 @@ def login():
 		else:
 			language = session.get('language', 'en')
 			return make_response(
-				jsonify(
-					error_list = ([strings.STRINGS[language]['INVALID_USER']])
-				),
+				jsonify(error_list = ([strings.STRINGS[language]['INVALID_USER']])),
 				400
 			)
 	else:
@@ -1230,7 +1232,8 @@ def login():
 @www.route('/logout/')
 @pt.route('/logout/')
 def logout():
-	del session['user_logged_id']
+	if 'user_logged_id' in session:
+		del session['user_logged_id']
 
 	return redirect('/')
 
@@ -1303,10 +1306,7 @@ def change_password_get(random_token):
 
 	if len(p_c_r) is not 0:
 		if Password_Change_Requests.is_valid_random_token(p_c_r[0]['datetime']):
-			return render_template(
-				'change_password.html',
-				random_token = random_token
-			)
+			return render_template('change_password.html', random_token = random_token)
 		else:
 			Password_Change_Requests.delete(p_c_r[0]['user_id'])
 			return redirect('/404')
@@ -1316,8 +1316,11 @@ def change_password_get(random_token):
 @www.route('/change_password/', methods = ['POST'])
 @pt.route('/change_password/', methods = ['POST'])
 def change_password_post():
-	if request.is_xhr:
-		random_token = request.form.get('change-password-random-token', '')
+	random_token = request.form.get('change-password-random-token', '')
+	p_c_r = Password_Change_Requests.select_by_id(random_token, 1)
+
+	if request.is_xhr and len(p_c_r) is not 0 and Password_Change_Requests.is_valid_random_token(p_c_r[0]['datetime']):
+		p_c_r = p_c_r[0]
 		new_password = request.form.get('change-password-new-password', '')
 		confirm_new_password = request.form.get('change-password-confirm-new-password', '')
 		language = session.get('language', 'en')
@@ -1333,20 +1336,14 @@ def change_password_post():
 		if len(error_list) is not 0:
 			return make_response(jsonify(error_list = error_list), 400)
 		else:
-			p_c_r = Password_Change_Requests.select_by_id(random_token, 1)
+			User.update_password(p_c_r['user_id'], new_password)
+			Password_Change_Requests.delete(p_c_r['user_id'])
 
-			if len(p_c_r) is not 0:
-				p_c_r = p_c_r[0]
-				User.update_password(p_c_r['user_id'], new_password)
-				Password_Change_Requests.delete(p_c_r['user_id'])
+			session['user_logged_id'] = p_c_r['user_id']
 
-				session['user_logged_id'] = p_c_r['user_id']
+			username = User.select_by_id(p_c_r['user_id'], 1)[0]['username']
 
-				username = User.select_by_id(p_c_r['user_id'], 1)[0]['username']
-
-				return jsonify(url = '/profile/' + username)
-			else:
-				return jsonify(url = '/')
+			return jsonify(url = '/profile/' + username)
 	else:
 		return redirect('/404')
 
@@ -1450,12 +1447,14 @@ def contact_get():
 @pt.route('/contact', methods = ['POST'])
 def contact_post():
 	if request.is_xhr:
-		name = request.form.get('contact-name', '')
-		email = request.form.get('contact-email', '')
-		message = request.form.get('contact-message', '') + '\nReply to: <' + email + '>'
+		name = request.form.get('contact-name')
+		email = request.form.get('contact-email')
+		message = request.form.get('contact-message')
 		language = session.get('language', 'en')
 
-		send_email('Contact: ' + name, app.config['MAIL_USERNAME'], message)
+		if name is not None and email is not None and message is not None:
+			send_email('Contact: ' + name, app.config['MAIL_USERNAME'], message + '\nReply to: <' + email + '>')
+
 		return strings.STRINGS[language]['CONTACT_MESSAGE_RECEIVED']
 	else:
 		return redirect('/404')
@@ -1463,10 +1462,7 @@ def contact_post():
 @www.route('/about')
 @pt.route('/about')
 def about():
-	return render_template(
-		'about.html',
-		total_users = User.select_count_all()[0][0]
-	)
+	return render_template('about.html', total_users = User.select_count_all()[0][0])
 
 @www.route('/faq')
 @pt.route('/faq')
