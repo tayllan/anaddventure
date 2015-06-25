@@ -65,4 +65,15 @@
 	</div>
 </div>
 
+<script>
+$(document).ready(function() {
+	var $to_fullscreen = $('#to-fullscreen');
+	var $fullscreen = $('#fullscreen');
+
+	$to_fullscreen.on('click', function(event) {
+		$fullscreen.modal('show');
+	});
+});
+</script>
+
 {% endblock %}
