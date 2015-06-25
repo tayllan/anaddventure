@@ -221,6 +221,9 @@ $(document).ready(function() {
 
 						input_confirm_password.value = hash;
 
+						var $profile_edit_password_submit = $profile.find('button[name="profile-edit-password-submit"]');
+						$profile_edit_password_submit.addClass('disabled loading');
+
 						$.ajax({
 							type: this.method,
 							url: this.action,
@@ -231,6 +234,7 @@ $(document).ready(function() {
 								window.location = data.url;
 							},
 							error: function(xhr, status, error) {
+								$profile_edit_password_submit.removeClass('disabled loading');
 								append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
 							}
 						});
