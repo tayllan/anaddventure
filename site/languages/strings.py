@@ -349,6 +349,7 @@ STRINGS = {
 		'PREVIOUS_CHAPTER': 'Previous Chapter',
 		'ADD_AVATAR': 'Upload new picture',
 
+		'INVALID_USER': 'Invalid User',
 		'INVALID_NAME': 'NAME Must have between 3 and 50 characters.',
 		'INVALID_USERNAME': 'USERNAME Must have between 3 and 50 characters.',
 		'INVALID_EMAIL': 'Invalid Email Address.',
@@ -606,6 +607,7 @@ STRINGS = {
 		'PREVIOUS_CHAPTER': 'Capítulo Anterior',
 		'ADD_AVATAR': 'Enviar nova imagem',
 
+		'INVALID_USER': 'Usuário Inválido',
 		'INVALID_NAME': 'NOME Deve conter entre 3 e 50 caracteres.',
 		'INVALID_USERNAME': 'USERNAME Deve conter entre 3 e 50 caracteres.',
 		'INVALID_EMAIL': 'Email Inválido.',

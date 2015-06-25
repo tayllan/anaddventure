@@ -1218,7 +1218,13 @@ def login():
 
 			return jsonify(url = request.args.get('redirect', '/profile/' + username))
 		else:
-			return make_response(jsonify(error_list = (['invalid user'])), 400)
+			language = session.get('language', 'en')
+			return make_response(
+				jsonify(
+					error_list = ([strings.STRINGS[language]['INVALID_USER']])
+				),
+				400
+			)
 	else:
 		return redirect('/404')
 
