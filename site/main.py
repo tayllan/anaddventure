@@ -757,7 +757,7 @@ def collaboration(contribution_request_id):
 def collaboration_add_get(tale_id, chapter_id):
 	chapter = Chapter.select_by_id(chapter_id, 1)
 
-	if len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id:
+	if chapter_id is not 0 and (len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id):
 		return redirect('/404')
 	elif 'user_logged_id' in session:
 		return render_template('collaboration_add.html', tale_id = tale_id, chapter_id = chapter_id)
@@ -768,11 +768,10 @@ def collaboration_add_get(tale_id, chapter_id):
 @pt.route('/collaboration/add/<int:tale_id>/<int:chapter_id>/', methods = ['POST'])
 def collaboration_add_post(tale_id, chapter_id):
 	chapter = Chapter.select_by_id(chapter_id, 1)
+	tale = Tale.select_by_id(tale_id, 1)
 
-	if len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id:
+	if chapter_id is not 0 and (len(chapter) is 0 or int(chapter[0]['tale_id']) is not tale_id):
 		return redirect('/404')
-
-	tale = Tale.select_by_id(chapter[0]['tale_id'], 1)
 
 	if request.is_xhr and len(tale) is not 0:
 		tale = tale[0]
