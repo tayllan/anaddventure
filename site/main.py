@@ -24,8 +24,8 @@ app.config.update(
 	# FLASK SETTINGS
 	SECRET_KEY = '\xe1{\xb3\x96\xbac\x1ds\xad\x04\x92@\x0e\x8d\xaf`|\x95P\x84;\xa7\x0b\x98\xbcX\x9d\xeaV\x7f',
 	MAX_CONTENT_LENGTH = 1024 * 1024,
-	DEBUG = True, SERVER_NAME = 'anaddventure.com.dev:5000', CONF_PRODUCTION = False,
-	#DEBUG = False, SERVER_NAME = 'anaddventure.com', CONF_PRODUCTION = True,
+	#DEBUG = True, SERVER_NAME = 'anaddventure.com.dev:5000', CONF_PRODUCTION = False,
+	DEBUG = False, SERVER_NAME = 'anaddventure.com', CONF_PRODUCTION = True,
 
 	# PERSONAL SETTINGS
 	SITE_NAME = 'An Addventure',
@@ -1467,7 +1467,7 @@ def contact_post():
 		message = request.form.get('contact-message')
 		language = session.get('language', 'en')
 
-		if name is not None and email is not None and message is not None:
+		if name is not None and User.is_email_valid(email) and message is not None:
 			send_email('Contact: ' + name, app.config['MAIL_USERNAME'], message + '\nReply to: <' + email + '>')
 
 		return strings.STRINGS[language]['CONTACT_MESSAGE_RECEIVED']

@@ -76,8 +76,7 @@ $(document).ready(function() {
 				},
 				error: function(xhr, status, error) {
 					$contact_submit.removeClass('disabled loading');
-					// TODO: see what exaclty this "append_messages_list" does.
-					append_messages_list(xhr.responseJSON.error_list, $contact_form.find('h1'));
+					console.log(xhr);
 				}
 			});
 
