@@ -1482,7 +1482,7 @@ def get_user_info():
 
 		return render_template('fragment/profile_edit_form.html', user = user)
 	else:
-		return redirect('/404')
+		abort(404)
 
 @www.route('/get_update_password_form/')
 @pt.route('/get_update_password_form/')
@@ -1492,56 +1492,50 @@ def get_update_password_form():
 @www.route('/follow/<int:tale_id>/', methods = ['POST'])
 @pt.route('/follow/<int:tale_id>/', methods = ['POST'])
 def follow(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0:
-		if 'user_logged_id' in session:
-			new_follow = Follow(session['user_logged_id'], tale_id)
-			new_follow.insert()
-
-			return jsonify({'followers': tale[0]['followers'] + 1})
-		else:
-			return jsonify({'error' : '/join/?redirect=/tale/' + str(tale_id) + '/0'})
+	if request.is_xhr and tale and 'user_logged_id' in session:
+		new_follow = Follow(session['user_logged_id'], tale_id)
+		new_follow.insert()
+		return jsonify({'followers': tale['followers'] + 1})
+	elif 'user_logged_id' not in session:
+		return jsonify({'error' : '/join/?redirect=/tale/' + str(tale_id) + '/0'})
 	else:
 		abort(404)
 
 @www.route('/unfollow/<int:tale_id>/', methods = ['POST'])
 @pt.route('/unfollow/<int:tale_id>/', methods = ['POST'])
 def unfollow(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0 and 'user_logged_id' in session:
+	if request.is_xhr and tale and 'user_logged_id' in session:
 		Follow.delete_by_user_id(session['user_logged_id'])
-
-		return jsonify({'followers': tale[0]['followers'] - 1})
+		return jsonify({'followers': tale['followers'] - 1})
 	else:
 		abort(404)
 
 @www.route('/star/<int:tale_id>/', methods = ['POST'])
 @pt.route('/star/<int:tale_id>/', methods = ['POST'])
 def star(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0:
-		if 'user_logged_id' in session:
-			new_star = Star(session['user_logged_id'], tale_id, get_current_datetime_as_string())
-			new_star.insert()
-
-			return jsonify({'stars': tale[0]['stars'] + 1})
-		else:
-			return jsonify({'error' : '/join/?redirect=/tale/' + str(tale_id) + '/0'})
+	if request.is_xhr and tale and 'user_logged_id' in session:
+		new_star = Star(session['user_logged_id'], tale_id, get_current_datetime_as_string())
+		new_star.insert()
+		return jsonify({'stars': tale['stars'] + 1})
+	elif 'user_logged_id' not in session:
+		return jsonify({'error' : '/join/?redirect=/tale/' + str(tale_id) + '/0'})
 	else:
 		abort(404)
 
 @www.route('/unstar/<int:tale_id>/', methods = ['POST'])
 @pt.route('/unstar/<int:tale_id>/', methods = ['POST'])
 def unstar(tale_id):
-	tale = Tale.select_by_id(tale_id, 1)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	if len(tale) is not 0 and 'user_logged_id' in session:
+	if request.is_xhr and tale and 'user_logged_id' in session:
 		Star.delete_by_user_id(session['user_logged_id'])
-
-		return jsonify({'stars': tale[0]['stars'] - 1})
+		return jsonify({'stars': tale['stars'] - 1})
 	else:
 		abort(404)
 
@@ -1549,33 +1543,43 @@ def unstar(tale_id):
 @pt.route('/get_open_contribution_requests/')
 def get_open_contribution_requests():
 	tale_id = int(request.args.get('tale_id', 0))
-	contribution_requests = Contribution_Request.select_open_by_tale_id_order_by_datetime(tale_id)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	for contribution_request in contribution_requests:
-		contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
-		contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
+	if tale:
+		contribution_requests = Contribution_Request.select_open_by_tale_id_order_by_datetime(tale_id)
 
-	return return_rendered_tale_template(
-		Tale.select_by_id(tale_id, 1)[0],
-		'fragment/open_contribution_requests.html',
-		open_contribution_requests_list = contribution_requests
-	)
+		for contribution_request in contribution_requests:
+			contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
+			contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
+
+		return return_rendered_tale_template(
+			tale,
+			'fragment/open_contribution_requests.html',
+			open_contribution_requests_list = contribution_requests
+		)
+	else:
+		abort(404)
 
 @www.route('/get_closed_contribution_requests/')
 @pt.route('/get_closed_contribution_requests/')
 def get_closed_contribution_requests():
 	tale_id = int(request.args.get('tale_id', 0))
-	contribution_requests = Contribution_Request.select_closed_by_tale_id_order_by_datetime(tale_id)
+	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 
-	for contribution_request in contribution_requests:
-		contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
-		contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
+	if tale:
+		contribution_requests = Contribution_Request.select_closed_by_tale_id_order_by_datetime(tale_id)
 
-	return return_rendered_tale_template(
-		Tale.select_by_id(tale_id, 1)[0],
-		'fragment/closed_contribution_requests.html',
-		closed_contribution_requests_list = contribution_requests
-	)
+		for contribution_request in contribution_requests:
+			contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
+			contribution_request['datetime'] = beautify_datetime(contribution_request['datetime'])
+
+		return return_rendered_tale_template(
+			tale,
+			'fragment/closed_contribution_requests.html',
+			closed_contribution_requests_list = contribution_requests
+		)
+	else:
+		abort(404)
 
 @www.route('/get_rendered_own_tales/')
 @pt.route('/get_rendered_own_tales/')
@@ -1639,10 +1643,7 @@ def get_ten_best_tales():
 
 		tales_list.append(tale)
 
-	return render_template(
-		'fragment/top10_tales.html',
-		tales = tales_list
-	)
+	return render_template('fragment/top10_tales.html', tales = tales_list)
 
 @www.route('/get_ten_best_daily_tales/')
 @pt.route('/get_ten_best_daily_tales/')
@@ -1665,10 +1666,7 @@ def get_ten_best_daily_tales():
 
 		tales_list.append(tale)
 
-	return render_template(
-		'fragment/top10_tales_today.html',
-		tales = tales_list
-	)
+	return render_template('fragment/top10_tales_today.html', tales = tales_list)
 
 @www.route('/<path:no_match>/')
 @pt.route('/<path:no_match>/')

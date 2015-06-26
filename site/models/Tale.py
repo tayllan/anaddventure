@@ -203,6 +203,7 @@ class Tale(DAO):
 			)
 		)
 
+	# the name says top 10, but it's actually top 5 (too much work to refactor it)
 	@staticmethod
 	def select_top_ten_order_by_star_count(rows = None):
 		return Tale._construct_tale_objects(
@@ -217,6 +218,7 @@ class Tale(DAO):
 			)
 		)
 
+	# the name says top 10, but it's actually top 5 (too much work to refactor it)
 	@staticmethod
 	def select_top_ten_order_by_star_count_today():
 		tales_aux =  DAO.select_by(
