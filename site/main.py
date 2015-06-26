@@ -762,7 +762,10 @@ def collaboration_add_get(tale_id, chapter_id):
 	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 	chapter = Chapter.select_by_id(chapter_id, 1)
 
-	if tale and (chapter_id is 0 or (len(chapter) is not 0 and int(chapter[0]['tale_id']) is tale_id)):
+	if tale and (
+		((len(chapter) is not 0 and int(chapter[0]['tale_id']) is tale_id)) or
+		(chapter_id is 0 and len(Chapter.select_by_tale_id_and_previous_chapter_id(tale_id, -1)) is 0)):
+
 		return render_template('collaboration_add.html', tale_id = tale_id, chapter_id = chapter_id)
 	elif 'user_logged_id' not in session:
 		return redirect('/join?redirect=/collaboration/add/' + str(tale_id) + '/' + str(chapter_id))
@@ -775,7 +778,10 @@ def collaboration_add_post(tale_id, chapter_id):
 	tale = is_visible_tale(tale_id, session.get('user_logged_id', None))
 	chapter = Chapter.select_by_id(chapter_id, 1)
 
-	if request.is_xhr and tale and (chapter_id is 0 or (len(chapter) is not 0 and int(chapter[0]['tale_id']) is tale_id)):
+	if request.is_xhr and tale and (
+		((len(chapter) is not 0 and int(chapter[0]['tale_id']) is tale_id)) or
+		(chapter_id is 0 and len(Chapter.select_by_tale_id_and_previous_chapter_id(tale_id, -1)) is 0)):
+
 		creator = tale['creator_id']
 		user_id = session['user_logged_id']
 		title = request.form.get('collaboration-add-title', '')
