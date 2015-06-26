@@ -136,6 +136,8 @@ $(document).ready(function() {
 		},
 		inline: true,
 		onSuccess: function() {
+			var $tale_add_submit = $('button[name="tale-add-submit"]');
+			$tale_add_submit.addClass('disabled loading');
 			$.ajax({
 				type: this.method,
 				url: this.action,
@@ -146,6 +148,7 @@ $(document).ready(function() {
 					window.location = data.url;
 				},
 				error: function(xhr, status, error) {
+					$tale_add_submit.removeClass('disabled loading');
 					append_messages_list(xhr.responseJSON.error_list, $tale_add_form.find('h1'));
 				}
 			});

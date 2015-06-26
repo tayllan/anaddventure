@@ -62,6 +62,8 @@ $(document).ready(function() {
 
 		if (delete_modal) {
 			if (delete_modal === original_tale_title) {
+				var $delete_submit = $('button[name="delete-submit"]');
+				$delete_submit.addClass('disabled loading');
 				$.ajax({
 					type: this.method,
 					url: this.action,
@@ -73,6 +75,7 @@ $(document).ready(function() {
 						window.location = data.url;
 					},
 					error: function(xhr, status, error) {
+						$delete_submit.removeClass('disabled loading');
 						console.log(xhr);
 					}
 				});

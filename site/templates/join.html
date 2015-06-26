@@ -141,6 +141,8 @@ $(document).ready(function() {
 
 			input_password.value = hash;
 
+			var $login_submit = $('button[name="login-submit"]');
+			$login_submit.addClass('disabled loading');
 			$.ajax({
 				type: this.method,
 				url: this.action,
@@ -151,6 +153,7 @@ $(document).ready(function() {
 					window.location = data.url;
 				},
 				error: function(xhr, status, error) {
+					$login_submit.removeClass('disabled loading');
 					append_messages_list(xhr.responseJSON.error_list, $login.find('h2'));
 				}
 			});
@@ -192,6 +195,8 @@ $(document).ready(function() {
 
 			input_password_repeat_password.value = hash;
 
+			var $profile_add_submit = $('button[name="profile-add-submit"]');
+			$profile_add_submit.addClass('disabled loading');
 			$.ajax({
 				type: this.method,
 				url: this.action,
@@ -202,6 +207,7 @@ $(document).ready(function() {
 					append_messages_list([data.message], $profile_add.find('h2'), true);
 				},
 				error: function(xhr, status, error) {
+					$profile_add_submit.removeClass('disabled loading');
 					append_messages_list(xhr.responseJSON.error_list, $profile_add.find('h2'));
 				}
 			});

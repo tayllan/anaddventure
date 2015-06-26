@@ -180,6 +180,8 @@ $(document).ready(function() {
 		},
 		inline: true,
 		onSuccess: function() {
+			var $tale_edit_submit = $('button[name="tale-edit-submit"]');
+			$tale_edit_submit.addClass('disabled loading');
 			$.ajax({
 				type: this.method,
 				url: this.action,
@@ -190,6 +192,7 @@ $(document).ready(function() {
 					window.location = data.url;
 				},
 				error: function(xhr, status, error) {
+					$tale_edit_submit.removeClass('disabled loading');
 					append_messages_list(xhr.responseJSON.error_list, $main_form.find('h1'));
 				}
 			});

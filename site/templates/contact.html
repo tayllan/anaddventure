@@ -61,6 +61,8 @@ $(document).ready(function() {
 	{
 		inline: true,
 		onSuccess: function() {
+			var $contact_submit = $('button[name="contact-submit"]');
+			$contact_submit.addClass('disabled loading');
 			$.ajax({
 				type: this.method,
 				url: this.action,
@@ -73,6 +75,7 @@ $(document).ready(function() {
 					$received_message.addClass('ui positive message');
 				},
 				error: function(xhr, status, error) {
+					$contact_submit.removeClass('disabled loading');
 					// TODO: see what exaclty this "append_messages_list" does.
 					append_messages_list(xhr.responseJSON.error_list, $contact_form.find('h1'));
 				}
