@@ -15,7 +15,6 @@ from models.Tale_Genre import Tale_Genre
 from models.User import User
 from datetime import datetime, timedelta
 from threading import Thread
-from functools import wraps
 import os, hashlib, random, re
 
 # BEGIN app configuration
@@ -255,15 +254,6 @@ def not_found(error):
 @app.errorhandler(500)
 def internal_error(error):
 	return render_template('500.html')
-
-def must_be_ajax_request(f):
-	@wraps(f)
-	def decorated_function(*args, **kwargs):
-		if not request.is_xhr:
-			return redirect('/404')
-		else:
-			return f(*args, **kwargs)
-	return decorated_function
 
 @www.route('/')
 @pt.route('/')
