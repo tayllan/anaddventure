@@ -1489,11 +1489,6 @@ def get_user_info():
 	else:
 		abort(404)
 
-@www.route('/get_update_password_form/')
-@pt.route('/get_update_password_form/')
-def get_update_password_form():
-	return render_template('fragment/profile_edit_password_form.html', user_id = int(request.args.get('user_id', -1)))
-
 @www.route('/follow/<int:tale_id>/', methods = ['POST'])
 @pt.route('/follow/<int:tale_id>/', methods = ['POST'])
 def follow(tale_id):
