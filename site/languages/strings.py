@@ -136,7 +136,7 @@ def construct_tale_invitation_email_object(language, user, tale, creator, SITE_N
 	if language == 'en':
 		email_object = {
 			'title': 'Private Tale Invitation',
-			'body': '"{0}", you\'ve been invited to collaborate to the private tale "{1}" on "{2}" by "{3}". To see the tale, click on the following link: {4}/join?redirect=/tale/{5}/0.\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.'.format(
+			'body': '"{0}", you\'ve been invited to collaborate to the private tale "{1}" on "{2}" by "{3}".\n\nTo see the tale, click on the following link: {4}/join?redirect=/tale/{5}/0.\n\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.'.format(
 					user['name'],
 					tale['title'],
 					SITE_NAME,
@@ -148,7 +148,7 @@ def construct_tale_invitation_email_object(language, user, tale, creator, SITE_N
 	else:
 		email_object = {
 			'title': 'Convite para um Conto Privado',
-			'body': '"{0}", você foi convidado a colaborar para o conto privado "{1}" em "{2}" por "{3}". Para visualizar o conto, clique no seguinte link: {4}/join?redirect=/tale/{5}/0.\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.'.format(
+			'body': '"{0}", você foi convidado a colaborar para o conto privado "{1}" em "{2}" por "{3}".\n\nPara visualizar o conto, clique no seguinte link: {4}/join?redirect=/tale/{5}/0.\n\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.'.format(
 					user['name'],
 					tale['title'],
 					SITE_NAME,
@@ -163,8 +163,8 @@ def construct_tale_invitation_email_object(language, user, tale, creator, SITE_N
 def construct_signup_email_object(language, signup_queue_id, SITE_NAME, SITE_URL):
 	if language == 'en':
 		email_object = {
-			'title': '' + SITE_NAME + ' Registration',
-			'body': 'To fulfill the account registration process on "{0}" just click the following link: {1}/activate_account/{2}.\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.\nIf you\'ve received this email in error, it\'s likely that another person entered your email address by mistake while trying to signup on "{0}", if that\'s the case, you can remove your email address from our database on the following link: {1}/delete_account/{2}.'.format(
+			'title': SITE_NAME + ' Registration',
+			'body': 'To fulfill the account registration process on "{0}" just click the following link: {1}/activate_account/{2}.\n\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.\n\nIf you\'ve received this email in error, it\'s likely that another person entered your email address by mistake while trying to signup on "{0}", if that\'s the case, you can remove your email address from our database on the following link: {1}/delete_account/{2}.'.format(
 					SITE_NAME,
 					SITE_URL,
 					str(signup_queue_id)
@@ -172,8 +172,8 @@ def construct_signup_email_object(language, signup_queue_id, SITE_NAME, SITE_URL
 		}
 	else:
 		email_object = {
-			'title': '' + SITE_NAME + ' Registration',
-			'body': 'Para completar o processo de cadastro da sua conta em "{0}" clique no seguinte link: {1}/activate_account/{2}.\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.\nSe você recebeu esse email por engano, é provável que outra pessoa digitou seu email sem querer enquanto tentava se cadastrar em "{0}", se esse for o caso, você pode remover seu email do nosso banco de dados no seguinte link: {1}/delete_account/{2}.'.format(
+			'title': 'Cadastro em ' + SITE_NAME,
+			'body': 'Para completar o processo de cadastro da sua conta em "{0}" clique no seguinte link: {1}/activate_account/{2}.\n\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.\n\nSe você recebeu esse email por engano, é provável que outra pessoa digitou seu email sem querer enquanto tentava se cadastrar em "{0}", se esse for o caso, você pode remover seu email do nosso banco de dados no seguinte link: {1}/delete_account/{2}.'.format(
 					SITE_NAME,
 					SITE_URL,
 					str(signup_queue_id)
@@ -186,7 +186,7 @@ def construct_password_reset_email_object(language, p_c_r_id, SITE_NAME, SITE_UR
 	if language == 'en':
 		email_object = {
 			'title': 'Password Resetting',
-			'body': 'To initiate the password reset process for your account on "{0}" click on the following link: {1}/change_password/{2}.\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.\nIf you\'ve received this email in error, it\'s likely that another user entered your email address by mistake while trying to reset a password.\nIf you didn\'t initiate the request, you don\'t need to take any further action and can safely disregard this email.'.format(
+			'body': 'To initiate the password reset process for your account on "{0}" click on the following link: {1}/change_password/{2}.\n\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.\n\nIf you\'ve received this email in error, it\'s likely that another user entered your email address by mistake while trying to reset a password.\n\nIf you didn\'t initiate the request, you don\'t need to take any further action and can safely disregard this email.'.format(
 					SITE_NAME,
 					SITE_URL,
 					str(p_c_r_id)
@@ -194,8 +194,8 @@ def construct_password_reset_email_object(language, p_c_r_id, SITE_NAME, SITE_UR
 		}
 	else:
 		email_object = {
-			'title': 'Password Resetting',
-			'body': 'Para iniciar o processo de recuperação de senhar para sua conta em "{0}" clique no seguinte link: {1}/change_password/{2}.\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.\nSe você recebeu esse email por engano, é provável que outro usuário tenha digitado seu email sem querer enquanto tentava resetar a senha dele.\nSe você não iniciou esse requisição, você não precisa tomar nenhuma outra ação e pode seguramente desconsiderar esse email.'.format(
+			'title': 'Redefinição de Senha',
+			'body': 'Para iniciar o processo de recuperação de senhar para sua conta em "{0}" clique no seguinte link: {1}/change_password/{2}.\n\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.\n\nSe você recebeu esse email por engano, é provável que outro usuário tenha digitado seu email sem querer enquanto tentava resetar a senha dele.\n\nSe você não iniciou essa requisição, você não precisa tomar nenhuma outra ação e pode seguramente desconsiderar esse email.'.format(
 					SITE_NAME,
 					SITE_URL,
 					str(p_c_r_id)
@@ -348,7 +348,6 @@ STRINGS = {
 		'LAST_UPDATED_ON': 'Last updated on',
 		'PREVIOUS_CHAPTER': 'Previous Chapter',
 		'ADD_AVATAR': 'Upload new picture',
-
 		'INVALID_USER': 'Invalid User',
 		'INVALID_NAME': 'NAME Must have between 3 and 50 characters.',
 		'INVALID_USERNAME': 'USERNAME Must have between 3 and 50 characters.',
@@ -367,9 +366,7 @@ STRINGS = {
 		'PASSWORD_NO_MATCH': 'Your passwords do not match.',
 		'NO_GENRES': 'The Tale must have at least one Genre.',
 		'WRONG_OLD_PASSWORD': 'The Old password is wrong.',
-
 		'TOO_WEAK': 'Too Weak',
-
 		'ACTION / ADVENTURE': 'Action / Adventure',
 		'CHILDREN\'S TALES': 'Children\'s Tales',
 		'CRIME / DETECTIVE': 'Crime / Detective',
@@ -400,7 +397,6 @@ STRINGS = {
 		'TEEN / YOUNG ADULT': 'Teen / Young Adult',
 		'URBAN': 'Urban',
 		'WESTERN': 'Western',
-
 		'ADD': 'Add',
 		'REMOVE': 'Remove',
 		'CONTACT_MESSAGE': 'Any problem, complaint and/or sugestion, please send an email to:',
@@ -606,7 +602,6 @@ STRINGS = {
 		'LAST_UPDATED_ON': 'Atualizado em',
 		'PREVIOUS_CHAPTER': 'Capítulo Anterior',
 		'ADD_AVATAR': 'Enviar nova imagem',
-
 		'INVALID_USER': 'Usuário Inválido',
 		'INVALID_NAME': 'NOME Deve conter entre 3 e 50 caracteres.',
 		'INVALID_USERNAME': 'USERNAME Deve conter entre 3 e 50 caracteres.',
@@ -626,7 +621,6 @@ STRINGS = {
 		'NO_GENRES': 'Um Conto deve ter ao menos um Gênero.',
 		'WRONG_OLD_PASSWORD': 'A Senha antiga está errada.',
 		'TOO_WEAK': 'Muito Fraca',
-
 		'ACTION / ADVENTURE': 'Ação / Aventura',
 		'CHILDREN\'S TALES': 'Contos Infantis',
 		'CRIME / DETECTIVE': 'Crime / Detetive',
@@ -657,7 +651,6 @@ STRINGS = {
 		'TEEN / YOUNG ADULT': 'Adolescente / Jovem Adulto',
 		'URBAN': 'Urbano',
 		'WESTERN': 'Ocidental',
-
 		'ADD': 'Add',
 		'REMOVE': 'Remover',
 		'CONTACT_MESSAGE': 'Qualquer problema, reclamação e/ou sugestão, por favor envie um email para:',
