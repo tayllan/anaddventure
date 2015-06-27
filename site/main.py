@@ -1476,22 +1476,12 @@ def contact_post():
 @www.route('/about')
 @pt.route('/about')
 def about():
-
-	@cache.memoize()
-	def inner_about(language):
-		print(str(language) + ' - about NOT CACHED')
-		return render_template('about.html', total_users = User.select_count_all()[0][0])
-	return inner_about(session.get('language', 'en'))
+	return render_template('about.html', total_users = User.select_count_all()[0][0])
 
 @www.route('/faq')
 @pt.route('/faq')
 def faq():
-
-	@cache.memoize()
-	def inner_faq(language):
-		print(str(language) + ' - faq NOT CACHED')
-		return render_template('faq.html')
-	return inner_faq(session.get('language', 'en'))
+	return render_template('faq.html')
 
 # Ajax
 @www.route('/get_user_info/')
