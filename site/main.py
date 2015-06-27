@@ -1,5 +1,6 @@
 from flask import Flask, request, session, render_template, redirect, jsonify, make_response, flash, abort, send_file, Blueprint
 from flask_mail import Mail, Message
+from flask.ext.profile import Profiler
 from languages import strings
 from models.Chapter import Chapter
 from models.Contribution_Request import Contribution_Request
@@ -40,6 +41,9 @@ app.config.update(
 )
 www = Blueprint('www', __name__, 	subdomain = 'www', 	static_folder = 'static', 	static_url_path = '/static')
 pt = Blueprint('pt', __name__, subdomain = 'pt', static_folder = 'static', static_url_path = '/static')
+
+# The Profiler is suppose to work only when DEBUG = True
+Profiler(app)
 
 mail = Mail(app)
 # END app configuration

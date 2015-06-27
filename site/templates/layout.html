@@ -10,6 +10,16 @@
 		<link rel="alternate" href="https://pt.anaddventure.com" hreflang="pt">
 		<link rel="shortcut icon" href="{{url_for('.static', filename = 'img/favicon2.ico')}}">
 		<link rel="stylesheet" type="text/css" href="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/my_semantic.min.css')}}">
+		<style>
+		@media only screen and (max-width: 1000px) {
+			#wider {
+				width: 100% !important;
+			}
+			#disappear, .disappear {
+				display: none !important;
+			}
+		}
+		</style>
 		{% if conf_production == true %}
 			<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 		{% else %}
@@ -112,14 +122,13 @@
 			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/dimmer.min.js')}}"></script>
 			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/transition.min.js')}}"></script>
 			<script src="{{url_for('.static', filename = 'js/main.js')}}"></script>
+
+			<!-- workaround to make the profile's div appear on the page -->
+			<script>
+			$(document).ready(function() {
+				$('[style="display:none"]').attr('style', '');
+			});
+			</script>
 		{% endif %}
 	</body>
-
-	<style>
-	@media only screen and (max-width: 1000px) {
-		#wider {
-			width: 100% !important;
-		}
-	}
-	</style>
 </html>
