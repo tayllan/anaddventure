@@ -41,7 +41,14 @@ app.config.update(
 )
 www = Blueprint('www', __name__, 	subdomain = 'www', 	static_folder = 'static', 	static_url_path = '/static')
 pt = Blueprint('pt', __name__, subdomain = 'pt', static_folder = 'static', static_url_path = '/static')
-cache = Cache(app, config = {'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 300})
+cache = Cache(app, config = {
+	'CACHE_DEFAULT_TIMEOUT': 300,
+	'CACHE_TYPE': 'redis',
+	'CACHE_KEY_PREFIX': 'fcache',
+	'CACHE_REDIS_HOST': 'localhost',
+	'CACHE_REDIS_PORT': '6379',
+	'CACHE_REDIS_URL': 'redis://localhost:6379',
+})
 
 mail = Mail(app)
 # END app configuration
