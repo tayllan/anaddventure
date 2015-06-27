@@ -1,6 +1,6 @@
 from flask import Flask, request, session, render_template, redirect, jsonify, make_response, flash, abort, send_file, Blueprint
 from flask_mail import Mail, Message
-from flask.ext.profile import Profiler
+from flask_cache import Cache
 from languages import strings
 from models.Chapter import Chapter
 from models.Contribution_Request import Contribution_Request
@@ -41,9 +41,7 @@ app.config.update(
 )
 www = Blueprint('www', __name__, 	subdomain = 'www', 	static_folder = 'static', 	static_url_path = '/static')
 pt = Blueprint('pt', __name__, subdomain = 'pt', static_folder = 'static', static_url_path = '/static')
-
-# The Profiler is suppose to work only when DEBUG = True
-Profiler(app)
+cache = Cache(app, config = {'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 300})
 
 mail = Mail(app)
 # END app configuration
@@ -1471,12 +1469,22 @@ def contact_post():
 @www.route('/about')
 @pt.route('/about')
 def about():
-	return render_template('about.html', total_users = User.select_count_all()[0][0])
+
+	@cache.memoize()
+	def inner_about(language):
+		print(str(language) + ' - about NOT CACHED')
+		return render_template('about.html', total_users = User.select_count_all()[0][0])
+	return inner_about(session.get('language', 'en'))
 
 @www.route('/faq')
 @pt.route('/faq')
 def faq():
-	return render_template('faq.html')
+
+	@cache.memoize()
+	def inner_faq(language):
+		print(str(language) + ' - faq NOT CACHED')
+		return render_template('faq.html')
+	return inner_faq(session.get('language', 'en'))
 
 # Ajax
 @www.route('/get_user_info/')
@@ -1629,48 +1637,58 @@ def get_rendered_participated_tales():
 @www.route('/get_ten_best_tales/')
 @pt.route('/get_ten_best_tales/')
 def get_ten_best_tales():
-	tales = Tale.select_top_ten_order_by_star_count()
-	tales_list = list()
 
-	for tale in tales:
-		creator = User.select_by_id(tale['creator_id'])
-		last_update = Tale.select_last_update(tale['id'])[0][0]
+	@cache.memoize()
+	def inner_get_ten_best_tales(language):
+		print(str(language) + ' - get_ten_best_tales NOT CACHED')
+		tales = Tale.select_top_ten_order_by_star_count()
+		tales_list = list()
 
-		tale['creator'] = creator[0]
-		tale['last_update'] = False if last_update is None else beautify_datetime(
-			last_update,
-			True,
-			int(request.args.get('timezone_offset', 0))
-		)
-		tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
-		tale['creation_datetime'] = beautify_datetime(tale['creation_datetime'])
+		for tale in tales:
+			creator = User.select_by_id(tale['creator_id'])
+			last_update = Tale.select_last_update(tale['id'])[0][0]
 
-		tales_list.append(tale)
+			tale['creator'] = creator[0]
+			tale['last_update'] = False if last_update is None else beautify_datetime(
+				last_update,
+				True,
+				int(request.args.get('timezone_offset', 0))
+			)
+			tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
+			tale['creation_datetime'] = beautify_datetime(tale['creation_datetime'])
 
-	return render_template('fragment/top10_tales.html', tales = tales_list)
+			tales_list.append(tale)
+
+		return render_template('fragment/top10_tales.html', tales = tales_list)
+	return inner_get_ten_best_tales(session.get('language', 'en'))
 
 @www.route('/get_ten_best_daily_tales/')
 @pt.route('/get_ten_best_daily_tales/')
 def get_ten_best_daily_tales():
-	tales = Tale.select_top_ten_order_by_star_count_today()
-	tales_list = list()
 
-	for tale in tales:
-		creator = User.select_by_id(tale['creator_id'])
-		last_update = Tale.select_last_update(tale['id'])[0][0]
+	@cache.memoize()
+	def inner_get_ten_best_daily_tales(language):
+		print(str(language) + ' - get_ten_best_daily_tales NOT CACHED')
+		tales = Tale.select_top_ten_order_by_star_count_today()
+		tales_list = list()
 
-		tale['creator'] = creator[0]
-		tale['last_update'] = False if last_update is None else beautify_datetime(
-			last_update,
-			True,
-			int(request.args.get('timezone_offset', 0))
-		)
-		tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
-		tale['creation_datetime'] = beautify_datetime(tale['creation_datetime'])
+		for tale in tales:
+			creator = User.select_by_id(tale['creator_id'])
+			last_update = Tale.select_last_update(tale['id'])[0][0]
 
-		tales_list.append(tale)
+			tale['creator'] = creator[0]
+			tale['last_update'] = False if last_update is None else beautify_datetime(
+				last_update,
+				True,
+				int(request.args.get('timezone_offset', 0))
+			)
+			tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
+			tale['creation_datetime'] = beautify_datetime(tale['creation_datetime'])
 
-	return render_template('fragment/top10_tales_today.html', tales = tales_list)
+			tales_list.append(tale)
+
+		return render_template('fragment/top10_tales_today.html', tales = tales_list)
+	return inner_get_ten_best_daily_tales(session.get('language', 'en'))
 
 @www.route('/<path:no_match>/')
 @pt.route('/<path:no_match>/')

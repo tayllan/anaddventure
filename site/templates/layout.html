@@ -122,13 +122,6 @@
 			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/dimmer.min.js')}}"></script>
 			<script src="{{url_for('.static', filename = 'Semantic-UI-1.8.1/dist/components/transition.min.js')}}"></script>
 			<script src="{{url_for('.static', filename = 'js/main.js')}}"></script>
-
-			<!-- workaround to make the profile's div appear on the page -->
-			<script>
-			$(document).ready(function() {
-				$('[style="display:none"]').attr('style', '');
-			});
-			</script>
 		{% endif %}
 	</body>
 </html>
