@@ -148,7 +148,7 @@ class User(DAO):
 	@staticmethod
 	def select_count_all(rows = None):
 		return DAO.select_by(
-			"SELECT COUNT(*) FROM anaddventure.system_user",
+			"SELECT COUNT(*) FROM anaddventure.system_user WHERE system_user_is_valid_account",
 			(),
 			rows
 		)
