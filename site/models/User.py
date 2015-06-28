@@ -1,5 +1,5 @@
 from models.DAO import DAO
-from pprint import pprint
+from config import cache
 import re, hashlib
 
 class User(DAO):
@@ -146,6 +146,7 @@ class User(DAO):
 		)
 
 	@staticmethod
+	@cache.cached()
 	def select_count_all(rows = None):
 		return DAO.select_by(
 			"SELECT COUNT(*) FROM anaddventure.system_user WHERE system_user_is_valid_account",

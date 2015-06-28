@@ -1,5 +1,5 @@
 from models.DAO import DAO
-from pprint import pprint
+from config import cache
 
 class Tale(DAO):
 
@@ -194,6 +194,7 @@ class Tale(DAO):
 		)
 
 	@staticmethod
+	@cache.cached(timeout = 86400)
 	def select_all(rows = None):
 		return Tale._construct_tale_objects(
 			DAO.select_by(
@@ -205,16 +206,11 @@ class Tale(DAO):
 
 	# the name says top 10, but it's actually top 5 (too much work to refactor it)
 	@staticmethod
-	def select_top_ten_order_by_star_count(rows = None):
+	def select_top_ten_order_by_star_count():
 		return Tale._construct_tale_objects(
 			DAO.select_by(
-				'''
-				SELECT * FROM anaddventure.tale
-					WHERE tale_category = 1
-					ORDER BY tale_star_count DESC LIMIT 5
-				''',
-				(),
-				rows
+				"SELECT * FROM anaddventure.tale WHERE tale_category = 1 ORDER BY tale_star_count DESC LIMIT 5",
+				()
 			)
 		)
 
@@ -415,6 +411,7 @@ class Tale(DAO):
 		)
 
 	@staticmethod
+	@cache.memoize()
 	def select_chapters_count(tale_id, rows = None):
 		return DAO.select_by(
 			"SELECT COUNT(*) FROM anaddventure.chapter WHERE chapter_tale_id = (%s)",

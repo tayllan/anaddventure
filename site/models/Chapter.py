@@ -1,5 +1,5 @@
 from models.DAO import DAO
-
+from config import cache
 
 class Chapter(DAO):
 
@@ -173,6 +173,7 @@ class Chapter(DAO):
 		)
 
 	@staticmethod
+	@cache.cached(timeout = 86400)
 	def select_all(rows = None):
 		return Chapter._construct_chapter_objects(
 			DAO.select_by(
