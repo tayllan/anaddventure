@@ -667,8 +667,7 @@ def get_rendered_participated_tales():
 def get_ten_best_tales():
 
 	@cache.memoize()
-	def inner_get_ten_best_tales(language):
-		print(str(language) + ' - get_ten_best_tales NOT CACHED')
+	def inner_get_ten_best_tales():
 		tales = Tale.select_top_ten_order_by_star_count()
 		tales_list = list()
 
@@ -684,19 +683,19 @@ def get_ten_best_tales():
 			)
 			tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
 			tale['creation_datetime'] = aux.beautify_datetime(tale['creation_datetime'])
-
 			tales_list.append(tale)
 
-		return render_template('fragment/top10_tales.html', tales = tales_list)
-	return inner_get_ten_best_tales(session.get('language', 'en'))
+		return tales_list
+
+	tales_list = inner_get_ten_best_tales()
+	return render_template('fragment/top10_tales.html', tales = tales_list)
 
 @www.route('/get_ten_best_daily_tales/')
 @pt.route('/get_ten_best_daily_tales/')
 def get_ten_best_daily_tales():
 
 	@cache.memoize()
-	def inner_get_ten_best_daily_tales(language):
-		print(str(language) + ' - get_ten_best_daily_tales NOT CACHED')
+	def inner_get_ten_best_daily_tales():
 		tales = Tale.select_top_ten_order_by_star_count_today()
 		tales_list = list()
 
@@ -712,11 +711,12 @@ def get_ten_best_daily_tales():
 			)
 			tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
 			tale['creation_datetime'] = aux.beautify_datetime(tale['creation_datetime'])
-
 			tales_list.append(tale)
 
-		return render_template('fragment/top10_tales_today.html', tales = tales_list)
-	return inner_get_ten_best_daily_tales(session.get('language', 'en'))
+		return tales_list
+
+	tales_list = inner_get_ten_best_daily_tales()
+	return render_template('fragment/top10_tales_today.html', tales = tales_list)
 
 @www.route('/<path:no_match>/')
 @pt.route('/<path:no_match>/')
