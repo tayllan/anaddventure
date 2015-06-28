@@ -673,10 +673,10 @@ def get_ten_best_tales():
 		tales_list = list()
 
 		for tale in tales:
-			creator = User.select_by_id(tale['creator_id'])
+			creator = User.select_by_id(tale['creator_id'], 1)[0]
 			last_update = Tale.select_last_update(tale['id'])[0][0]
 
-			tale['creator'] = creator[0]
+			tale['creator'] = creator
 			tale['last_update'] = False if last_update is None else aux.beautify_datetime(
 				last_update,
 				True,
@@ -701,10 +701,10 @@ def get_ten_best_daily_tales():
 		tales_list = list()
 
 		for tale in tales:
-			creator = User.select_by_id(tale['creator_id'])
+			creator = User.select_by_id(tale['creator_id'], 1)[0]
 			last_update = Tale.select_last_update(tale['id'])[0][0]
 
-			tale['creator'] = creator[0]
+			tale['creator'] = creator
 			tale['last_update'] = False if last_update is None else aux.beautify_datetime(
 				last_update,
 				True,

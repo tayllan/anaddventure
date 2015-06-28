@@ -8,12 +8,14 @@ class User(DAO):
 		self.name = name
 		self.username = username
 		self.email = email
-		self.password = password
+		self.password = hashlib.sha256(password.encode('utf-8')).hexdigest()
 		self.signup_date = signup_date
 		self.biography = biography
 		self.is_email_visible = is_email_visible
 
 	def insert(self):
+		User._clear_cache(self.username, self.email, self.password)
+
 		cursor = DAO.connection.cursor()
 		cursor.execute(
 			'''
@@ -32,7 +34,7 @@ class User(DAO):
 				self.name,
 				self.username,
 				self.email,
-				hashlib.sha256(self.password.encode('utf-8')).hexdigest(),
+				self.password,
 				self.signup_date,
 				self.biography,
 				self.is_email_visible
@@ -71,6 +73,9 @@ class User(DAO):
 
 	@staticmethod
 	def update_profile(user_id, name, email, biography, is_email_visible):
+		user = User.select_by_id(user_id, 1)[0]
+		User._clear_cache(user['username'], user['email'], user['password'], user_id)
+
 		DAO.update(
 			"""
 			UPDATE anaddventure.system_user SET
@@ -85,6 +90,9 @@ class User(DAO):
 
 	@staticmethod
 	def update_password(user_id, password):
+		user = User.select_by_id(user_id, 1)[0]
+		User._clear_cache(user['username'], user['email'], user['password'], user_id)
+
 		DAO.update(
 			"UPDATE anaddventure.system_user SET system_user_password = (%s) WHERE system_user_id = (%s)",
 			(hashlib.sha256(password.encode('utf-8')).hexdigest(), user_id)
@@ -92,12 +100,16 @@ class User(DAO):
 
 	@staticmethod
 	def activate_account(user_id):
+		user = User.select_by_id(user_id, 1)[0]
+		User._clear_cache(user['username'], user['email'], user['password'], user_id)
+
 		DAO.update(
 			"UPDATE anaddventure.system_user SET system_user_is_valid_account = True WHERE system_user_id = (%s)",
 			(user_id, )
 		)
 
 	@staticmethod
+	@cache.memoize(timeout = 86400)
 	def select_by_id(user_id, rows = None):
 		return User._construct_user_objects(
 			DAO.select_by(
@@ -108,6 +120,7 @@ class User(DAO):
 		)
 
 	@staticmethod
+	@cache.memoize(timeout = 86400)
 	def select_by_username(username = '', rows = None):
 		return User._construct_user_objects(
 			DAO.select_by(
@@ -118,6 +131,7 @@ class User(DAO):
 		)
 
 	@staticmethod
+	@cache.memoize(timeout = 86400)
 	def select_count_by_username(username = '', rows = None):
 		return DAO.select_by(
 			"SELECT COUNT(system_user_id) FROM anaddventure.system_user WHERE system_user_username ILIKE (%s)",
@@ -126,6 +140,7 @@ class User(DAO):
 		)
 
 	@staticmethod
+	@cache.memoize(timeout = 86400)
 	def select_by_full_username(username = '', rows = None):
 		return User._construct_user_objects(
 			DAO.select_by(
@@ -136,6 +151,7 @@ class User(DAO):
 		)
 
 	@staticmethod
+	@cache.memoize(timeout = 86400)
 	def select_by_email(email = '', rows = None):
 		return User._construct_user_objects(
 			DAO.select_by(
@@ -146,7 +162,7 @@ class User(DAO):
 		)
 
 	@staticmethod
-	@cache.cached()
+	@cache.cached() # for it's only 5 minutes, but maybe this time could be increased with more users
 	def select_count_all(rows = None):
 		return DAO.select_by(
 			"SELECT COUNT(*) FROM anaddventure.system_user WHERE system_user_is_valid_account",
@@ -155,7 +171,8 @@ class User(DAO):
 		)
 
 	@staticmethod
-	def is_valid_user(username, password):
+	@cache.memoize(timeout = 86400)
+	def _is_valid_user(username, password):
 		user = User.select_by_full_username(username, 1)
 
 		if len(user) is not 1:
@@ -164,10 +181,14 @@ class User(DAO):
 			if len(user) is not 1:
 				return None
 
-		if hashlib.sha256(password.encode('utf-8')).hexdigest() == user[0]['password'] and user[0]['is_valid_account']:
+		if password == user[0]['password'] and user[0]['is_valid_account']:
 			return user[0]['id']
 		else:
 			return None
+
+	@staticmethod
+	def is_valid_user(username, password):
+		return User._is_valid_user(hashlib.sha256(password.encode('utf-8')).hexdigest(), password)
 
 	@staticmethod
 	def is_name_valid(name):
@@ -199,3 +220,25 @@ class User(DAO):
 	@staticmethod
 	def is_biography_valid(biography):
 		return len(biography) <= 500
+
+	@staticmethod
+	def _clear_cache(username, email, password, user_id = None):
+		if user_id:
+			cache.delete_memoized(User.select_by_id, user_id, 1)
+			cache.delete_memoized(User.select_by_id, user_id, None)
+		else:
+			cache.delete_memoized(User.select_by_id)
+		cache.delete_memoized(User.select_by_username, username, 1)
+		cache.delete_memoized(User.select_by_username, username, None)
+
+		cache.delete_memoized(User.select_count_by_username, username, 1)
+		cache.delete_memoized(User.select_count_by_username, username, None)
+
+		cache.delete_memoized(User.select_by_full_username, username, 1)
+		cache.delete_memoized(User.select_by_full_username, username, None)
+
+		cache.delete_memoized(User.select_by_email, email, 1)
+		cache.delete_memoized(User.select_by_email, email, None)
+
+		cache.delete_memoized(User._is_valid_user, username, password)
+		cache.delete_memoized(User._is_valid_user, email, password)
