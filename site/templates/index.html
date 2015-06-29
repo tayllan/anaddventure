@@ -29,10 +29,18 @@
 {% block content %}
 <div class="ui grid">
 	<div class="doubling two column row">
-		<div class="column top-tales">
+		<div class="column">
 			<label class="ui label black"><i class="star icon"></i>{{_('TOP_10')}}: </label>
-			<button class="ui button" id="top-today">{{_('TOP_10_TODAY')}}</button>
+			<button class="ui button disabled" id="top-today">{{_('TOP_10_TODAY')}}</button>
 			<button class="ui button" id="top-all">{{_('TOP_10_ALL')}}</button>
+
+			<div id="div-top-today">
+				{% include "fragment/top10_tales_today.html" %}
+			</div>
+
+			<div id="div-top-all" style="display: none;">
+				{% include "fragment/top10_tales.html" %}
+			</div>
 		</div>
 
 		<div class="column">
@@ -50,53 +58,30 @@
 
 <script>
 $(document).ready(function() {
+	$('.utc-time').each(function(i, e) {
+		var times = e.innerHTML.match(/(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)/);
+		var date = new Date(Date.UTC(times[1], times[2], times[3], times[4], times[5], times[6]));
+
+		e.innerHTML = date.getDate() + ' ' + MONTHS_DICTIONARY[language][date.getMonth()] + ', ' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+	});
 	var $top_all = $('#top-all');
 	var $top_today = $('#top-today');
-	var $top_tales = $('.top-tales');
+	var $div_top_all = $('#div-top-all');
+	var $div_top_today = $('#div-top-today');
 
 	$top_all.on('click', function(event) {
-		$top_today.removeClass('active');
-		$top_all.addClass('active');
-
-		$.ajax({
-			type: 'get',
-			url: '/get_ten_best_tales',
-			data: {
-				timezone_offset: (new Date()).getTimezoneOffset()
-			},
-			datatype: 'json',
-			success: function(data) {
-				$top_tales.find('div').remove();
-				$top_tales.append(data);
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
+		$top_today.removeClass('disabled');
+		$top_all.addClass('disabled');
+		$div_top_today.css('display', 'none');
+		$div_top_all.css('display', 'block');
 	});
 
 	$top_today.on('click', function(event) {
-		$top_all.removeClass('active');
-		$top_today.addClass('active');
-
-		$.ajax({
-			type: 'get',
-			url: '/get_ten_best_daily_tales',
-			data: {
-				timezone_offset: (new Date()).getTimezoneOffset()
-			},
-			datatype: 'json',
-			success: function(data) {
-				$top_tales.find('div').remove();
-				$top_tales.append(data);
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
+		$top_all.removeClass('disabled');
+		$top_today.addClass('disabled');
+		$div_top_all.css('display', 'none');
+		$div_top_today.css('display', 'block');
 	});
-
-	$top_today.trigger('click');
 });
 </script>
 

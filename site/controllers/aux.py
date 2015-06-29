@@ -1,6 +1,6 @@
 from flask import render_template, session
 from flask_mail import Message
-from config import mail, app
+from config import mail, app, cache
 from models.License import License
 from models.Follow import Follow
 from models.Invitation import Invitation
@@ -13,18 +13,14 @@ import random
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 MONTHS_DICTIONARY = {
-	1: 'Jan',
-	2: 'Feb',
-	3: 'Mar',
-	4: 'Apr',
-	5: 'May',
-	6: 'Jun',
-	7: 'Jul',
-	8: 'Aug',
-	9: 'Sep',
-	10: 'Oct',
-	11: 'Nov',
-	12: 'Dec'
+	'en': {
+		1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun',
+		7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+	},
+	'pt': {
+		1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun',
+		7: 'Jul', 8: 'Ago', 9: 'Set', 10: 'Out', 11: 'Nov', 12: 'Dez'
+	}
 }
 PAGINATION_LIMIT = 5
 
@@ -55,9 +51,9 @@ def get_number_with_two_digits(number):
 def beautify_datetime(d, withHour = False, timezone_offset = 0):
 	d = d - timedelta(minutes = timezone_offset)
 	if withHour:
-		return str(d.day) + ' ' + MONTHS_DICTIONARY[d.month] + ', ' + str(d.year) + ' ' + get_number_with_two_digits(d.hour) + ':' + get_number_with_two_digits(d.minute)
+		return str(d.day) + ' ' + MONTHS_DICTIONARY[session.get('language', 'en')][d.month] + ', ' + str(d.year) + ' ' + get_number_with_two_digits(d.hour) + ':' + get_number_with_two_digits(d.minute)
 	else:
-		return str(d.day) + ' ' + MONTHS_DICTIONARY[d.month] + ', ' + str(d.year)
+		return str(d.day) + ' ' + MONTHS_DICTIONARY[session.get('language', 'en')][d.month] + ', ' + str(d.year)
 
 def send_email_to_followers(tale_id, message_title, message_body):
 	followers = Follow.select_by_tale_id(tale_id);
@@ -150,4 +146,34 @@ def is_visible_tale(tale_id, user_logged_id):
 		return tale
 	else:
 		return False
+
+@cache.memoize()
+def get_ten_best_tales():
+	tales = Tale.select_top_ten_order_by_star_count()
+	tales_list = list()
+
+	for tale in tales:
+		last_update = Tale.select_last_update(tale['id'])[0][0]
+
+		tale['creator'] = User.select_by_id(tale['creator_id'], 1)[0]
+		tale['last_update'] = False if last_update is None else last_update
+		tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
+		tales_list.append(tale)
+
+	return tales_list
+
+@cache.memoize()
+def get_ten_best_daily_tales():
+	tales = Tale.select_top_ten_order_by_star_count_today()
+	tales_list = list()
+
+	for tale in tales:
+		last_update = Tale.select_last_update(tale['id'])[0][0]
+
+		tale['creator'] = User.select_by_id(tale['creator_id'], 1)[0]
+		tale['last_update'] = False if last_update is None else last_update
+		tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
+		tales_list.append(tale)
+
+	return tales_list
 # END auxiliary functions

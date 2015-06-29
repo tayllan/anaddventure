@@ -1,7 +1,7 @@
 <div>
 	<br>
 	<br>
-	{% for tale in tales %}
+	{% for tale in top10_daily_tales %}
 		<div class="ui segment">
 			<p>
 				<sup>
@@ -35,7 +35,8 @@
 				<span class="column">
 					<sub>
 						{% if tale.last_update != false %}
-							<i class="wait icon"></i>{{_('LAST_UPDATED_ON')}} {{tale.last_update}}
+							<i class="wait icon"></i>
+							{{_('LAST_UPDATED_ON')}} <span class="utc-time">{{tale.last_update}}</span>
 						{% else %}
 							<i class="wait icon"></i>{{_('WAITING_FIRST_CHAPTER')}}
 						{% endif %}

@@ -13,7 +13,7 @@ from models.Tale_Genre import Tale_Genre
 from models.User import User
 from datetime import datetime
 from controllers import aux
-from config import www, pt, app, cache
+from config import www, pt, app
 import os, re
 
 @www.context_processor
@@ -89,7 +89,15 @@ def internal_error(error):
 @www.route('/')
 @pt.route('/')
 def index():
-	return render_template('index.html', genres = Genre.select_top_ten())
+	top10_tales = aux.get_ten_best_tales()
+	top10_daily_tales = aux.get_ten_best_daily_tales()
+
+	return render_template(
+		'index.html',
+		genres = Genre.select_top_ten(),
+		top10_tales = top10_tales,
+		top10_daily_tales = top10_daily_tales
+	)
 
 @www.route('/settings/<int:tale_id>/')
 @pt.route('/settings/<int:tale_id>/')
@@ -661,62 +669,6 @@ def get_rendered_participated_tales():
 		'previous_offset': 0 if (offset - aux.PAGINATION_LIMIT < 0) else (offset - aux.PAGINATION_LIMIT),
 		'next_offset': offset if len(tales) <= aux.PAGINATION_LIMIT else (offset + aux.PAGINATION_LIMIT)
 	})
-
-@www.route('/get_ten_best_tales/')
-@pt.route('/get_ten_best_tales/')
-def get_ten_best_tales():
-
-	@cache.memoize()
-	def inner_get_ten_best_tales():
-		tales = Tale.select_top_ten_order_by_star_count()
-		tales_list = list()
-
-		for tale in tales:
-			creator = User.select_by_id(tale['creator_id'], 1)[0]
-			last_update = Tale.select_last_update(tale['id'])[0][0]
-
-			tale['creator'] = creator
-			tale['last_update'] = False if last_update is None else aux.beautify_datetime(
-				last_update,
-				True,
-				int(request.args.get('timezone_offset', 0))
-			)
-			tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
-			tale['creation_datetime'] = aux.beautify_datetime(tale['creation_datetime'])
-			tales_list.append(tale)
-
-		return tales_list
-
-	tales_list = inner_get_ten_best_tales()
-	return render_template('fragment/top10_tales.html', tales = tales_list)
-
-@www.route('/get_ten_best_daily_tales/')
-@pt.route('/get_ten_best_daily_tales/')
-def get_ten_best_daily_tales():
-
-	@cache.memoize()
-	def inner_get_ten_best_daily_tales():
-		tales = Tale.select_top_ten_order_by_star_count_today()
-		tales_list = list()
-
-		for tale in tales:
-			creator = User.select_by_id(tale['creator_id'], 1)[0]
-			last_update = Tale.select_last_update(tale['id'])[0][0]
-
-			tale['creator'] = creator
-			tale['last_update'] = False if last_update is None else aux.beautify_datetime(
-				last_update,
-				True,
-				int(request.args.get('timezone_offset', 0))
-			)
-			tale['chapters'] = Tale.select_chapters_count(tale['id'])[0][0]
-			tale['creation_datetime'] = aux.beautify_datetime(tale['creation_datetime'])
-			tales_list.append(tale)
-
-		return tales_list
-
-	tales_list = inner_get_ten_best_daily_tales()
-	return render_template('fragment/top10_tales_today.html', tales = tales_list)
 
 @www.route('/<path:no_match>/')
 @pt.route('/<path:no_match>/')
