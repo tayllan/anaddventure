@@ -1,5 +1,4 @@
 from models.DAO import DAO
-from config import cache
 
 class Genre(DAO):
 
@@ -37,7 +36,6 @@ class Genre(DAO):
 		]
 
 	@staticmethod
-	@cache.memoize(timeout = 86400)
 	def select_by_id(genre_id, rows = None):
 		return Genre._construct_genre_objects(
 			DAO.select_by(
@@ -48,7 +46,6 @@ class Genre(DAO):
 		)
 
 	@staticmethod
-	@cache.memoize(timeout = 86400)
 	def select_by_type(category, rows = None):
 		return Genre._construct_genre_objects(
 			DAO.select_by(
@@ -59,7 +56,6 @@ class Genre(DAO):
 		)
 
 	@staticmethod
-	@cache.cached(timeout = 86400)
 	def select_all(rows = None):
 		return Genre._construct_genre_objects(
 			DAO.select_by(
@@ -70,7 +66,6 @@ class Genre(DAO):
 		)
 
 	@staticmethod
-	@cache.cached()
 	def select_top_ten(rows = None):
 		return Genre._construct_genre_objects(
 			DAO.select_by(
@@ -81,6 +76,5 @@ class Genre(DAO):
 		)
 
 	@staticmethod
-	@cache.memoize(timeout = 86400)
 	def is_genre_id_valid(genre_id):
 		return len(Genre.select_by_id(genre_id, 1)) is not 0

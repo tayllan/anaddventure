@@ -89,14 +89,11 @@ def internal_error(error):
 @www.route('/')
 @pt.route('/')
 def index():
-	top10_tales = aux.get_ten_best_tales()
-	top10_daily_tales = aux.get_ten_best_daily_tales()
-
 	return render_template(
 		'index.html',
 		genres = Genre.select_top_ten(),
-		top10_tales = top10_tales,
-		top10_daily_tales = top10_daily_tales
+		top10_tales = aux.get_ten_best_tales(),
+		top10_daily_tales = aux.get_ten_best_daily_tales()
 	)
 
 @www.route('/settings/<int:tale_id>/')
@@ -523,20 +520,6 @@ def faq():
 	return render_template('faq.html')
 
 # Ajax
-@www.route('/get_user_info/')
-@pt.route('/get_user_info/')
-def get_user_info():
-	user_id = int(request.args.get('user_id', -1))
-	user = User.select_by_id(user_id, 1)
-
-	if request.is_xhr and len(user) is not 0 and session.get('user_logged_id', None) is user[0]['id']:
-		user = user[0]
-		user['biography'] = user['biography'].replace("<br>", "\r\n")
-
-		return render_template('fragment/profile_edit_form.html', user = user)
-	else:
-		abort(404)
-
 @www.route('/follow/<int:tale_id>/', methods = ['POST'])
 @pt.route('/follow/<int:tale_id>/', methods = ['POST'])
 def follow(tale_id):

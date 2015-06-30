@@ -1,5 +1,4 @@
 from models.DAO import DAO
-from config import cache
 
 class Chapter(DAO):
 
@@ -173,7 +172,6 @@ class Chapter(DAO):
 		)
 
 	@staticmethod
-	@cache.cached(timeout = 86400)
 	def select_all(rows = None):
 		return Chapter._construct_chapter_objects(
 			DAO.select_by(
@@ -182,10 +180,3 @@ class Chapter(DAO):
 				rows
 			)
 		)
-
-	@staticmethod
-	def is_editable_chapter(chapter_id):
-		return DAO.select_by(
-			"SELECT COUNT(chapter_id) FROM anaddventure.chapter WHERE chapter_previous_chapter = (%s)",
-			(chapter_id, )
-		)[0][0]

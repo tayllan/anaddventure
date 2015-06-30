@@ -35,16 +35,14 @@ def tale(tale_id, chapter_id):
 				return redirect('/404')
 		else:
 			chapter = chapter[0]
-
 			next_chapters = Chapter.select_by_tale_id_and_previous_chapter_id(tale['id'], chapter['id'])
 
 			chapter['datetime'] = aux.beautify_datetime(chapter['date'])
 			chapter['contributor_username'] = User.select_by_id(chapter['user_id'], 1)[0]['username']
 			chapter['next_chapters'] = next_chapters
-			chapter['is_editable'] = Chapter.is_editable_chapter(chapter['id']) is 0
+			chapter['is_editable'] = tale['creator_id'] is session.get('user_logged_id', None)
 
 		tale['chapter'] = chapter
-
 		tale_genres = Tale_Genre.select_by_tale_id(tale['id'])
 		tale_genres_list = list()
 

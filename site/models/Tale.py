@@ -194,7 +194,6 @@ class Tale(DAO):
 		)
 
 	@staticmethod
-	@cache.cached(timeout = 86400)
 	def select_all(rows = None):
 		return Tale._construct_tale_objects(
 			DAO.select_by(

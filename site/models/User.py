@@ -188,7 +188,7 @@ class User(DAO):
 
 	@staticmethod
 	def is_valid_user(username, password):
-		return User._is_valid_user(hashlib.sha256(password.encode('utf-8')).hexdigest(), password)
+		return User._is_valid_user(username, hashlib.sha256(password.encode('utf-8')).hexdigest())
 
 	@staticmethod
 	def is_name_valid(name):

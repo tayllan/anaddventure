@@ -135,12 +135,6 @@ $(document).ready(function() {
 	{
 		inline: true,
 		onSuccess: function() {
-			var input_password = $(this).find('input[type="password"]')[0];
-			var password = input_password.value;
-			var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-			input_password.value = hash;
-
 			var $login_submit = $('button[name="login-submit"]');
 			$login_submit.addClass('disabled loading');
 			$.ajax({
@@ -183,18 +177,6 @@ $(document).ready(function() {
 	{
 		inline: true,
 		onSuccess: function() {
-			var input_password = $(this).find('input[name="profile-add-password"]')[0];
-			var password = input_password.value;
-			var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-			input_password.value = hash;
-
-			var input_password_repeat_password = $(this).find('input[name="profile-add-repeat-password"]')[0];
-			password = input_password_repeat_password.value;
-			hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-			input_password_repeat_password.value = hash;
-
 			var $profile_add_submit = $('button[name="profile-add-submit"]');
 			$profile_add_submit.addClass('disabled loading');
 			$.ajax({

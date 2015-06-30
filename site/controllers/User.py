@@ -86,6 +86,7 @@ def profile_edit_get(user_id):
 	if len(user) is not 0 and session.get('user_logged_id', None) is user[0]['id']:
 		user = user[0]
 		user['signup_date'] = aux.beautify_datetime(user['signup_date'])
+		user['biography'] = user['biography'].replace("<br>", "\r\n")
 		user['is_email_visible'] = True
 
 		return render_template('profile_edit.html', user = user)

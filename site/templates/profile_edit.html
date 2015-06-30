@@ -19,7 +19,7 @@
 			</div>
 		</div>
 
-		<div class="profile column">
+		<div class="column">
 			<div class="ui grid">
 				<div class="doubling two column row">
 					<div class="column">
@@ -32,14 +32,22 @@
 					</div>
 
 					<div class="column">
-						<button class="button-profile-edit ui button" value="{{user.id}}">
+						<button id="button-profile-edit" class="ui button" value="{{user.id}}">
 							{{_('UPDATE_PROFILE')}}
 						</button>
-						<button class="button-profile-edit-password ui button" value="{{user.id}}">
+						<button id="button-profile-edit-password" class="ui button" value="{{user.id}}">
 							{{_('UPDATE_PASSWORD')}}
 						</button>
 					</div>
 				</div>
+			</div>
+
+			<div id="div-profile-edit">
+				{% include "fragment/profile_edit_form.html" %}
+			</div>
+
+			<div id="div-profile-edit-password" style="display: none;">
+				{% include "fragment/profile_edit_password_form.html" %}
 			</div>
 		</div>
 	</div>
@@ -47,16 +55,32 @@
 
 <script>
 $(document).ready(function() {
-	var $profile = $('.profile');
-	var $button_profile_edit = $('.button-profile-edit');
+	var $button_profile_edit = $('#button-profile-edit');
+	var $button_profile_edit_password = $('#button-profile-edit-password');
+	var $div_profile_edit = $('#div-profile-edit');
+	var $div_profile_edit_password = $('#div-profile-edit-password');
+	var $profile_edit_avatar = $('input[name="profile-edit-avatar"]');
+	var $button_choose_file = $('#button-choose-file');
+	var $label_choose_file = $('#label-choose-file');
 
-	$profile.on('change', 'input[name="profile-edit-avatar"]', function(event) {
+	$button_profile_edit.on('click', function(event) {
+		$button_profile_edit_password.removeClass('disabled');
+		$button_profile_edit.addClass('disabled');
+		$div_profile_edit_password.css('display', 'none');
+		$div_profile_edit.css('display', 'block');
+	});
+
+	$button_profile_edit_password.on('click', function(event) {
+		$button_profile_edit.removeClass('disabled');
+		$button_profile_edit_password.addClass('disabled');
+		$div_profile_edit.css('display', 'none');
+		$div_profile_edit_password.css('display', 'block');
+	});
+
+	$profile_edit_avatar.on('change', function(event) {
 		var file = this.files[0];
 
 		if (file) {
-			var $button_choose_file = $profile.find('.button-choose-file');
-			var $label_choose_file = $profile.find('.label-choose-file');
-
 			if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
 				if (file.size < (1024 * 1024)) {
 					$button_choose_file.addClass('green').html(file.name);
@@ -78,206 +102,128 @@ $(document).ready(function() {
 		}
 	});
 
-	$profile.on('click', '.button-choose-file', function(event) {
+	$button_choose_file.on('click', function(event) {
 		event.preventDefault();
-
-		$profile.find('input[name="profile-edit-avatar"]').trigger('click');
-
+		$profile_edit_avatar.trigger('click');
 		return false;
 	});
 
-	$button_profile_edit.on('click', function(event) {
-		$.ajax({
-			type: 'get',
-			url: '/get_user_info',
-			datatype: 'json',
-			data: {
-				user_id: this.value
-			},
-			success: function(data) {
-				$profile.find('form').remove();
-				$profile.append(data);
-
-				$profile.find('form').form({
-					name: {
-						identifier: 'profile-edit-name',
-						rules: my_rules.name
-					},
-					email: {
-						identifier: 'profile-edit-email',
-						rules: my_rules.email
-					},
-					email_visibility: {
-						identifier: 'profile-edit-email-visibility',
-						rules: my_rules.empty
-					},
-					biography: {
-						identifier: 'profile-edit-biography',
-						rules: my_rules.biography
-					}
+	$div_profile_edit.find('form').form({
+		name: {
+			identifier: 'profile-edit-name',
+			rules: my_rules.name
+		},
+		email: {
+			identifier: 'profile-edit-email',
+			rules: my_rules.email
+		},
+		email_visibility: {
+			identifier: 'profile-edit-email-visibility',
+			rules: my_rules.empty
+		},
+		biography: {
+			identifier: 'profile-edit-biography',
+			rules: my_rules.biography
+		}
+	},
+	{
+		inline: true,
+		onSuccess: function() {
+			var $profile_edit_submit = $div_profile_edit.find('button[name="profile-edit-submit"]');
+			$profile_edit_submit.addClass('disabled loading');
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: new FormData(this),
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					window.location = data.url;
 				},
-				{
-					inline: true,
-					onSuccess: function() {
-						var $profile_edit_submit = $profile.find('button[name="profile-edit-submit"]');
-						$profile_edit_submit.addClass('disabled loading');
-						$.ajax({
-							type: this.method,
-							url: this.action,
-							data: new FormData(this),
-							processData: false,
-							contentType: false,
-							success: function(data) {
-								window.location = data.url;
-							},
-							error: function(xhr, status, error) {
-								$profile_edit_submit.removeClass('disabled loading');
-								append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
-							}
-						});
+				error: function(xhr, status, error) {
+					$profile_edit_submit.removeClass('disabled loading');
+					append_messages_list(xhr.responseJSON.error_list, $div_profile_edit.find('h4'));
+				}
+			});
 
-						return false;
-					},
-					onFailure: function() {
-						return false;
-					}
-				});
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
+			return false;
+		},
+		onFailure: function() {
+			return false;
+		}
 	});
 
-	$button_profile_edit.trigger('click');
+	$div_profile_edit_password.find(
+		'input[name="profile-edit-password-new-password"]'
+	).on('keyup', function(event) {
+		var $profile_edit_password_strength = $('#password-strength');
+		var password = this.value;
+		var strength = calculate_password_strength(password);
 
-	var profile_edit_password_form = ' \
-		<form action="/profile/edit/password/{{user.id}}/" method="post" class="ui form"> \
-		<h4 class="ui header">{{_("CHANGE_PASSWORD")}}</h4> \
- \
-		<div class="required field"> \
-			<label class="label">{{_("OLD_PASSWORD")}}</label> \
- \
-			<div class="ui left icon input"> \
-				<input type="password" name="profile-edit-password-old-password" tabindex="1"> \
-				<i class="lock icon"></i> \
-			</div> \
-		</div> \
- \
-		<div class="required field"> \
-			<label class="label">{{_("NEW_PASSWORD")}}</label> \
- \
-			<div class="ui right labeled left icon input"> \
-				<i class="lock icon"></i> \
-				<input type="password" name="profile-edit-password-new-password" tabindex="2"> \
-				<div class="password-strength ui yellow label"> \
-					{{_("TOO_WEAK")}} \
-				</div> \
-			</div> \
-		</div> \
- \
-		<div class="required field"> \
-			<label class="label">{{_("CONFIRM_NEW_PASSWORD")}}</label> \
- \
-			<div class="ui left icon input"> \
-				<input type="password" name="profile-edit-password-confirm-new-password" tabindex="3"> \
-				<i class="lock icon"></i> \
-			</div> \
-		</div> \
- \
-		<input type="hidden" name="_csrf_token" value="{{_csrf_token()}}"> \
-		<button type="submit" name="profile-edit-password-submit" class="ui green button" tabindex="4"> \
-			{{_("UPDATE_PASSWORD")}} \
-		</button> \
-		<a href="/password_reset">({{_("FORGOT_MY_PASSWORD")}})</a> \
-	</form>'
+		$profile_edit_password_strength.removeClass();
 
-	$('.button-profile-edit-password').on('click', function(event) {
-		$profile.find('form').remove();
-		$profile.append(profile_edit_password_form);
+		switch (strength) {
+			case 0:
+				$profile_edit_password_strength.
+					addClass('ui yellow label').
+					html(my_messages[language]['TOO_WEAK']);
+				break;
+			case 1:
+				$profile_edit_password_strength.
+					addClass('ui green label').
+					html(my_messages[language]['WEAK']);
+				break;
+			case 2:
+				$profile_edit_password_strength.
+					addClass('ui blue label').
+					html(my_messages[language]['GOOD']);
+				break;
+			default:
+				$profile_edit_password_strength.
+					addClass('ui red label').
+					html(my_messages[language]['STRONG']);
+		}
+	});
 
-		var $profile_edit_password_strength = $('.password-strength');
-
-		$('input[name="profile-edit-password-new-password"]').on('keyup', function(event) {
-			var password = this.value;
-			var strength = calculate_password_strength(password);
-
-			$profile_edit_password_strength.removeClass();
-
-			switch (strength) {
-				case 0:
-					$profile_edit_password_strength.addClass('ui yellow label').html(my_messages[language]['TOO_WEAK']);
-					break;
-				case 1:
-					$profile_edit_password_strength.addClass('ui green label').html(my_messages[language]['WEAK']);
-					break;
-				case 2:
-					$profile_edit_password_strength.addClass('ui blue label').html(my_messages[language]['GOOD']);
-					break;
-				default:
-					$profile_edit_password_strength.addClass('ui red label').html(my_messages[language]['STRONG']);
-			}
-		});
-
-		$profile.find('form').form({
-			old_password: {
-				identifier: 'profile-edit-password-old-password',
-				rules: my_rules.password
-			},
-			new_password: {
-				identifier: 'profile-edit-password-new-password',
-				rules: my_rules.password
-			},
-			confirm_new_password: {
-				identifier: 'profile-edit-password-confirm-new-password',
-				rules: my_rules.match('profile-edit-password-new-password')
-			}
+	$div_profile_edit_password.find('form').form({
+		old_password: {
+			identifier: 'profile-edit-password-old-password',
+			rules: my_rules.password
 		},
-		{
-			inline: true,
-			onSuccess: function() {
-				var input_old_password = $(this).find('input[name="profile-edit-password-old-password"]')[0];
-				var password = input_old_password.value;
-				var hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
+		new_password: {
+			identifier: 'profile-edit-password-new-password',
+			rules: my_rules.password
+		},
+		confirm_new_password: {
+			identifier: 'profile-edit-password-confirm-new-password',
+			rules: my_rules.match('profile-edit-password-new-password')
+		}
+	},
+	{
+		inline: true,
+		onSuccess: function() {
+			var $profile_edit_password_submit = $div_profile_edit_password.find('button[name="profile-edit-password-submit"]');
+			$profile_edit_password_submit.addClass('disabled loading');
+			$.ajax({
+				type: this.method,
+				url: this.action,
+				data: new FormData(this),
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					window.location = data.url;
+				},
+				error: function(xhr, status, error) {
+					$profile_edit_password_submit.removeClass('disabled loading');
+					append_messages_list(xhr.responseJSON.error_list, $div_profile_edit_password.find('h4'));
+				}
+			});
 
-				input_old_password.value = hash;
-
-				var input_new_password = $(this).find('input[name="profile-edit-password-new-password"]')[0];
-				password = input_new_password.value;
-				hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-				input_new_password.value = hash;
-
-				var input_confirm_password = $(this).find('input[name="profile-edit-password-confirm-new-password"]')[0];
-				password = input_confirm_password.value;
-				hash = new jsSHA(password, 'TEXT').getHash('SHA-256', 'HEX');
-
-				input_confirm_password.value = hash;
-
-				var $profile_edit_password_submit = $profile.find('button[name="profile-edit-password-submit"]');
-				$profile_edit_password_submit.addClass('disabled loading');
-
-				$.ajax({
-					type: this.method,
-					url: this.action,
-					data: new FormData(this),
-					processData: false,
-					contentType: false,
-					success: function(data) {
-						window.location = data.url;
-					},
-					error: function(xhr, status, error) {
-						$profile_edit_password_submit.removeClass('disabled loading');
-						append_messages_list(xhr.responseJSON.error_list, $profile.find('h4'));
-					}
-				});
-
-				return false;
-			},
-			onFailure: function() {
-				return false;
-			}
-		});
+			return false;
+		},
+		onFailure: function() {
+			return false;
+		}
 	});
 });
 </script>
