@@ -3,9 +3,11 @@ from flask_mail import Message
 from config import mail, app, cache
 from models.License import License
 from models.Follow import Follow
+from models.Genre import Genre
 from models.Invitation import Invitation
 from models.Star import Star
 from models.Tale import Tale
+from models.Tale_Genre import Tale_Genre
 from models.User import User
 from datetime import datetime, timedelta
 from threading import Thread
@@ -72,6 +74,15 @@ def return_rendered_tale_template(
 	):
 	this_user_gave_star = did_the_logged_user_give_star(tale['id'])
 	this_user_is_following = did_the_logged_user_follow(tale['id'])
+
+	tale_genres = Tale_Genre.select_by_tale_id(tale['id'])
+	tale_genres_list = list()
+
+	for tale_genre in tale_genres:
+		genre = Genre.select_by_id(tale_genre[1], 1)[0]
+		tale_genres_list.append(genre)
+
+	tale['genres'] = tale_genres_list
 
 	return render_template(
 		template,

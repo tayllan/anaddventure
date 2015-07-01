@@ -22,10 +22,12 @@
 	{% endif %}
 </div>
 
-<div class="ui segment center aligned disappear">
-	<h5>{{_('TALES_GENRES')}}</h5>
+{% if tale.genres|length != 0 %}
+	<div class="ui segment center aligned disappear">
+		<h5>{{_('TALES_GENRES')}}</h5>
 
-	{% for genre in tale.genres %}
-		<a href="/search_tales/?g={{genre.id}}" class="ui tag label">{{_(genre.type)}}</a>
-	{% endfor %}
-</div>
+		{% for genre in tale.genres %}
+			<a href="/search_tales/?g={{genre.id}}" class="ui tag label">{{_(genre.type)}}</a>
+		{% endfor %}
+	</div>
+{% endif %}
