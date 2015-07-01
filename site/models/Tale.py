@@ -1,5 +1,4 @@
 from models.DAO import DAO
-from config import cache
 
 class Tale(DAO):
 
@@ -410,7 +409,6 @@ class Tale(DAO):
 		)
 
 	@staticmethod
-	@cache.memoize()
 	def select_chapters_count(tale_id, rows = None):
 		return DAO.select_by(
 			"SELECT COUNT(*) FROM anaddventure.chapter WHERE chapter_tale_id = (%s)",
