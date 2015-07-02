@@ -739,7 +739,7 @@ STRINGS = {
 		'MIN_CHARACTERS': 'Digite ao menos 3 caracteres!',
 		'INTERNAL_ERROR': 'Erro no Servidor',
 		'INTERNAL_ERROR_MESSAGE': 'Nos desculpe, algo deu errado! Pessoas serão demitidas por causa disso!',
-		'TALES_GENRES': 'Gêneros dos Contos',
+		'TALES_GENRES': 'Gêneros do Conto',
 		'UPDATE_CHAPTER': 'Atualizar Capítulo',
 		'UPDATE_CONTRIBUTION_REQUEST': 'Atualizar Pedido de Colaboração',
 	}
