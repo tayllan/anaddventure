@@ -96,12 +96,6 @@ def index():
 		top10_daily_tales = aux.get_ten_best_daily_tales()
 	)
 
-@app.route('/manifest')
-def manifest():
-	response = make_response(render_template('manifest.appcache'), 200)
-	response.headers["Content-Type"] = "text/cache-manifest"
-	return response
-
 @www.route('/settings/<int:tale_id>/')
 @pt.route('/settings/<int:tale_id>/')
 def settings(tale_id):
