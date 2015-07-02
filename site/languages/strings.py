@@ -1,111 +1,116 @@
-def construct_new_chapter_email_object(language, tale, creator_username, chapter_number, SITE_NAME, SITE_URL, new_chapter_id):
+from config import app
+
+SITE_NAME = app.config['SITE_NAME']
+SITE_URL = app.config['SITE_URL']
+
+def construct_new_chapter_email_object(language, tale, creator_username, chapter_number, new_chapter_id):
 	if language == 'en':
 		email_object = {
 			'title': 'New Chapter on ' + tale['title'],
 			'body': '"{0}" just added a version for the chapter {1} on the tale "{2}" on "{3}", which can be viewed on {4}/tale/{5}/{6}.'.format(
-					creator_username,
-					str(chapter_number),
-					tale['title'],
-					SITE_NAME,
-					SITE_URL,
-					str(tale['id']),
-					str(new_chapter_id)
-				)
+				creator_username,
+				str(chapter_number),
+				tale['title'],
+				SITE_NAME,
+				SITE_URL,
+				str(tale['id']),
+				str(new_chapter_id)
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Novo Capítulo em ' + tale['title'],
 			'body': '"{0}" adicionou outra versão do capítulo {1} no conto "{2}" em "{3}", o qual pode ser visualizado em {4}/tale/{5}/{6}.'.format(
-					creator_username,
-					str(chapter_number),
-					tale['title'],
-					SITE_NAME,
-					SITE_URL,
-					str(tale['id']),
-					str(new_chapter_id)
-				)
+				creator_username,
+				str(chapter_number),
+				tale['title'],
+				SITE_NAME,
+				SITE_URL,
+				str(tale['id']),
+				str(new_chapter_id)
+			)
 		}
 
 	return email_object
 
-def construct_new_contribution_request_email_object(language, tale, creator_username, SITE_NAME, SITE_URL):
+def construct_new_contribution_request_email_object(language, tale, creator_username):
 	if language == 'en':
 		email_object = {
 			'title': 'New Collaboration Request on ' + tale['title'],
 			'body': '"{0}" just sent a collaboration request for the tale "{1}" on "{2}", which can be viewed on {3}/contribution_requests/{4}.'.format(
-					creator_username,
-					tale['title'],
-					SITE_NAME,
-					SITE_URL,
-					str(tale['id'])
-				)
+				creator_username,
+				tale['title'],
+				SITE_NAME,
+				SITE_URL,
+				str(tale['id'])
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Novo Pedido de Colaboração em ' + tale['title'],
 			'body': '"{0}" enviou um pedido de colaboração para o conto "{1}" em "{2}", o qual pode ser visualizado em {3}/contribution_requests/{4}.'.format(
-					creator_username,
-					tale['title'],
-					SITE_NAME,
-					SITE_URL,
-					str(tale['id'])
-				)
+				creator_username,
+				tale['title'],
+				SITE_NAME,
+				SITE_URL,
+				str(tale['id'])
+			)
 		}
 
 	return email_object
 
-def construct_contribution_request_accepted_email_object(language, tale, creator, contributor, contribution_id, SITE_NAME, SITE_URL):
+def construct_contribution_request_accepted_email_object(language, tale, creator, contributor, contribution_id):
 	if language == 'en':
 		email_object = {
 			'title': 'Collaboration Request Accepted on ' + tale['title'],
 			'body': '"{0}" just accepted a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/collaboration/{5}/.'.format(
-					creator['username'],
-					tale['title'],
-					SITE_NAME,
-					contributor['username'],
-					SITE_URL,
-					str(contribution_id)
-				)
+				creator['username'],
+				tale['title'],
+				SITE_NAME,
+				contributor['username'],
+				SITE_URL,
+				str(contribution_id)
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Pedido de Colaboração Aceito em ' + tale['title'],
 			'body': '"{0}" aceitou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/collaboration/{5}/.'.format(
-					creator['username'],
-					tale['title'],
-					SITE_NAME,
-					contributor['username'],
-					SITE_URL,
-					str(contribution_id)
-				)
+				creator['username'],
+				tale['title'],
+				SITE_NAME,
+				contributor['username'],
+				SITE_URL,
+				str(contribution_id)
+			)
 		}
 
 	return email_object
 
-def construct_contribution_request_refused_email_object(language, tale, creator, contributor, contribution_id, SITE_NAME, SITE_URL):
+def construct_contribution_request_refused_email_object(language, tale, creator, contributor, contribution_id):
 	if language == 'en':
 		email_object = {
 			'title': 'Collaboration Request Refused on ' + tale['title'],
 			'body': '"{0}" just refused a collaboration request on the tale "{1}" on "{2}" sent from "{3}". The collaboration can be viewed on {4}/collaboration/{5}/.'.format(
-					creator['username'],
-					tale['title'],
-					SITE_NAME,
-					contributor['username'],
-					SITE_URL,
-					str(contribution_id)
-				)
+				creator['username'],
+				tale['title'],
+				SITE_NAME,
+				contributor['username'],
+				SITE_URL,
+				str(contribution_id)
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Pedido de Colaboração Recusado em ' + tale['title'],
 			'body': '"{0}" recusou um pedido de colaboração no conto "{1}" em "{2}" enviado por "{3}". A colaboração pode ser visualizada em {4}/collaboration/{5}/.'.format(
-					creator['username'],
-					tale['title'],
-					SITE_NAME,
-					contributor['username'],
-					SITE_URL,
-					str(contribution_id)
-				)
+				creator['username'],
+				tale['title'],
+				SITE_NAME,
+				contributor['username'],
+				SITE_URL,
+				str(contribution_id)
+			)
 		}
 
 	return email_object
@@ -115,121 +120,121 @@ def construct_delete_tale_email_object(language, tale, creator, SITE_NAME):
 		email_object = {
 			'title': 'Tale ' + tale['title'] + ' Deleted',
 			'body': '"{0}" just deleted the tale "{1}" on "{2}".'.format(
-					creator['username'],
-					tale['title'],
-					SITE_NAME
-				)
+				creator['username'],
+				tale['title'],
+				SITE_NAME
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Conto ' + tale['title'] + ' Deletado',
 			'body': '"{0}" deletou o conto "{1}" em "{2}".'.format(
-					creator['username'],
-					tale['title'],
-					SITE_NAME
-				)
+				creator['username'],
+				tale['title'],
+				SITE_NAME
+			)
 		}
 
 	return email_object
 
-def construct_tale_invitation_email_object(language, user, tale, creator, SITE_NAME, SITE_URL):
+def construct_tale_invitation_email_object(language, user, tale, creator):
 	if language == 'en':
 		email_object = {
 			'title': 'Private Tale Invitation',
 			'body': '"{0}", you\'ve been invited to collaborate to the private tale "{1}" on "{2}" by "{3}".\n\nTo see the tale, click on the following link: {4}/join?redirect=/tale/{5}/0.\n\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.'.format(
-					user['name'],
-					tale['title'],
-					SITE_NAME,
-					creator['name'],
-					SITE_URL,
-					str(tale['id'])
-				)
+				user['name'],
+				tale['title'],
+				SITE_NAME,
+				creator['name'],
+				SITE_URL,
+				str(tale['id'])
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Convite para um Conto Privado',
 			'body': '"{0}", você foi convidado a colaborar para o conto privado "{1}" em "{2}" por "{3}".\n\nPara visualizar o conto, clique no seguinte link: {4}/join?redirect=/tale/{5}/0.\n\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.'.format(
-					user['name'],
-					tale['title'],
-					SITE_NAME,
-					creator['name'],
-					SITE_URL,
-					str(tale['id'])
-				)
+				user['name'],
+				tale['title'],
+				SITE_NAME,
+				creator['name'],
+				SITE_URL,
+				str(tale['id'])
+			)
 		}
 
 	return email_object
 
-def construct_signup_email_object(language, signup_queue_id, SITE_NAME, SITE_URL):
+def construct_signup_email_object(language, signup_queue_id):
 	if language == 'en':
 		email_object = {
 			'title': SITE_NAME + ' Registration',
 			'body': 'To fulfill the account registration process on "{0}" just click the following link: {1}/activate_account/{2}.\n\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.\n\nIf you\'ve received this email in error, it\'s likely that another person entered your email address by mistake while trying to signup on "{0}", if that\'s the case, you can remove your email address from our database on the following link: {1}/delete_account/{2}.'.format(
-					SITE_NAME,
-					SITE_URL,
-					str(signup_queue_id)
-				)
+				SITE_NAME,
+				SITE_URL,
+				str(signup_queue_id)
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Cadastro em ' + SITE_NAME,
 			'body': 'Para completar o processo de cadastro da sua conta em "{0}" clique no seguinte link: {1}/activate_account/{2}.\n\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.\n\nSe você recebeu esse email por engano, é provável que outra pessoa digitou seu email sem querer enquanto tentava se cadastrar em "{0}", se esse for o caso, você pode remover seu email do nosso banco de dados no seguinte link: {1}/delete_account/{2}.'.format(
-					SITE_NAME,
-					SITE_URL,
-					str(signup_queue_id)
-				)
+				SITE_NAME,
+				SITE_URL,
+				str(signup_queue_id)
+			)
 		}
 
 	return email_object
 
-def construct_password_reset_email_object(language, p_c_r_id, SITE_NAME, SITE_URL):
+def construct_password_reset_email_object(language, p_c_r_id):
 	if language == 'en':
 		email_object = {
 			'title': 'Password Resetting',
 			'body': 'To initiate the password reset process for your account on "{0}" click on the following link: {1}/change_password/{2}.\n\nIf clicking the link above doesn\'t work, please copy and paste the URL in a new browser window instead.\n\nIf you\'ve received this email in error, it\'s likely that another user entered your email address by mistake while trying to reset a password.\n\nIf you didn\'t initiate the request, you don\'t need to take any further action and can safely disregard this email.'.format(
-					SITE_NAME,
-					SITE_URL,
-					str(p_c_r_id)
-				)
+				SITE_NAME,
+				SITE_URL,
+				str(p_c_r_id)
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Redefinição de Senha',
 			'body': 'Para iniciar o processo de recuperação de senhar para sua conta em "{0}" clique no seguinte link: {1}/change_password/{2}.\n\nSe clicar no link acima não funcionar, por favor copie e cole a URL em uma nova aba do navegador.\n\nSe você recebeu esse email por engano, é provável que outro usuário tenha digitado seu email sem querer enquanto tentava resetar a senha dele.\n\nSe você não iniciou essa requisição, você não precisa tomar nenhuma outra ação e pode seguramente desconsiderar esse email.'.format(
-					SITE_NAME,
-					SITE_URL,
-					str(p_c_r_id)
-				)
+				SITE_NAME,
+				SITE_URL,
+				str(p_c_r_id)
+			)
 		}
 
 	return email_object
 
-def construct_updated_chapter_email_object(language, tale, creator_username, chapter_number, SITE_NAME, SITE_URL, chapter_id):
+def construct_updated_chapter_email_object(language, tale, creator_username, chapter_number, chapter_id):
 	if language == 'en':
 		email_object = {
 			'title': 'Chapter Updated on ' + tale['title'],
 			'body': '"{0}" just updated the chapter {1} on the tale "{2}" on "{3}", which can be viewed on {4}/tale/{5}/{6}.'.format(
-					creator_username,
-					str(chapter_number),
-					tale['title'],
-					SITE_NAME,
-					SITE_URL,
-					str(tale['id']),
-					str(chapter_id)
-				)
+				creator_username,
+				str(chapter_number),
+				tale['title'],
+				SITE_NAME,
+				SITE_URL,
+				str(tale['id']),
+				str(chapter_id)
+			)
 		}
 	else:
 		email_object = {
 			'title': 'Capítulo Atualizado em ' + tale['title'],
 			'body': '"{0}" atualizou o capítulo {1} no conto "{2}" em "{3}", o qual pode ser visualizado em {4}/tale/{5}/{6}.'.format(
-					creator_username,
-					str(chapter_number),
-					tale['title'],
-					SITE_NAME,
-					SITE_URL,
-					str(tale['id']),
-					str(chapter_id)
-				)
+				creator_username,
+				str(chapter_number),
+				tale['title'],
+				SITE_NAME,
+				SITE_URL,
+				str(tale['id']),
+				str(chapter_id)
+			)
 		}
 
 	return email_object

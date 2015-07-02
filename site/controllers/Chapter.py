@@ -49,8 +49,6 @@ def chapter_edit_post(chapter_id):
 				tale,
 				User.select_by_id(creator_id, 1)[0]['username'],
 				chapter['number'],
-				app.config['SITE_NAME'],
-				app.config['SITE_URL'],
 				chapter['id']
 			)
 

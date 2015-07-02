@@ -67,9 +67,7 @@ def profile_add():
 
 			email_object = strings.construct_signup_email_object(
 				language,
-				signup_queue.id,
-				app.config['SITE_NAME'],
-				app.config['SITE_URL']
+				signup_queue.id
 			)
 
 			aux.send_email(email_object['title'], email, email_object['body'])

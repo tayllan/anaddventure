@@ -96,6 +96,12 @@ def index():
 		top10_daily_tales = aux.get_ten_best_daily_tales()
 	)
 
+@app.route('/manifest')
+def manifest():
+	response = make_response(render_template('manifest.appcache'), 200)
+	response.headers["Content-Type"] = "text/cache-manifest"
+	return response
+
 @www.route('/settings/<int:tale_id>/')
 @pt.route('/settings/<int:tale_id>/')
 def settings(tale_id):
@@ -138,9 +144,7 @@ def invite_post(tale_id):
 			session.get('language', 'en'),
 			user,
 			tale,
-			creator,
-			app.config['SITE_NAME'],
-			app.config['SITE_URL']
+			creator
 		)
 
 		aux.send_email(email_object['title'], user['email'], email_object['body'])
@@ -190,9 +194,7 @@ def contribution_requests_accept():
 				tale,
 				creator,
 				contributor,
-				contribution_request['id'],
-				app.config['SITE_NAME'],
-				app.config['SITE_URL']
+				contribution_request['id']
 			)
 
 			aux.send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
@@ -225,9 +227,7 @@ def contribution_requests_refuse():
 				tale,
 				creator,
 				contributor,
-				contribution_request['id'],
-				app.config['SITE_NAME'],
-				app.config['SITE_URL']
+				contribution_request['id']
 			)
 
 			aux.send_email_to_followers(tale['id'], email_object['title'], email_object['body'])
@@ -338,9 +338,7 @@ def password_reset_post():
 
 			email_object = strings.construct_password_reset_email_object(
 				language,
-				p_c_r.id,
-				app.config['SITE_NAME'],
-				app.config['SITE_URL']
+				p_c_r.id
 			)
 
 			aux.send_email(email_object['title'], email, email_object['body'])

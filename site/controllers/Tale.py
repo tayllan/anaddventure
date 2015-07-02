@@ -222,8 +222,7 @@ def tale_delete(tale_id):
 		email_object = strings.construct_delete_tale_email_object(
 			session.get('language', 'en'),
 			tale,
-			creator,
-			app.config['SITE_NAME']
+			creator
 		)
 
 		aux.send_email_to_followers(tale['id'], email_object['title'], email_object['body'])

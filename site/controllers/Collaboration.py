@@ -94,8 +94,6 @@ def collaboration_add_post(tale_id, chapter_id):
 						tale,
 						creator_username,
 						1,
-						app.config['SITE_NAME'],
-						app.config['SITE_URL'],
 						0
 					)
 				else:
@@ -118,8 +116,6 @@ def collaboration_add_post(tale_id, chapter_id):
 						tale,
 						creator_username,
 						chapter['number'] + 1,
-						app.config['SITE_NAME'],
-						app.config['SITE_URL'],
 						new_chapter_id
 					)
 			else:
@@ -139,9 +135,7 @@ def collaboration_add_post(tale_id, chapter_id):
 				email_object = strings.construct_new_contribution_request_email_object(
 					language,
 					tale,
-					creator_username,
-					app.config['SITE_NAME'],
-					app.config['SITE_URL']
+					creator_username
 				)
 
 			aux.send_email_to_followers(tale_id, email_object['title'], email_object['body'])
