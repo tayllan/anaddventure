@@ -1,4 +1,5 @@
 from models.DAO import DAO
+from config import cache
 
 class Genre(DAO):
 
@@ -66,6 +67,7 @@ class Genre(DAO):
 		)
 
 	@staticmethod
+	@cache.cached(timeout = 86400)
 	def select_top_ten(rows = None):
 		return Genre._construct_genre_objects(
 			DAO.select_by(

@@ -495,7 +495,7 @@ STRINGS = {
 		'UPDATE_CONTRIBUTION_REQUEST': 'Update Collaboration Request',
 	},
 	'pt': {
-		'TOP_10_GENRES': 'Gêneros Mais Acessados',
+		'TOP_10_GENRES': 'Gêneros Mais Utilizados',
 		'MY_PROFILE': 'Meu Perfil',
 		'LOGOUT': 'Sair',
 		'LOGIN': 'Entrar',
