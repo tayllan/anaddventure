@@ -151,7 +151,22 @@ def contribution_requests(tale_id):
 	tale = aux.is_visible_tale(tale_id, session.get('user_logged_id', None))
 
 	if tale:
-		return aux.return_rendered_tale_template(tale, 'contribution_requests.html')
+		o_c_r = Contribution_Request.select_open_by_tale_id_order_by_datetime(tale_id)
+		for contribution_request in o_c_r:
+			contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
+			contribution_request['datetime'] = aux.beautify_datetime(contribution_request['datetime'])
+
+		c_c_r = Contribution_Request.select_closed_by_tale_id_order_by_datetime(tale_id)
+		for contribution_request in c_c_r:
+			contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
+			contribution_request['datetime'] = aux.beautify_datetime(contribution_request['datetime'])
+
+		return aux.return_rendered_tale_template(
+			tale,
+			'contribution_requests.html',
+			open_contribution_requests_list = o_c_r,
+			closed_contribution_requests_list = c_c_r
+		)
 	else:
 		return redirect('/404')
 
@@ -559,48 +574,6 @@ def unstar(tale_id):
 	if request.is_xhr and tale and 'user_logged_id' in session:
 		Star.delete_by_user_id(session['user_logged_id'])
 		return jsonify({'stars': tale['stars'] - 1})
-	else:
-		abort(404)
-
-@www.route('/get_open_contribution_requests/')
-@pt.route('/get_open_contribution_requests/')
-def get_open_contribution_requests():
-	tale_id = int(request.args.get('tale_id', 0))
-	tale = aux.is_visible_tale(tale_id, session.get('user_logged_id', None))
-
-	if tale:
-		contribution_requests = Contribution_Request.select_open_by_tale_id_order_by_datetime(tale_id)
-
-		for contribution_request in contribution_requests:
-			contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
-			contribution_request['datetime'] = aux.beautify_datetime(contribution_request['datetime'])
-
-		return aux.return_rendered_tale_template(
-			tale,
-			'fragment/open_contribution_requests.html',
-			open_contribution_requests_list = contribution_requests
-		)
-	else:
-		abort(404)
-
-@www.route('/get_closed_contribution_requests/')
-@pt.route('/get_closed_contribution_requests/')
-def get_closed_contribution_requests():
-	tale_id = int(request.args.get('tale_id', 0))
-	tale = aux.is_visible_tale(tale_id, session.get('user_logged_id', None))
-
-	if tale:
-		contribution_requests = Contribution_Request.select_closed_by_tale_id_order_by_datetime(tale_id)
-
-		for contribution_request in contribution_requests:
-			contribution_request['user_username'] = User.select_by_id(contribution_request['user_id'], 1)[0]['username']
-			contribution_request['datetime'] = aux.beautify_datetime(contribution_request['datetime'])
-
-		return aux.return_rendered_tale_template(
-			tale,
-			'fragment/closed_contribution_requests.html',
-			closed_contribution_requests_list = contribution_requests
-		)
 	else:
 		abort(404)
 

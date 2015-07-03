@@ -10,10 +10,18 @@
 
 <div class="main">
 	<div class="ui stackable two column grid">
-		<div class="contribution-requests thirteen wide column">
+		<div id="contribution-requests" class="thirteen wide column">
 			<div class="ui top attached tabular menu">
-				<a class="o-c-r active item">{{_('OPEN_CONTRIBUTION_REQUESTS')}}</a>
-				<a class="c-c-r item">{{_('CLOSED_CONTRIBUTION_REQUESTS')}}</a>
+				<a id="o-c-r" class="active item">{{_('OPEN_CONTRIBUTION_REQUESTS')}}</a>
+				<a id="c-c-r" class="item">{{_('CLOSED_CONTRIBUTION_REQUESTS')}}</a>
+			</div>
+
+			<div id="open-contribution-requests">
+				{% include "fragment/open_contribution_requests.html" %}
+			</div>
+
+			<div id="closed-contribution-requests" style="display: none;">
+				{% include "fragment/closed_contribution_requests.html" %}
 			</div>
 		</div>
 
@@ -25,60 +33,25 @@
 
 <script>
 $(document).ready(function() {
-	var $contribution_requests = $('.contribution-requests');
-	var tale_id = '{{tale.id}}';
-
-	var $o_c_r = $('.o-c-r');
-	var $c_c_r = $('.c-c-r');
+	var $o_c_r = $('#o-c-r');
+	var $c_c_r = $('#c-c-r');
+	var $open_contribution_requests = $('#open-contribution-requests');
+	var $closed_contribution_requests = $('#closed-contribution-requests');
 
 	$o_c_r.on('click', function(event) {
-		if ($contribution_requests.find('.open-contribution-requests').length === 1) {
-			return;
-		}
 		$o_c_r.addClass('active');
 		$c_c_r.removeClass('active');
 
-		$.ajax({
-			type: 'get',
-			url: '/get_open_contribution_requests',
-			datatype: 'json',
-			data: {
-				tale_id: tale_id
-			},
-			success: function(data) {
-				$contribution_requests.find('.closed-contribution-requests').remove();
-				$contribution_requests.append(data);
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
+		$open_contribution_requests.css('display', 'block');
+		$closed_contribution_requests.css('display', 'none');
 	});
 
-	$o_c_r.trigger('click');
-
 	$c_c_r.on('click', function(event) {
-		if ($contribution_requests.find('.closed-contribution-requests').length === 1) {
-			return;
-		}
 		$c_c_r.addClass('active');
 		$o_c_r.removeClass('active');
 
-		$.ajax({
-			type: 'get',
-			url: '/get_closed_contribution_requests',
-			datatype: 'json',
-			data: {
-				tale_id: tale_id
-			},
-			success: function(data) {
-				$contribution_requests.find('.open-contribution-requests').remove();
-				$contribution_requests.append(data);
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
-			}
-		});
+		$closed_contribution_requests.css('display', 'block');
+		$open_contribution_requests.css('display', 'none');
 	});
 });
 </script>
