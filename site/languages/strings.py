@@ -423,8 +423,8 @@ STRINGS = {
 		'CURRENTLY_HAS': 'The site currectly has',
 		'REGISTERED_USERS': 'registered users',
 		'WHERE_IT_STARTED_CONTENT': '''
-			It all started with a similar, yet different, idea from my friend Joelton.
-			With some research and some more ideas I addapted the original one to fit
+			It all started with a similar idea from my friend Joelton.
+			With some research and some more ideas, I addapted the original one to fit
 			the writing model to which I felt more confortable with, the addventure model:
 			''',
 		'AN_ADDVENTURE_CONTENT': '''
@@ -667,7 +667,7 @@ STRINGS = {
 		'MORE_ABOUT': 'Mais sobre',
 		'FAQ': 'Frequently Asked Questions',
 		'WHAT_IS': 'O que é',
-		'WHERE_IT_STARTED': 'Onde tudo começo',
+		'WHERE_IT_STARTED': 'Onde tudo começou',
 		'WHERE_IS_GOING': 'Onde An Addventure está indo',
 		'AN_ADDVENTURE': 'An Addventure',
 		'WHAT_IS_CONTENT': '''
@@ -677,8 +677,8 @@ STRINGS = {
 		'CURRENTLY_HAS': 'Atualmente o site possui',
 		'REGISTERED_USERS': 'usuários registrados',
 		'WHERE_IT_STARTED_CONTENT': '''
-			Tudo começou com uma ideia similar, porém diferente, do meu amigo Joelton.
-			Com alguma pesquisa e outras ideias eu adaptei a ideia original para combinar
+			Tudo começou com uma ideia similar do meu amigo Joelton.
+			Com alguma pesquisa e outras ideias, eu adaptei a ideia original para combinar
 			melhor com o estilo de escrita que eu achei melhor, o estilo addventure:
 			''',
 		'AN_ADDVENTURE_CONTENT': '''
