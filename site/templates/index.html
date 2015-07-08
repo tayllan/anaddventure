@@ -5,25 +5,27 @@
 {% endblock %}
 
 {% block site_header %}
-<div class="ui black inverted segment">
-	<h1 class="ui header">
-		{{_('SITE_HEADER')}}
-		<sup>
-			<a href="https://en.wikipedia.org/wiki/Addventure" title="{{_('NOT_WRONG')}}" target="_blank">*</a>
-		</sup>
-		?
-	</h1>
+	{% if user_logged_id is none %}
+		<div class="ui black inverted segment">
+			<h1 class="ui header">
+				{{_('SITE_HEADER')}}
+				<sup>
+					<a href="https://en.wikipedia.org/wiki/Addventure" title="{{_('NOT_WRONG')}}" target="_blank">*</a>
+				</sup>
+				?
+			</h1>
 
-	<div class="ui big red label">
-		<a href="/contact">{{_('HELP_ME_OUT')}}</a>
-	</div>
+			<div class="ui big red label">
+				<a href="/contact">{{_('HELP_ME_OUT')}}</a>
+			</div>
 
-	<h2 class="ui header">
-		{{_('SITE_PRESENTATION')}}
-		<br>
-		<sub><a href="/faq">{{_('MORE_ABOUT')}}</a></sub>
-	</h2>
-</div>
+			<h2 class="ui header">
+				{{_('SITE_PRESENTATION')}}
+				<br>
+				<sub><a href="/faq">{{_('MORE_ABOUT')}}</a></sub>
+			</h2>
+		</div>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
