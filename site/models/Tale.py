@@ -236,29 +236,7 @@ class Tale(DAO):
 		return tales
 
 	@staticmethod
-	def select_tales_other_creator(user_id, rows = None):
-		return Tale._construct_tale_objects(
-			DAO.select_by(
-				'''
-				SELECT DISTINCT
-					tale_id, tale_title, tale_description,
-					tale_category, tale_creator, tale_license,
-					tale_star_count, tale_follow_count,
-					tale_contribution_request_count, tale_creation_datetime
-					FROM anaddventure.chapter INNER JOIN anaddventure.tale ON
-					chapter_system_user_id = (%s) AND
-					tale_creator != chapter_system_user_id AND
-					tale_id = chapter_tale_id;
-				''',
-				(user_id, ),
-				rows
-			)
-		)
-
-	@staticmethod
-	def select_tales_other_creator_by_title_with_offset_and_limit(
-			user_id, viewer_id, title, offset, limit = 5, rows = None
-		):
+	def select_tales_other_creator(user_id, viewer_id, rows = None):
 		return Tale._construct_tale_objects(
 			DAO.select_by(
 				'''
@@ -285,11 +263,10 @@ class Tale(DAO):
 									invitation_invited = (%s)
 							) > 0
 						)
-					) AND
-					tale_title ILIKE (%s)
-					ORDER BY tale_star_count DESC OFFSET (%s) LIMIT (%s)
+					)
+					ORDER BY tale_star_count DESC
 				''',
-				(user_id, viewer_id, '%' + title + '%', offset, limit),
+				(user_id, viewer_id),
 				rows
 			)
 		)
@@ -308,8 +285,8 @@ class Tale(DAO):
 		)
 
 	@staticmethod
-	def select_viewable_by_creator_id_and_viewer_id_and_title_with_offset_and_limit(
-			creator_id, viewer_id, title, offset, limit = 5, rows = None
+	def select_viewable_by_creator_id_and_viewer_id(
+			creator_id, viewer_id, rows = None
 		):
 		return Tale._construct_tale_objects(
 			DAO.select_by(
@@ -329,11 +306,10 @@ class Tale(DAO):
 							invitation_tale_id = tale_id
 						) OR
 						tale_creator = (%s)
-					) AND
-					tale_title ILIKE (%s)
-					ORDER BY tale_star_count DESC OFFSET (%s) LIMIT (%s)
+					)
+					ORDER BY tale_star_count DESC
 				''',
-				(creator_id, viewer_id, viewer_id, '%' + title + '%', offset, limit),
+				(creator_id, viewer_id, viewer_id),
 				rows
 			)
 		)

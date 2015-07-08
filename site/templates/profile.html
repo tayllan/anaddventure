@@ -34,12 +34,12 @@
 			</div>
 		</div>
 
-		<div class="own column">
-			<form action="/get_rendered_own_tales" method="get" class="ui fluid icon input">
+		<div id="own" class="column">
+			<div class="ui fluid icon input">
 				<input type="text" placeholder="{{_('SEARCH')}} {{_('TALES')}}">
 				<i class="search icon"></i>
-			</form>
-			<table class="ui loading form table">
+			</div>
+			<table class="ui table">
 				<thead>
 					<tr>
 						<th colspan="3">
@@ -48,37 +48,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for a in range(0, 5) %}
-						<tr>
-							<td></td>
-							<td>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-							</td>
-							<td></td>
-						</tr>
-					{% endfor %}
+					{% include "fragment/own_tales.html" %}
 				</tbody>
 			</table>
 
 			<div class="ui one column grid center aligned">
 				<div class="column">
-					<button id="previous-button" class="own-pagination ui button disabled">
+					<button id="own-previous-button" class="ui button disabled">
 						<i class="chevron left icon"></i>
 					</button>
-					<button id="next-button" class="own-pagination ui button disabled">
+					<button id="own-next-button" class="ui button disabled">
 						<i class="chevron right icon"></i>
 					</button>
 				</div>
 			</div>
 		</div>
 
-		<div class="participated column">
-			<form action="/search_participated_tales" method="get" class="ui fluid icon input">
+		<div id="participated" class="column">
+			<div class="ui fluid icon input">
 				<input type="text" placeholder="{{_('SEARCH')}} {{_('TALES')}}">
 				<i class="search icon"></i>
-			</form>
-			<table class="ui loading form table">
+			</div>
+			<table class="ui table">
 				<thead>
 					<tr>
 						<th colspan="3">
@@ -87,24 +78,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for a in range(0, 5) %}
-						<tr>
-							<td></td>
-							<td>
-								<p>&nbsp;</p>
-								<p>&nbsp;</p>
-							</td>
-							<td></td>
-						</tr>
-					{% endfor %}
+					{% include "fragment/participated_tales.html" %}
 				</tbody>
 			</table>
 			<div class="ui one column grid center aligned">
 				<div class="column">
-					<button id="previous-button" class="participated-pagination ui button disabled">
+					<button id="participated-previous-button" class="ui button disabled">
 						<i class="chevron left icon"></i>
 					</button>
-					<button id="next-button" class="participated-pagination ui button disabled">
+					<button id="participated-next-button" class="ui button disabled">
 						<i class="chevron right icon"></i>
 					</button>
 				</div>
@@ -124,127 +106,150 @@
 
 <script>
 $(document).ready(function() {
-	var username = '{{user.username}}';
-	var $own = $('.own');
-	var $participated = $('.participated');
+	// own_tales
+	var $own_tbody = $('#own tbody');
+	var all_own_tales = $own_tbody.find('tr');
+	var own_tales = all_own_tales;
+	var own_tales_length = own_tales.length;
+	var page = 1;
+	var pages = Math.ceil(own_tales_length / 5);
+	var $own_previous_button = $('#own-previous-button');
+	var $own_next_button = $('#own-next-button');
 
-	var render_own_tales = function(offset, search_string) {
-		offset = parseInt(offset, 10);
-		$.ajax({
-			type: 'get',
-			url: '/get_rendered_own_tales',
-			datatype: 'json',
-			data: {
-				username: username,
-				offset: offset,
-				search_string: search_string
-			},
-			success: function(data) {
-				var $own_table = $own.find('table');
-				$own_table.removeClass('loading form');
-				$own_table.find('tbody').empty().append(data.template);
+	if (pages > page) {
+		$own_next_button.removeClass('disabled');
+	}
+	$own_next_button.on('click', function(event) {
+		for (var max = page * 5, min = max - 5; min < max; min++) {
+			$(own_tales[min]).css('display', 'none');
 
-				var $previous_button = $own.find('#previous-button');
-				var $next_button = $own.find('#next-button');
-
-				$previous_button.val(data.previous_offset);
-				$next_button.val(data.next_offset);
-
-				if (parseInt(data.previous_offset, 10) === offset) {
-					$previous_button.addClass('disabled');
-				}
-				else {
-					$previous_button.removeClass('disabled');
-				}
-
-				if (parseInt(data.next_offset, 10) === offset) {
-					$next_button.addClass('disabled');
-				}
-				else {
-					$next_button.removeClass('disabled');
-				}
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
+			if (min + 5 < own_tales_length) {
+				$(own_tales[min + 5]).css('display', 'table-row');
 			}
+		}
+		++page;
+		if (pages <= page) {
+			$own_next_button.addClass('disabled');
+		}
+		$own_previous_button.removeClass('disabled');
+	});
+	$own_previous_button.on('click', function(event) {
+		for (var min = (page * 5) - 5, max = Math.max(min + 5, own_tales_length); min < max; min++) {
+			$(own_tales[min]).css('display', 'none');
+			$(own_tales[min - 5]).css('display', 'table-row');
+		}
+		--page;
+		if (page <= 1) {
+			$own_previous_button.addClass('disabled');
+		}
+		$own_next_button.removeClass('disabled');
+	});
+
+	$('#own input').on('keyup', function(event) {
+		var query = this.value.toLowerCase();
+
+		own_tales = all_own_tales.filter(function(i, e) {
+			return $(e).find('.tale-text').html().indexOf(query) !== -1;
 		});
-	};
+		own_tales_length = own_tales.length;
 
-	var render_participated_tales = function(offset, search_string) {
-		offset = parseInt(offset, 10);
-		$.ajax({
-			type: 'get',
-			url: '/get_rendered_participated_tales',
-			datatype: 'json',
-			data: {
-				username: username,
-				offset: offset,
-				search_string: search_string
-			},
-			success: function(data) {
-				var $participated_table = $participated.find('table');
-				$participated_table.removeClass('loading form');
-				$participated_table.find('tbody').empty().append(data.template);
+		while (own_tales_length === 0 || own_tales_length % 5 !== 0) {
+			own_tales.push($('<tr style="display: none;"><td></td><td><p class="tale-text" style="display: none;"></p><p>&nbsp;</p><p>&nbsp;</p></td><td></td></tr>'));
+			++own_tales_length;
+		}
 
-				var $previous_button = $participated.find('#previous-button');
-				var $next_button = $participated.find('#next-button');
+		page = 1;
+		pages = Math.ceil(own_tales_length / 5);
 
-				$previous_button.val(data.previous_offset);
-				$next_button.val(data.next_offset);
+		$own_tbody.empty();
 
-				if (parseInt(data.previous_offset, 10) === offset) {
-					$previous_button.addClass('disabled');
-				}
-				else {
-					$previous_button.removeClass('disabled');
-				}
+		for (var i = 0, max = Math.min(5, own_tales_length); i < max; i++) {
+			$own_tbody.append($(own_tales[i]).css('display', 'table-row'));
+		}
+		for (i = 5; i < own_tales_length; i++) {
+			$own_tbody.append($(own_tales[i]).css('display', 'none'));
+		}
+		if (pages <= page) {
+			$own_next_button.addClass('disabled');
+		}
+		else {
+			$own_next_button.removeClass('disabled');
+		}
 
-				if (parseInt(data.next_offset, 10) === offset) {
-					$next_button.addClass('disabled');
-				}
-				else {
-					$next_button.removeClass('disabled');
-				}
-			},
-			error: function(xhr, status, error) {
-				console.log(xhr);
+		$own_previous_button.addClass('disabled');
+	});
+
+	// participated_tales
+	var $participated_tbody = $('#participated tbody');
+	var all_participated_tales = $participated_tbody.find('tr');
+	var participated_tales = all_participated_tales;
+	var participated_tales_length = participated_tales.length;
+	var page = 1;
+	var pages = Math.ceil(participated_tales_length / 5);
+	var $participated_previous_button = $('#participated-previous-button');
+	var $participated_next_button = $('#participated-next-button');
+
+	if (pages > page) {
+		$participated_next_button.removeClass('disabled');
+	}
+	$participated_next_button.on('click', function(event) {
+		for (var max = page * 5, min = max - 5; min < max; min++) {
+			$(participated_tales[min]).css('display', 'none');
+
+			if (min + 5 < participated_tales_length) {
+				$(participated_tales[min + 5]).css('display', 'table-row');
 			}
+		}
+		++page;
+		if (pages <= page) {
+			$participated_next_button.addClass('disabled');
+		}
+		$participated_previous_button.removeClass('disabled');
+	});
+	$participated_previous_button.on('click', function(event) {
+		for (var min = (page * 5) - 5, max = Math.max(min + 5, participated_tales_length); min < max; min++) {
+			$(participated_tales[min]).css('display', 'none');
+			$(participated_tales[min - 5]).css('display', 'table-row');
+		}
+		--page;
+		if (page <= 1) {
+			$participated_previous_button.addClass('disabled');
+		}
+		$participated_next_button.removeClass('disabled');
+	});
+
+	$('#participated input').on('keyup', function(event) {
+		var query = this.value.toLowerCase();
+
+		participated_tales = all_participated_tales.filter(function(i, e) {
+			return $(e).find('.tale-text').html().indexOf(query) !== -1;
 		});
-	};
+		participated_tales_length = participated_tales.length;
 
-	$own.on('click', '.own-pagination', function(event) {
-		event.preventDefault();
+		while (participated_tales_length === 0 || participated_tales_length % 5 !== 0) {
+			participated_tales.push($('<tr style="display: none;"><td></td><td><p class="tale-text" style="display: none;"></p><p>&nbsp;</p><p>&nbsp;</p></td><td></td></tr>'));
+			++participated_tales_length;
+		}
 
-		render_own_tales(this.value, $own.find('input').val());
+		page = 1;
+		pages = Math.ceil(participated_tales_length / 5);
 
-		return false;
-	});
+		$participated_tbody.empty();
 
-	$participated.on('click', '.participated-pagination', function(event) {
-		event.preventDefault();
+		for (var i = 0, max = Math.min(5, participated_tales_length); i < max; i++) {
+			$participated_tbody.append($(participated_tales[i]).css('display', 'table-row'));
+		}
+		for (i = 5; i < participated_tales_length; i++) {
+			$participated_tbody.append($(participated_tales[i]).css('display', 'none'));
+		}
+		if (pages <= page) {
+			$participated_next_button.addClass('disabled');
+		}
+		else {
+			$participated_next_button.removeClass('disabled');
+		}
 
-		render_participated_tales(this.value, $participated.find('input').val());
-
-		return false;
-	});
-
-	render_own_tales(0);
-	render_participated_tales(0);
-
-	$own.on('submit', 'form', function(event) {
-		event.preventDefault();
-
-		render_own_tales(0, $(this).find('input').val());
-
-		return false;
-	});
-
-	$participated.on('submit', 'form', function(event) {
-		event.preventDefault();
-
-		render_participated_tales(0, $(this).find('input').val());
-
-		return false;
+		$participated_previous_button.addClass('disabled');
 	});
 });
 </script>

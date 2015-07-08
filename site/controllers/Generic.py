@@ -577,47 +577,6 @@ def unstar(tale_id):
 	else:
 		abort(404)
 
-@www.route('/get_rendered_own_tales/')
-@pt.route('/get_rendered_own_tales/')
-def get_rendered_own_tales():
-	username = request.args.get('username')
-	offset = int(request.args.get('offset'))
-	search_string = request.args.get('search_string', '')
-	user_logged_id = session.get('user_logged_id', None)
-	user_id = User.select_by_full_username(username, 1)[0]['id']
-
-	tales = Tale.select_viewable_by_creator_id_and_viewer_id_and_title_with_offset_and_limit(
-		user_id, user_logged_id, search_string, offset, aux.PAGINATION_LIMIT + 1
-	)
-
-	return jsonify({
-		'template': render_template('fragment/own_tales.html', tales = tales[:aux.PAGINATION_LIMIT]),
-		'previous_offset': 0 if (offset - aux.PAGINATION_LIMIT < 0) else (offset - aux.PAGINATION_LIMIT),
-		'next_offset': offset if len(tales) <= aux.PAGINATION_LIMIT else (offset + aux.PAGINATION_LIMIT)
-	})
-
-@www.route('/get_rendered_participated_tales/')
-@pt.route('/get_rendered_participated_tales/')
-def get_rendered_participated_tales():
-	username = request.args.get('username')
-	offset = int(request.args.get('offset'))
-	search_string = request.args.get('search_string', '')
-	user_logged_id = session.get('user_logged_id', None)
-	user_id = User.select_by_full_username(username, 1)[0]['id']
-
-	tales = Tale.select_tales_other_creator_by_title_with_offset_and_limit(
-		user_id, user_logged_id, search_string, offset, aux.PAGINATION_LIMIT + 1
-	)
-
-	for tale in tales:
-		tale['creator'] = User.select_by_id(tale['creator_id'], 1)[0]
-
-	return jsonify({
-		'template': render_template('fragment/participated_tales.html', tales = tales[:aux.PAGINATION_LIMIT]),
-		'previous_offset': 0 if (offset - aux.PAGINATION_LIMIT < 0) else (offset - aux.PAGINATION_LIMIT),
-		'next_offset': offset if len(tales) <= aux.PAGINATION_LIMIT else (offset + aux.PAGINATION_LIMIT)
-	})
-
 @www.route('/<path:no_match>/')
 @pt.route('/<path:no_match>/')
 def not_found2(no_match):

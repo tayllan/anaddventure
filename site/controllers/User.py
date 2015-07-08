@@ -1,6 +1,7 @@
 from flask import request, session, render_template, redirect, jsonify, make_response
 from languages import strings
 from models.Signup_Queue import Signup_Queue
+from models.Tale import Tale
 from models.User import User
 from controllers import aux
 from config import www, pt, app
@@ -14,12 +15,22 @@ def profile(username):
 
 	if len(user) is not 0 and user[0]['is_valid_account']:
 		user = user[0]
+		user_logged_id = session.get('user_logged_id', None)
+
 		user['signup_date'] = aux.beautify_datetime(user['signup_date'])
-		user['is_email_visible'] = user['is_email_visible'] or session.get('user_logged_id', None) is user['id']
+		user['is_email_visible'] = user['is_email_visible'] or user_logged_id is user['id']
+
+		own_tales = Tale.select_viewable_by_creator_id_and_viewer_id(user['id'], user_logged_id)
+		participated_tales = Tale.select_tales_other_creator(user['id'], user_logged_id)
+
+		for tale in participated_tales:
+			tale['creator'] = User.select_by_id(tale['creator_id'], 1)[0]
 
 		return render_template(
 			'profile.html',
-			user = user
+			user = user,
+			own_tales = own_tales,
+			participated_tales = participated_tales,
 		)
 	else:
 		return redirect('/404')

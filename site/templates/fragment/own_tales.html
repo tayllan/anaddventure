@@ -1,5 +1,10 @@
-{% for tale in tales %}
-	<tr>
+{% for tale in own_tales %}
+	{% if loop.index < 6 %}
+		<tr>
+	{% else %}
+		<tr style="display: none;">
+	{% endif %}
+
 		<td class="left aligned ui header">
 			{% if tale.category == 1 %}
 				<i class="book icon"></i>
@@ -8,6 +13,9 @@
 			{% endif %}
 		</td>
 		<td>
+			<p class="tale-text" style="display: none;">
+				{{"%.40s"|format(tale.title)|lower}} {{"%.40s"|format(tale.description)|lower}}
+			</p>
 			<p>
 				{% if tale.title|length > 40 %}
 					<a href="/tale/{{tale.id}}/0">{{"%.40s"|format(tale.title)}}...</a>
@@ -29,13 +37,28 @@
 	</tr>
 {% endfor %}
 
-{% for a in range(0, 5 - tales|length) %}
-	<tr>
-		<td></td>
-		<td>
-			<p>&nbsp;</p>
-			<p>&nbsp;</p>
-		</td>
-		<td></td>
-	</tr>
-{% endfor %}
+{% if own_tales|length <= 5 %}
+	{% for a in range(0, 5 - own_tales|length) %}
+		<tr>
+			<td></td>
+			<td>
+				<p class="tale-text" style="display: none;"></p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+			</td>
+			<td></td>
+		</tr>
+	{% endfor %}
+{% else %}
+	{% for a in range(0, 5 - (own_tales|length % 5)) %}
+		<tr style="display: none;">
+			<td></td>
+			<td>
+				<p class="tale-text" style="display: none;"></p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+			</td>
+			<td></td>
+		</tr>
+	{% endfor %}
+{% endif %}
